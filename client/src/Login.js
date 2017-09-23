@@ -71,5 +71,5 @@ export default class Login extends Component {
 }
 
 const CreateAccountLink = () => (
-  <span>Login or Create Account</span>
+  <span>Login or Create Account!</span>
 )
