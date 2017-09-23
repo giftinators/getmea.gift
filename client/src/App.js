@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 import Homepage from './Homepage';
 import WishListPage from './WishListPage';
+import Footer from './Footer';
 
 
 
@@ -52,6 +53,7 @@ class App extends Component {
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" component={WishListPage}/>
             <Route exact path="/:username/:list_id" component={WishListPage}/>
+            <Footer />
           </div>
         </MuiThemeProvider>
       </Router>

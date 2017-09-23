@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {AppBar} from 'material-ui';
 
-class Homepage extends Component {
+
+class Footer extends Component {
   constructor(props) {
     super(props);
 
@@ -14,11 +15,11 @@ class Homepage extends Component {
 
   render() {
     return (
-        <div className="Homepage">
-          <h1>Homepage</h1>
+        <div className="Footer">
+          <h1>Footer</h1>
         </div>
     );
   }
 }
 
-export default Homepage;
+export default Footer;
