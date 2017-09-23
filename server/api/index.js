@@ -1,9 +1,14 @@
 const router = require('express').Router();
 const User = require('../../app/models/user');
 
+<<<<<<< HEAD
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 const helpers = require('./helpers');
+=======
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+>>>>>>> cleaned up some syntax and added comments
 
 //get all users
 //We actually won't need this for our app, but good for testing db
@@ -74,10 +79,27 @@ router.post('/lists', (req, res) => {
   //TODO: get user id from session
   var user_id = '59c9ca9d9abf99a03260e2ed';
 
+<<<<<<< HEAD
   helpers.createList({
     title: title,
     secret: secret,
     user_id: user_id
+=======
+  //decide if its ok to have multiple lists of same name
+  List.findOne({title: title})
+  .exec(function (err, list) {
+    var newList = new List({
+      title: title,
+      secret: secret
+    })
+    newList.save(function (err, newList) {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.send({newList})
+      }
+    })
+>>>>>>> cleaned up some syntax and added comments
   })
   .then((list) => {
     res.send(list);
@@ -129,6 +151,36 @@ router.put('/lists/:id', (req, res) => {
   });
 });
 
+<<<<<<< HEAD
+=======
+//add an item to the list (specific to the user)
+router.post('/:user/:list/item', (req, res) => {
+  var title = req.body.title;
+  var price = req.body.price;
+  var comments = req.body.comments;
+  var url = req.body.url;
+  var imageUrl = req.body.secret;
+  var timestamp = req.body.timestamp;
+  var purchased = req.body.purchased;
+
+  //work on adding multiple items with same title
+  Item.findOne({title: title})
+  .exec(function (err, item) {
+    var newItem = new Item({
+      title: title,
+      price: price,
+      comments: comments,
+      url: url,
+      image_url: imageUrl
+    })
+    newItem.save(function (err, newItem) {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.send({newItem})
+      }
+    })
+>>>>>>> cleaned up some syntax and added comments
 
 //add an item to the list (specific to the user)
 /* Example POST data

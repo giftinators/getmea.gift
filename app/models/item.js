@@ -8,10 +8,9 @@ var itemSchema = mongoose.Schema({
   image_url: String,
   timestamp: Date,
   purchased: Boolean,
-  list_id: {type: mongoose.Schema.Types.ObjectId, ref: 'List'}
+  list_id: [{type: mongoose.Schema.Types.ObjectId, ref: 'List'}]
 })
 
 var Item = mongoose.model('Item', itemSchema);
-
 
 module.exports = Item;
