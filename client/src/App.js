@@ -11,6 +11,7 @@ import {
 import Homepage from './Homepage';
 import WishListPage from './WishListPage';
 import Footer from './Footer';
+import Login from './Login';
 
 
 
@@ -44,7 +45,7 @@ class App extends Component {
           <div className="App">
             <AppBar
               title={<span>Get Me A Gift</span>}
-              iconElementRight={<FlatButton primary={true} label="Login" />}
+              iconElementRight={<Login />}
             />
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" component={WishListPage}/>
