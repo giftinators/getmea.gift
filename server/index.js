@@ -1,5 +1,7 @@
 const express = require('express');
-require('dotenv').config();
+require('dotenv').config({
+  path: '../.env'
+});
 const path = require('path');
 const http = require('http');
 const api = require('./api');
@@ -7,7 +9,7 @@ const app = express();
 const mongoose = require('mongoose')
 
 //connecting to the mongoose database
-mongoose.connect('mongodb://localhost/getmeagift');
+mongoose.connect(process.env.MONGODB_URI);
 //mongoose Promises are deprecated in Mongoose 4 (think we used mongo3 for sprint)
 mongoose.Promise = global.Promise;
 
