@@ -49,7 +49,6 @@ const style = {
 class Test extends Component {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
   render() {
@@ -99,5 +98,7 @@ class WishListPage extends Component {
     );
   }
 }
+
+
 
 export default WishListPage;
