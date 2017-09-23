@@ -22,10 +22,7 @@ const muiTheme = getMuiTheme({
     primary3Color: colors.orange200,
     accent1Color: colors.blue200,
     alternateTextColor: colors.white
-  },
-  appBar: {
-    height: 200,
-  },
+  }
 });
 
 class App extends Component {
@@ -47,7 +44,7 @@ class App extends Component {
           <div className="App">
             <AppBar
               title={<span>Get Me A Gift</span>}
-              iconElementRight={<FlatButton primary={true} label="Logout" />}
+              iconElementRight={<FlatButton primary={true} label="Login" />}
             />
 
             <Route exact path="/" component={Homepage}/>
