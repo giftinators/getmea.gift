@@ -90,15 +90,15 @@ class WishListPage extends Component {
         <div>
         </div>
           <br />
+          <RaisedButton style={muiTheme.raisedButton} label="Share" primary={true} />
+          <RaisedButton style={muiTheme.raisedButton} label="Wishlist" primary={true} />
+          <RaisedButton style={muiTheme.raisedButton} label="Add Item" primary={true} />
           <br />
           <br />
             <List style={muiTheme.listStyle}>
             <Paper style={muiTheme.paperStyle}  zDepth={1}>
              <br />
              <br />
-            <RaisedButton style={muiTheme.raisedButton} label="Share" primary={true} />
-            <RaisedButton style={muiTheme.raisedButton} label="Wishlist" primary={true} />
-            <RaisedButton style={muiTheme.raisedButton} label="Add Item" primary={true} />
             <br />
               <br />
                 <br />
