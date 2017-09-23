@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 import Homepage from './Homepage';
 import WishListPage from './WishListPage';
+import Footer from './Footer';
 
 
 
@@ -21,10 +22,7 @@ const muiTheme = getMuiTheme({
     primary3Color: colors.orange200,
     accent1Color: colors.blue200,
     alternateTextColor: colors.white
-  },
-  appBar: {
-    height: 100,
-  },
+  }
 });
 
 class App extends Component {
@@ -46,12 +44,12 @@ class App extends Component {
           <div className="App">
             <AppBar
               title={<span>Get Me A Gift</span>}
-              iconElementRight={<FlatButton primary={true} label="Logout" />}
+              iconElementRight={<FlatButton primary={true} label="Login" />}
             />
-
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" component={WishListPage}/>
             <Route exact path="/:username/:list_id" component={WishListPage}/>
+            <Footer />
           </div>
         </MuiThemeProvider>
       </Router>
