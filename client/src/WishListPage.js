@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 // dded gridList and gridTile for grid divs. May not need all
 import {AppBar, RaisedButton, GridList, GridTile} from 'material-ui';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // added for grid stuff, may not need all
 import {colors} from 'material-ui/styles';
