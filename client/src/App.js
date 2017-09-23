@@ -48,7 +48,6 @@ class App extends Component {
               title={<span>Get Me A Gift</span>}
               iconElementRight={<FlatButton primary={true} label="Logout" />}
             />
-
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" component={WishListPage}/>
             <Route exact path="/:username/:list_id" component={WishListPage}/>
