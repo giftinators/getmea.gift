@@ -11,6 +11,8 @@ import TextField from 'material-ui/TextField';
 export default class Login extends Component {
   state = {
     open: false,
+    email: '',
+    password: ''
   };
 
   handleOpen = () => {
@@ -20,6 +22,13 @@ export default class Login extends Component {
   handleClose = () => {
     this.setState({open: false});
   };
+
+  handleEmailChange = (e, newValue) => {
+    this.setState({email: newValue})
+  }
+  handlePasswordChange = (e, newValue) => {
+    this.setState({password: newValue})
+  }
 
   render() {
     const actions = [
@@ -31,16 +40,16 @@ export default class Login extends Component {
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={true}
+        disabled={!this.state.email || !this.state.password}
         onClick={this.handleClose}
       />,
     ];
 
     return (
       <div>
-        <RaisedButton label="Login" onClick={this.handleOpen} />
+        <RaisedButton secondary label="Login" onClick={this.handleOpen} />
         <Dialog
-          title={<CreateAccountLink />}
+          title={CreateAccountLink()}
           actions={actions}
           modal={true}
           open={this.state.open}
@@ -48,19 +57,18 @@ export default class Login extends Component {
           <div style={{textAlign: 'center'}}>
             <form>
               <TextField
-                hintText="Username"
-                floatingLabelText="Username"
+                onChange={this.handleEmailChange}
+                hintText="email"
+                floatingLabelText="email"
+                type="email"
+                value={this.state.email}
               /><br />
               <TextField
-                hintText="Password"
-                floatingLabelText="Password"
+                onChange={this.handlePasswordChange}
+                hintText="password"
+                floatingLabelText="password"
                 type="password"
-              /><br />
-              <TextField
-                hintText="Confirm Password"
-                floatingLabelText="Confirm Password"
-                type="password"
-                errorText="Passwords don't match"
+                value={this.state.password}
               /><br />
             </form>
           </div>
@@ -71,5 +79,5 @@ export default class Login extends Component {
 }
 
 const CreateAccountLink = () => (
-  <span>Login or Create Account!</span>
+  <div>Login or <a href="#">Create Account</a></div>
 )

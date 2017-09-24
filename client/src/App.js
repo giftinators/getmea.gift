@@ -46,6 +46,7 @@ class App extends Component {
             <AppBar
               title={<span>Get Me A Gift</span>}
               iconElementRight={<Login />}
+              zDepth={4}
             />
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" component={WishListPage}/>
