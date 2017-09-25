@@ -65,6 +65,7 @@ router.post('/users', (req, res) => {
   })
 })
 
+<<<<<<< HEAD
 
 //add new list to user
 /* Example POST data
@@ -74,6 +75,17 @@ router.post('/users', (req, res) => {
 }
 */
 router.post('/lists', (req, res) => {
+=======
+//get all the lists from the user
+router.get('/:user/lists', (req, res) => {
+  List.find().exec((err, lists) => {
+    res.send({lists})
+  })
+})
+
+router.post('/:user/lists', (req, res) => {
+  console.log(req.body)
+>>>>>>> just moved stuff around. no real changes
   var title = req.body.title;
   var secret = req.body.secret;
   //TODO: get user id from session
