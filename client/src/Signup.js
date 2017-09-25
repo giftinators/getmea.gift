@@ -3,17 +3,17 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Signup from './Signup.js';
 
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
 
-export default class Login extends Component {
+export default class Signup extends Component {
   state = {
     open: false,
     email: '',
-    password: ''
+    password: '',
+    verifyPassword: ''
   };
 
   handleOpen = () => {
@@ -29,6 +29,9 @@ export default class Login extends Component {
   }
   handlePasswordChange = (e, newValue) => {
     this.setState({password: newValue})
+  }
+  handleVerifyPasswordChange = (e, newValue) => {
+    this.setState({verifyPassword: newValue})
   }
 
   render() {
@@ -48,9 +51,9 @@ export default class Login extends Component {
 
     return (
       <div>
-        <RaisedButton secondary label="Login" onClick={this.handleOpen} />
+        <a href="#" onClick={this.handleOpen}>Creat an Account</a>
         <Dialog
-          title={CreateAccountLink()}
+          title="Create an account"
           actions={actions}
           modal={true}
           open={this.state.open}
@@ -70,6 +73,14 @@ export default class Login extends Component {
                 floatingLabelText="password"
                 type="password"
                 value={this.state.password}
+                /><br />
+              <TextField
+                onChange={this.handleVerifyPasswordChange}
+                hintText="verify password"
+                floatingLabelText="verify password"
+                type="password"
+                value={this.state.verifyPassword}
+                errorText="Passwords don't match"
               /><br />
             </form>
           </div>
@@ -80,5 +91,5 @@ export default class Login extends Component {
 }
 
 const CreateAccountLink = () => (
-  <div>Login or <Signup /></div>
+  <div>Login or <a href="#">Create Account</a></div>
 )
