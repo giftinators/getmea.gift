@@ -13,8 +13,6 @@ import WishListPage from './WishListPage';
 import Footer from './Footer';
 import Login from './Login';
 
-
-
 //overwrite default theme
 const muiTheme = getMuiTheme({
   palette: {

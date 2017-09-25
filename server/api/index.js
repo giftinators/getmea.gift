@@ -4,27 +4,15 @@ const List = require('../../app/models/list')
 const Item = require('../../app/models/item')
 const bodyParser = require('body-parser');
 
-
-
-
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-// router.get('/', (req, res) => {
-//   res.send('API Server');
-// });
-//
-// router.get('/hello', (req, res) => {
-//   res.send({
-//     name: 'World'
-//   });
-// });
-
 //get all users
 router.get('/users', (req, res) => {
-  User.find().exec((err, users) => {
-    res.send({users})
-  })
+  res.send('hi');
+  // User.find().exec((err, users) => {
+  //   res.send({users})
+  // })
 })
 
 //create a new user when user signs up
@@ -121,6 +109,5 @@ router.post('/:user/:list/item', (req, res) => {
 
   })
 })
-
 
 module.exports = router;
