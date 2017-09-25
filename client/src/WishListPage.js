@@ -27,6 +27,7 @@ import Avatar from 'material-ui/Avatar';
 import Paper from 'material-ui/Paper';
 // end of paper imports
 
+<<<<<<< HEAD
 // Import for table/list
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
@@ -44,6 +45,9 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import Menu from 'material-ui/Menu';
 // end of wishlist menu imports
 
+=======
+import AddItem from './AddItem.js';
+>>>>>>> additem module created
 
 const style = {
   raisedButton: {
