@@ -32,12 +32,12 @@ const getUser = (username, loggedInUserId) => {
   })
 };
 
-const createList = (user_id, list) => {
+const createList = (list) => {
   return new Promise((resolve, reject) => {
     let savedList;
     //user_id should be from the session
     //make sure user_id is defined
-    if (user_id){
+    if (list.user_id){
       //create new list
       const newList = new List(list);
       //save new list to database
@@ -47,7 +47,7 @@ const createList = (user_id, list) => {
         savedList = newList;
         //now we have to add the new list to the user's wishlists
         //find the user based on the user's id
-        return User.findById(user_id).exec()
+        return User.findById(list.user_id).exec()
       })
       .then((user) => {
         //add new list to the user's list of wishlists
