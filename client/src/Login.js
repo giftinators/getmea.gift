@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,7 +12,7 @@ import Signup from './Signup.js';
 
 export default class Login extends Component {
   state = {
-    open: false,
+    open: this.props.open || false,
     username: '',
     password: ''
   };
@@ -50,7 +51,7 @@ export default class Login extends Component {
       <div>
         <RaisedButton secondary label="Login" onClick={this.handleOpen} />
         <Dialog
-          title={CreateAccountLink()}
+          title="Login"
           actions={actions}
           modal={true}
           open={this.state.open}
@@ -71,13 +72,10 @@ export default class Login extends Component {
                 value={this.state.password}
               /><br />
             </form>
+            <p>Don't have an account? <Link to={'/signup'} onClick={this.handleClose}>Create one</Link></p>
           </div>
         </Dialog>
       </div>
     );
   }
 }
-
-const CreateAccountLink = () => (
-  <div>Login or <Signup /></div>
-)
