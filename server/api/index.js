@@ -61,13 +61,19 @@ router.post('/signup', (req, res) => {
 
 
 //add new list to user
+/* Example POST data
+{
+	"title": "Secret List",
+	"secret": true
+}
+*/
 router.post('/list', (req, res) => {
   var title = req.body.title;
   var secret = req.body.secret;
   //TODO: get user id from session
   var user_id = '59c9ca9d9abf99a03260e2ed';
 
-  helpers.createList(user_id, {
+  helpers.createList({
     title: title,
     secret: secret,
     user_id: user_id
