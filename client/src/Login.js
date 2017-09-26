@@ -12,7 +12,7 @@ import Signup from './Signup.js';
 export default class Login extends Component {
   state = {
     open: false,
-    email: '',
+    username: '',
     password: ''
   };
 
@@ -24,8 +24,8 @@ export default class Login extends Component {
     this.setState({open: false});
   };
 
-  handleEmailChange = (e, newValue) => {
-    this.setState({email: newValue})
+  handleUsernameChange = (e, newValue) => {
+    this.setState({username: newValue})
   }
   handlePasswordChange = (e, newValue) => {
     this.setState({password: newValue})
@@ -41,7 +41,7 @@ export default class Login extends Component {
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={!this.state.email || !this.state.password}
+        disabled={!this.state.username || !this.state.password}
         onClick={this.handleClose}
       />,
     ];
@@ -58,11 +58,10 @@ export default class Login extends Component {
           <div style={{textAlign: 'center'}}>
             <form>
               <TextField
-                onChange={this.handleEmailChange}
-                hintText="email"
-                floatingLabelText="email"
-                type="email"
-                value={this.state.email}
+                onChange={this.handleUsernameChange}
+                hintText="username"
+                floatingLabelText="username"
+                value={this.state.username}
               /><br />
               <TextField
                 onChange={this.handlePasswordChange}

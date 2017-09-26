@@ -9,14 +9,13 @@ router.use(bodyParser.json());
 
 //get all users
 router.get('/users', (req, res) => {
-  res.send('hi');
-  // User.find().exec((err, users) => {
-  //   res.send({users})
-  // })
+  User.find().exec((err, users) => {
+    res.send({users})
+  })
 })
 
 //create a new user when user signs up
-router.post('/signup', (req, res) => {
+router.post('/users', (req, res) => {
   console.log(req.body)
   var username = req.body.username;
   var password = req.body.password;
