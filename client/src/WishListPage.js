@@ -27,7 +27,6 @@ import Avatar from 'material-ui/Avatar';
 import Paper from 'material-ui/Paper';
 // end of paper imports
 
-<<<<<<< HEAD
 // Import for table/list
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
@@ -43,11 +42,13 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 
 // WishLists menu imports
 import Menu from 'material-ui/Menu';
+
+//Component import
+import AddItem  from './AddItem';
 // end of wishlist menu imports
 
-=======
-import AddItem from './AddItem.js';
->>>>>>> additem module created
+
+
 
 const style = {
   raisedButton: {
@@ -202,6 +203,7 @@ class WishListPage extends Component {
 
   // componentWillMount() {
   // }
+  // <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
 
   render() {
     return (
@@ -213,7 +215,7 @@ class WishListPage extends Component {
           <span id=''></span>
           <RaisedButton style={style.raisedButton} secondary label="New Wishlist" />
           <RaisedButton onClick={ ()=>{this.addThing()} } style={style.raisedButton} secondary label="Share"/>
-          <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
+          <AddItem />
           <br/>
           <br/>
                   <div>
