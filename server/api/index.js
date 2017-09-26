@@ -61,6 +61,12 @@ router.post('/signup', (req, res) => {
 
 
 //add new list to user
+/* Example POST data
+{
+	"title": "Secret List",
+	"secret": true
+}
+*/
 router.post('/list', (req, res) => {
   var title = req.body.title;
   var secret = req.body.secret;
