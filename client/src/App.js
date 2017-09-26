@@ -12,6 +12,7 @@ import Homepage from './Homepage';
 import WishListPage from './WishListPage';
 import Footer from './Footer';
 import Login from './Login';
+import Signup from './Signup';
 
 //overwrite default theme
 const muiTheme = getMuiTheme({
@@ -27,7 +28,6 @@ const muiTheme = getMuiTheme({
 class App extends Component {
   constructor() {
     super();
-
 
     this.state = {
     };
@@ -49,6 +49,8 @@ class App extends Component {
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" component={WishListPage}/>
             <Route exact path="/:username/:list_id" component={WishListPage}/>
+            <Route path='/login' render={routeProps => <Login open={true}/>} />
+            <Route path='/signup' render={routeProps => <Signup open={true}/>} />
             <Footer />
           </div>
         </MuiThemeProvider>

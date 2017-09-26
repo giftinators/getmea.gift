@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -9,31 +10,35 @@ import TextField from 'material-ui/TextField';
 */
 
 export default class Signup extends Component {
-  state = {
-    open: false,
-    email: '',
-    password: '',
-    verifyPassword: ''
-  };
 
-  handleOpen = () => {
-    this.setState({open: true});
-  };
+  constructor(props) {
+    super(props);
 
-  handleClose = () => {
-    this.setState({open: false});
-  };
+    this.state = {
+      open: this.props.open,
+      email: '',
+      password: '',
+      verifyPassword: ''
+    };
 
-  handleEmailChange = (e, newValue) => {
-    this.setState({email: newValue})
+    this.handleOpen = () => {
+      this.setState({open: true});
+    };
+
+    this.handleClose = () => {
+      this.setState({open: false});
+    };
+
+    this.handleEmailChange = (e, newValue) => {
+      this.setState({email: newValue})
+    }
+    this.handlePasswordChange = (e, newValue) => {
+      this.setState({password: newValue})
+    }
+    this.handleVerifyPasswordChange = (e, newValue) => {
+      this.setState({verifyPassword: newValue})
+    }
   }
-  handlePasswordChange = (e, newValue) => {
-    this.setState({password: newValue})
-  }
-  handleVerifyPasswordChange = (e, newValue) => {
-    this.setState({verifyPassword: newValue})
-  }
-
   render() {
     const actions = [
       <FlatButton
@@ -51,7 +56,6 @@ export default class Signup extends Component {
 
     return (
       <div>
-        <a href="#" onClick={this.handleOpen}>Creat an Account</a>
         <Dialog
           title="Create an account"
           actions={actions}
@@ -83,6 +87,7 @@ export default class Signup extends Component {
                 errorText="Passwords don't match"
               /><br />
             </form>
+            <p>Already have an account? <Link to={'/login'}>Login</Link></p>
           </div>
         </Dialog>
       </div>
