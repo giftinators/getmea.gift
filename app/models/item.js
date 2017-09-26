@@ -6,9 +6,10 @@ var itemSchema = mongoose.Schema({
   comments: String,
   url: String,
   image_url: String,
-  timestamp: Date,
-  purchased: Boolean,
-  list_id: [{type: mongoose.Schema.Types.ObjectId, ref: 'List'}]
+  timestamp: {type: Date, default: Date.now},
+  purchased: {type: Boolean, default: false},
+  user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  list_id: {type: mongoose.Schema.Types.ObjectId, ref: 'List'}
 })
 
 var Item = mongoose.model('Item', itemSchema);
