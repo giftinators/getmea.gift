@@ -7,7 +7,14 @@ const getUser = (username, loggedInUserId) => {
   return new Promise((resolve, reject) => {
     User.findOne({username: username})
     .select('-password') //don't send back password
-    .populate('wishlists')
+    .populate({ //gets nested items
+      path: 'wishlists',
+      model: 'List',
+      populate: {
+        path: 'items',
+        model: 'Item'
+      }
+    })
     .exec()
     .then((user) => {
       //check if user doesn't exist
@@ -128,29 +135,36 @@ const updateList = (user_id, list_id, listUpdates) => {
 
 const addItem = (user_id, item) => {
   return new Promise((resolve, reject) => {
+    let savedItem;
     //user_id should be from the session
     //make sure user_id is defined
     if (user_id){
-      //update the list based on list id and user id and pass in the updates
-      //create new list
-      const newItem = new List(list);
-      //save new list to database
+      //create new item
+      const newItem = new Item(item);
+      //save new item to database
       newItem.save()
       .then((newItem) => {
-        //store the new list so we can access it later
-        savedList = newItem;
-        //now we have to add the new list to the user's wishlists
-        //find the user based on the user's id
-        return User.findById(list.user_id).exec()
+        //store the new item so we can access it later
+        savedItem = newItem;
+        //now we have to add the new item to the wishlists
+        //find the list based on the list_id on the new item
+        return List.findById(newItem.list_id).exec()
       })
-      .then((user) => {
-        //add new list to the user's list of wishlists
-        user.wishlists.push(savedList._id);
-        return user.save();
+      .then((list) => {
+        //make sure user is owner of the list
+        if (user_id == list.user_id){
+          //add new item's id to the wishlist items array
+          list.items.push(savedItem._id);
+          return list.save();
+        } else {
+          //remove item from database
+          Item.remove({ _id: savedItem._id });
+          reject('logged in user does not own list');
+        }
       })
-      .then((user) => {
-        //resolve with the newly added wishlist
-        resolve(savedList);
+      .then((list) => {
+        //resolve with the newly added item
+        resolve(savedItem);
       })
       .catch((err) => {
         //catch and return any errors
@@ -164,10 +178,50 @@ const addItem = (user_id, item) => {
 }
 
 
+const deleteItem = (user_id, item_id) => {
+  return new Promise((resolve, reject) => {
+    let deletedItem;
+    //user_id should be from the session
+    //make sure user_id is defined
+    if (user_id){
+      //find the item based on item id and user id and remove it
+      Item.findOne({ _id:item_id, user_id: user_id })
+      .then((item) => {
+        //store the deleted item for use later
+        deletedItem = item;
+        //remove item from database
+        return Item.remove({ _id: item_id, user_id: user_id }).exec();
+      })
+      .then(() => {
+        //find the list of the deleted item
+        return List.findById(deletedItem.list_id).exec()
+      })
+      .then((list) => {
+        //remove item ref from the list
+        list.items.pull(item_id);
+        return list.save();
+      })
+      .then((list) => {
+        //resolve with the id of the removed item
+        resolve(item_id);
+      })
+      .catch((err) => {
+        //catch and return any errors
+        reject(err);
+      });
+    } else {
+      //probaby not logged in
+      reject('user not logged in');
+    }
+  })
+};
+
+
 module.exports = {
   getUser,
   createList,
   deleteList,
   updateList,
-  addItem
+  addItem,
+  deleteItem
 }

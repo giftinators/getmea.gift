@@ -133,23 +133,26 @@ router.put('/lists/:id', (req, res) => {
 //add an item to the list (specific to the user)
 /* Example POST data
 {
-	"title": "Secret List",
-	"secret": true
+	"title": "New Balance - 247 Classic",
+  "price": 79.99,
+  "comments": "I wear a size 10.5",
+  "url": "http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D",
+  "imageUrl": "http://nb.scene7.com/is/image/NB/mrl247rb_nb_02_i?$dw_temp_default_gallery$",
+  "list_id": "59cab05eec5719b45039976b"
 }
 */
-router.post('/lists/:list_id/items', (req, res) => {
+router.post('/items', (req, res) => {
+  //TODO: get user id from session
+  var user_id = '59c9ca9d9abf99a03260e2ed';
+
   var item = {};
   item.title = req.body.title;
   item.price = req.body.price;
   item.comments = req.body.comments;
   item.url = req.body.url;
   item.imageUrl = req.body.imageUrl;
-  item.timestamp = req.body.timestamp;
-  item.purchased = req.body.purchased;
-  item.list_id = req.params.list_id;
-
-  //TODO: get user id from session
-  var user_id = '59c9ca9d9abf99a03260e2ed';
+  item.list_id = req.body.list_id;
+  item.user_id = user_id;
 
   helpers.addItem(user_id, item)
   .then((newItem) => {
@@ -159,5 +162,21 @@ router.post('/lists/:list_id/items', (req, res) => {
     res.status(404).send({err});
   });
 })
+
+
+//delete item
+router.delete('/items/:id', (req, res) => {
+  var item_id = req.params.id;
+  //TODO: get user id from session
+  var user_id = '59c9ca9d9abf99a03260e2ed';
+
+  helpers.deleteItem(user_id, item_id)
+  .then((id) => {
+    res.send(`Deleted Item: ${id}`);
+  })
+  .catch((err) => {
+    res.status(404).send({err});
+  });
+});
 
 module.exports = router;
