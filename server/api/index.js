@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../../app/models/user');
+
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 const helpers = require('./helpers');
@@ -30,7 +31,7 @@ router.get('/users/:username', (req, res) => {
 
 
 //create a new user when user signs up
-router.post('/signup', (req, res) => {
+router.post('/users', (req, res) => {
   console.log(req.body)
   var username = req.body.username;
   var password = req.body.password;
@@ -132,6 +133,5 @@ router.post('/item', (req, res) => {
 
   })
 })
-
 
 module.exports = router;
