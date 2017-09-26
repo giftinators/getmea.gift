@@ -151,9 +151,16 @@ const addItem = (user_id, item) => {
         return List.findById(newItem.list_id).exec()
       })
       .then((list) => {
-        //add new item's id to the wishlist items array
-        list.items.push(savedItem._id);
-        return list.save();
+        //make sure user is owner of the list
+        if (user_id == list.user_id){
+          //add new item's id to the wishlist items array
+          list.items.push(savedItem._id);
+          return list.save();
+        } else {
+          //remove item from database
+          Item.remove({ _id: savedItem._id });
+          reject('logged in user does not own list');
+        }
       })
       .then((list) => {
         //resolve with the newly added item
