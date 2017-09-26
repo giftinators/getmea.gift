@@ -1,5 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
-var User = rquire('/models/user.js');
+var User = require('/models/user.js');
 
 module.exports = function(passport) {
 
@@ -22,7 +22,7 @@ module.exports = function(passport) {
   },
   function(req, username, password, done) {
     process.nextTick(function() {
-      User.findOne({'local.username': username }, function(err, user) {
+      User.findOne({'username': username }, function(err, user) {
         if (err) {
           return done(err);
         }
@@ -33,8 +33,8 @@ module.exports = function(passport) {
           var newUser = new User();
 
           // Set the user's local credentials
-          newUser.local.username = username;
-          newUser.local.password = newUser.generateHash(password);
+          newUser.username = username;
+          newUser.password = newUser.generateHash(password);
 
           // Save the user
           newUser.save(function(err) {
@@ -55,7 +55,7 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, username, password, done) {
-    User.findOne({ 'local.username': username }, function(err, user) {
+    User.findOne({ 'username': username }, function(err, user) {
       if (err) {
         return done(err);
       }
