@@ -3,23 +3,10 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Checkbox from 'material-ui/Checkbox';
-import Signup from './Signup.js';
 
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
-
-const styles = {
-  block: {
-    maxWidth: 100,
-    marginLeft: 'auto',
-    marginRight: 'auto'
-  },
-  checkbox: {
-    marginBottom: 16,
-  },
-};
 
 export default class Login extends Component {
   state = {
@@ -29,8 +16,7 @@ export default class Login extends Component {
     url: '',
     imageUrl: '',
     comments: '',
-    private: false,
-    checked: false
+    private: false
   };
 
   handleOpen = () => {
@@ -55,17 +41,9 @@ export default class Login extends Component {
   }
 
   //figure out how to add an upload image button
-  handleImageChange = (e, newValue) => {
+  handleImageUrlChange = (e, newValue) => {
+    this.setState({imageUrl: newValue})
   }
-
-  updateCheck() {
-    this.setState((oldState) => {
-      return {
-        checked: !oldState.checked,
-      };
-    });
-  }
-
 
   render() {
     const actions = [
@@ -100,12 +78,14 @@ export default class Login extends Component {
                 floatingLabelText="Item Name"
                 type="title"
                 value={this.state.title}
+                errorText="Item Name is Required"
               /><br />
               <TextField
                 onChange={this.handlePriceChange}
                 floatingLabelText="Price"
                 type="price"
                 value={this.state.price}
+                errorText="Price is Required"
                 style={{maxWidth: 75}}
               /><br />
               <TextField
@@ -115,26 +95,26 @@ export default class Login extends Component {
                 value={this.state.url}
               />
               <div>
-              <TextField
-                onChange={this.handleCommentChange}
-                floatingLabelText="Description"
-                type="comments"
-                multiLine={true}
-                rows={2}
-                value={this.state.comments}
-                styles={{textAlign: 'left'}}
-              />
+                <TextField
+                onChange={this.handleImageUrlChange}
+                floatingLabelText="Image Url"
+                type="imageUrl"
+                value={this.state.imageUrl}
+                />
               </div>
-              <br />
-              <FlatButton secondary label='Upload Image'/>
-              <br />
-              <div style={styles.block}>
-              <Checkbox
-                label="Private"
-                checked={this.state.checked}
-                onCheck={this.updateCheck.bind(this)}
-                styles={styles.checkbox}
-              />
+              <div>
+                <TextField
+                  onChange={this.handleCommentChange}
+                  floatingLabelText="Description"
+                  type="comments"
+                  rows={2}
+                  multiLine='true'
+                  value={this.state.comments}
+                  style={{textAlign: 'left'}}
+                />
+              </div>
+              <div>
+                <FlatButton secondary label='Upload Image'/>
               </div>
             </form>
           </div>
@@ -146,5 +126,4 @@ export default class Login extends Component {
 
 const Header = () => (
   <div style={{textAlign: 'center'}}> Add Item </div>
-  // <div>Login or <Signup /></div>
 )
