@@ -133,7 +133,7 @@ const addItem = (user_id, item) => {
     if (user_id){
       //update the list based on list id and user id and pass in the updates
       //create new list
-      const newItem = new List(list);
+      const newItem = new Item(item);
       //save new list to database
       newItem.save()
       .then((newItem) => {
