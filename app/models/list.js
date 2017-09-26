@@ -5,7 +5,7 @@ var listSchema = mongoose.Schema({
   id: Number,
   user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   secret: Boolean,
-  items: Array
+  items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }]
 })
 
 var List = mongoose.model('List', listSchema);
