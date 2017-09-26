@@ -12,6 +12,23 @@ router.get('/users', (req, res) => {
   })
 })
 
+//get user
+router.get('/users/:username', (req, res) => {
+  //TODO: get user id from session
+  var loggedInUserId = '59c9ca9d9abf99a03260e2ed';
+
+  //we want to send in the logged in user's id
+  //so we can determine if we should send back secret wishlists
+  helpers.getUser(req.params.username, loggedInUserId)
+  .then((user) => {
+    res.send(user);
+  })
+  .catch((err) => {
+    res.status(404).send({err});
+  })
+})
+
+
 //create a new user when user signs up
 router.post('/signup', (req, res) => {
   console.log(req.body)
@@ -29,7 +46,7 @@ router.post('/signup', (req, res) => {
       })
       newUser.save(function (err, newUser) {
         if (err) {
-          res.status(500).send(err)
+          res.status(500).send({err})
         } else {
           res.send({newUser})
         }
@@ -42,27 +59,42 @@ router.post('/signup', (req, res) => {
   })
 })
 
+
 //add new list to user
 router.post('/list', (req, res) => {
-  console.log(req.body)
   var title = req.body.title;
   var secret = req.body.secret;
+  //TODO: get user id from session
+  var user_id = '59c9ca9d9abf99a03260e2ed';
 
-  List.findOne({title: title})
-  .exec(function (err, list) {
-    var newList = new List({
-      title: title,
-      secret: secret
-    })
-    newList.save(function (err, newList) {
-      if (err) {
-        res.status(500).send(err)
-      } else {
-        res.send({newList})
-      }
-    })
+  helpers.createList(user_id, {
+    title: title,
+    secret: secret,
+    user_id: user_id
   })
-})
+  .then((list) => {
+    res.send(list);
+  })
+  .catch((err) => {
+    res.status(404).send({err});
+  });
+});
+
+
+//delete list
+router.delete('/list/:id', (req, res) => {
+  var list_id = req.params.id;
+  //TODO: get user id from session
+  var user_id = '59c9ca9d9abf99a03260e2ed';
+
+  helpers.deleteList(user_id, list_id)
+  .then((id) => {
+    res.send(`Deleted Wishlist: ${id}`);
+  })
+  .catch((err) => {
+    res.status(404).send({err});
+  });
+});
 
 
 //add an item to the list (specific to the user)
@@ -86,7 +118,7 @@ router.post('/item', (req, res) => {
     })
     newItem.save(function (err, newItem) {
       if (err) {
-        res.status(500).send(err)
+        res.status(500).send({err})
       } else {
         res.send({newItem})
       }
