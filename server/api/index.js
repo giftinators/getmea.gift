@@ -4,7 +4,7 @@ const User = require('../../app/models/user');
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 const helpers = require('./helpers');
-
+const passport = require('passport');
 //get all users
 //We actually won't need this for our app, but good for testing db
 router.get('/users', (req, res) => {
@@ -29,6 +29,11 @@ router.get('/users/:username', (req, res) => {
   })
 })
 
+router.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
+}))
 
 //create a new user when user signs up
 router.post('/users', (req, res) => {
