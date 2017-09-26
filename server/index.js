@@ -8,11 +8,22 @@ const api = require('./api');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
+const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
+
 
 //connecting to the mongoose database
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 //mongoose Promises are deprecated in Mongoose 4 (think we used mongo3 for sprint)
 mongoose.Promise = global.Promise;
+
+// Passport
+app.use(session({secret: 'thiscanbeanyfuckingthing'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+require('../app/passport.js')(passport);
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
