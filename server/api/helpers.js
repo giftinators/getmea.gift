@@ -2,6 +2,7 @@ const User = require('../../app/models/user');
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 
+
 const getUser = (username, loggedInUserId) => {
   return new Promise((resolve, reject) => {
     User.findOne({username: username})
@@ -31,6 +32,7 @@ const getUser = (username, loggedInUserId) => {
     })
   })
 };
+
 
 const createList = (list) => {
   return new Promise((resolve, reject) => {
@@ -69,6 +71,7 @@ const createList = (list) => {
   })
 };
 
+
 const deleteList = (user_id, list_id) => {
   return new Promise((resolve, reject) => {
     //user_id should be from the session
@@ -99,8 +102,72 @@ const deleteList = (user_id, list_id) => {
   })
 };
 
+
+const updateList = (user_id, list_id, listUpdates) => {
+  return new Promise((resolve, reject) => {
+    //user_id should be from the session
+    //make sure user_id is defined
+    if (user_id){
+      //update the list based on list id and user id and pass in the updates
+      List.findOneAndUpdate({ _id:list_id, user_id: user_id }, {$set: listUpdates}, {new: true}).exec()
+      .then((list) => {
+        //send back the updated list
+        resolve(list);
+      })
+      .catch((err) => {
+        //catch and return any errors
+        reject(err);
+      });
+    } else {
+      //probaby not logged in
+      reject('user not logged in');
+    }
+  })
+};
+
+
+const addItem = (user_id, item) => {
+  return new Promise((resolve, reject) => {
+    //user_id should be from the session
+    //make sure user_id is defined
+    if (user_id){
+      //update the list based on list id and user id and pass in the updates
+      //create new list
+      const newItem = new List(list);
+      //save new list to database
+      newItem.save()
+      .then((newItem) => {
+        //store the new list so we can access it later
+        savedList = newItem;
+        //now we have to add the new list to the user's wishlists
+        //find the user based on the user's id
+        return User.findById(list.user_id).exec()
+      })
+      .then((user) => {
+        //add new list to the user's list of wishlists
+        user.wishlists.push(savedList._id);
+        return user.save();
+      })
+      .then((user) => {
+        //resolve with the newly added wishlist
+        resolve(savedList);
+      })
+      .catch((err) => {
+        //catch and return any errors
+        reject(err);
+      });
+    } else {
+      //probaby not logged in
+      reject('user not logged in');
+    }
+  })
+}
+
+
 module.exports = {
-  getUser: getUser,
-  createList: createList,
-  deleteList: deleteList
+  getUser,
+  createList,
+  deleteList,
+  updateList,
+  addItem
 }

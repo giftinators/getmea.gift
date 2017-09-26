@@ -68,7 +68,7 @@ router.post('/users', (req, res) => {
 	"secret": true
 }
 */
-router.post('/list', (req, res) => {
+router.post('/lists', (req, res) => {
   var title = req.body.title;
   var secret = req.body.secret;
   //TODO: get user id from session
@@ -89,7 +89,7 @@ router.post('/list', (req, res) => {
 
 
 //delete list
-router.delete('/list/:id', (req, res) => {
+router.delete('/lists/:id', (req, res) => {
   var list_id = req.params.id;
   //TODO: get user id from session
   var user_id = '59c9ca9d9abf99a03260e2ed';
@@ -104,34 +104,60 @@ router.delete('/list/:id', (req, res) => {
 });
 
 
-//add an item to the list (specific to the user)
-router.post('/item', (req, res) => {
-  var title = req.body.title;
-  var price = req.body.price;
-  var comments = req.body.comments;
-  var url = req.body.url;
-  var imageUrl = req.body.secret;
-  var timestamp = req.body.timestamp;
-  var purchased = req.body.purchased;
+//add new list to user
+/* Example POST data
+{
+	"title": "New List Name"
+}
+or
+{
+	"secret": false
+}
+*/
+router.put('/lists/:id', (req, res) => {
+  var list_id = req.params.id;
+  var listUpdates = req.body;
+  //TODO: get user id from session
+  var user_id = '59c9ca9d9abf99a03260e2ed';
 
-  Item.findOne({title: title})
-  .exec(function (err, item) {
-    var newItem = new Item({
-      title: title,
-      price: price,
-      comments: comments,
-      url: url,
-      image_url: imageUrl
-    })
-    newItem.save(function (err, newItem) {
-      if (err) {
-        res.status(500).send({err})
-      } else {
-        res.send({newItem})
-      }
-    })
-
+  helpers.updateList(user_id, list_id, listUpdates)
+  .then((list) => {
+    res.send(list);
   })
+  .catch((err) => {
+    res.status(404).send({err});
+  });
+});
+
+
+//add an item to the list (specific to the user)
+/* Example POST data
+{
+	"title": "Secret List",
+	"secret": true
+}
+*/
+router.post('/lists/:list_id/items', (req, res) => {
+  var item = {};
+  item.title = req.body.title;
+  item.price = req.body.price;
+  item.comments = req.body.comments;
+  item.url = req.body.url;
+  item.imageUrl = req.body.imageUrl;
+  item.timestamp = req.body.timestamp;
+  item.purchased = req.body.purchased;
+  item.list_id = req.params.list_id;
+
+  //TODO: get user id from session
+  var user_id = '59c9ca9d9abf99a03260e2ed';
+
+  helpers.addItem(user_id, item)
+  .then((newItem) => {
+    res.send(newItem);
+  })
+  .catch((err) => {
+    res.status(404).send({err});
+  });
 })
 
 module.exports = router;
