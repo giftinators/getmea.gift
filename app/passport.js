@@ -5,6 +5,7 @@ module.exports = function(passport) {
 
 // Passport Session setup
   passport.serializeUser(function(user, done) {
+    console.log('user from serializeUser func:', user)
     done(null, user.id);
   });
 
