@@ -32,18 +32,26 @@ router.get('/users/:username', (req, res) => {
 })
 
 // new route for testing Passport authentication
-router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/',
-  failureRedirect: '/signup',
-  failureFlash: true
-}))
+router.post('/signup', (req, res) => {
+  passport.authenticate('local-signup', (err, user, info) => {
+    if (err) {
+      res.status(401).send({err: err});
+    } else {
+      res.send(user);
+    }
+  })(req, res);
+});
 
 // Login router
-router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true
-}))
+router.post('/login', (req, res) => {
+  passport.authenticate('local-login', (err, user, info) => {
+    if (err) {
+      res.status(401).send({err: err});
+    } else {
+      res.send(user);
+    }
+  })(req, res);
+});
 
 //create a new user when user signs up
 router.post('/users', (req, res) => {
