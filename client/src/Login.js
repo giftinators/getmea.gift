@@ -16,6 +16,9 @@ export default class Login extends Component {
     username: '',
     password: ''
   };
+  toggleOpen = () => {
+    this.setState({open: !this.state.open})
+  };
   handleOpen = () => {
     this.setState({open: true});
   };
@@ -86,7 +89,7 @@ export default class Login extends Component {
                 value={this.state.password}
               /><br />
             </form>
-            <p>Don't have an account? <Link to={'/signup'} onClick={this.handleClose}>Create one</Link></p>
+            <p>Don't have an account? <Link to={'/signup'} open={true} onClick={this.toggleOpen}>Create one</Link></p>
           </div>
         </Dialog>
       </div>

@@ -4,7 +4,6 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
-import flash from 'connect-flash';
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
@@ -21,9 +20,15 @@ export default class Signup extends Component {
       verifyPassword: ''
     };
 
+    this.toggleOpen = () => {
+      this.setState({open: !this.state.open})
+    }
     this.handleOpen = () => {
       this.setState({open: true});
     };
+    this.handleClose = () => {
+      this.setState({open: false});
+    }
     this.handleEmailChange = (e, newValue) => {
       this.setState({username: newValue})
     };
@@ -45,7 +50,7 @@ export default class Signup extends Component {
           console.log(response);
           this.setState({open: false});
         } else {
-
+          console.log('nope')
         }
       })
       .catch(function (error) {
@@ -98,10 +103,10 @@ export default class Signup extends Component {
                 floatingLabelText="verify password"
                 type="password"
                 value={this.state.verifyPassword}
-                errorText="Passwords don't match"
+                errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords don't match"}
               /><br />
             </form>
-            <p>Already have an account? <Link to={'/login'}>Login</Link></p>
+            <p>Already have an account? <Link to={'/login'} open={true} onClick={this.toggleOpen}>Login</Link></p>
           </div>
         </Dialog>
       </div>
