@@ -1,47 +1,22 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 // dded gridList and gridTile for grid divs. May not need all
-import {AppBar, RaisedButton, GridList, GridTile, Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui';
+import {RaisedButton, Table, TableBody, TableRow, TableRowColumn} from 'material-ui';
 
 // added for grid stuff, may not need all
-import {colors} from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
-import Subheader from 'material-ui/Subheader';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
-
-//imports for MUI list styles
-import {List, ListItem} from 'material-ui/List';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
-import ContentSend from 'material-ui/svg-icons/content/send';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
-import Divider from 'material-ui/Divider';
-import ActionInfo from 'material-ui/svg-icons/action/info';
-import ContentInbox from 'material-ui/svg-icons/content/inbox';
 // end of list style MUI imports
-
-// imports for Avatar
-import Avatar from 'material-ui/Avatar';
-// end imports for avatar
 
 //imports for paper
 import Paper from 'material-ui/Paper';
 // end of paper imports
-
-// Import for table/list
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
 
 // toolbar imports
 import IconMenu from 'material-ui/IconMenu';
 import FontIcon from 'material-ui/FontIcon';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 // end of toolbar inputs
-
-// WishLists menu imports
-import Menu from 'material-ui/Menu';
 
 //Component import
 import AddItem  from './AddItem';
@@ -100,50 +75,6 @@ const style = {
   }
 };
 
-const menuStyle = {
-  display: 'inline-block',
-  margin: '16px 32px 16px 0',
-};
-
-const MenuExampleSimple = () => (
-  <div>
-    <Paper menuStyle={style}>
-      <Menu>
-        <MenuItem primaryText="Maps" />
-        <MenuItem primaryText="Books" />
-        <MenuItem primaryText="Flights" />
-        <MenuItem primaryText="Apps" />
-      </Menu>
-    </Paper>
-  </div>
-);
-
-const styles = {
-  propContainer: {
-    overflow: 'hidden',
-    margin: '20px auto 0',
-  },
-  propToggleHeader: {
-    margin: '20px auto 10px',
-  },
-};
-
-
-
-class Test extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
-  render() {
-    return <p style={{
-      textAlign: 'right',
-      marginTop: '-20px'
-    }}>$9.99</p>
-  }
-}
-
 class WishListPage extends Component {
   constructor(props) {
     super(props);
@@ -194,7 +125,7 @@ class WishListPage extends Component {
     var temp = {}
     temp.name = 'Bike'
     temp.price = '$5.99'
-    temp.link = <RaisedButton label="Give This Gift" secondary={true} style={style} />,
+    temp.link = <RaisedButton label="Give This Gift" secondary={true} style={style} />
     temp.image = 'http://www.wigglestatic.com/product-media/5360108808/Wiggle-Road-Bike-Road-Bikes-Black-1WGMY16R7048UK0001-6.jpg?w=2000&h=2000&a=7'
     var temp1 = this.state.userData.slice(0)
     temp1.push(temp)
@@ -258,7 +189,7 @@ class WishListPage extends Component {
 
                 <TableRowColumn hoverable={true} style={{ height: 140}}>
                   <Paper style={{maxWidth: 120, marginTop: 10, maxHeight: 120}} zDepth={1} >
-                    <img style={style.images} src={row.image}/>
+                    <img alt="button" style={style.images} src={row.image}/>
                   </Paper>
 
                 </TableRowColumn>
