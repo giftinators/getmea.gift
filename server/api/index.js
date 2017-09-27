@@ -43,8 +43,14 @@ router.post('/signup', (req, res) => {
   })(req, res);
 });
 
-router.post('/login', passport.authenticate('local-login'), (req, res) => {
-  res.send(req.user);
+router.post('/login', (req, res) => {
+  passport.authenticate('local-login', (err, user, info) => {
+    if (err) {
+      res.status(401).send({err: err});
+    } else {
+      res.send(user);
+    }
+  })(req, res);
 });
 
 //create a new user when user signs up
