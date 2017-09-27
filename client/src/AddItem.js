@@ -3,20 +3,21 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import axios from 'axios';
 
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
 
-export default class Login extends Component {
+export default class AddItem extends Component {
   state = {
     open: false,
     title: '',
-    price: null,
+    price: 0.00,
     url: '',
     imageUrl: '',
     comments: '',
-    private: false
+    errorText: '*Required'
   };
 
   handleOpen = () => {
@@ -45,6 +46,16 @@ export default class Login extends Component {
     this.setState({imageUrl: newValue})
   }
 
+  //trying to edit so that errortext goes away when they type something
+  handleErrorText = (e) => {
+    console.log(e.target.value)
+    if(e.target.value.length) {
+      this.setState({errorText: ''});
+    } else {
+      this.setState({errorText: '*Required'});
+    }
+  }
+
   render() {
     const actions = [
       <FlatButton
@@ -55,8 +66,8 @@ export default class Login extends Component {
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={!this.state.title || !this.state.password}
-        onClick={this.handleClose}
+        disabled={!this.state.title || !this.state.price}
+        onClick={this.handleSubmit}
       />,
     ];
 
@@ -71,50 +82,58 @@ export default class Login extends Component {
           modal={true}
           open={this.state.open}
         >
-          <div style={{textAlign: 'center'}}>
+          <div style={{marginLeft: 150}}>
             <form>
-              <TextField
-                onChange={this.handleTitleChange}
-                floatingLabelText="Item Name"
-                type="title"
-                value={this.state.title}
-                errorText="Item Name is Required"
-              /><br />
-              <TextField
+              <div>
+                <TextField
+                  onChange={this.handleTitleChange}
+                  floatingLabelText="Item Name"
+                  type="title"
+                  value={this.state.title}
+                  errorText={this.state.errorText}
+                  style={{marginRight: 30}}
+                />
+                <TextField
                 onChange={this.handlePriceChange}
                 floatingLabelText="Price"
                 type="price"
                 value={this.state.price}
-                errorText="Price is Required"
+                errorText={this.state.errorText}
                 style={{maxWidth: 75}}
-              /><br />
-              <TextField
-                onChange={this.handleUrlChange}
-                floatingLabelText="Link to Item"
-                type="url"
-                value={this.state.url}
-              />
+                />
+              </div>
+              <div>
+                <TextField
+                  onChange={this.handleUrlChange}
+                  floatingLabelText="Link to Item"
+                  type="url"
+                  value={this.state.url}
+                />
+              </div>
               <div>
                 <TextField
                 onChange={this.handleImageUrlChange}
                 floatingLabelText="Image Url"
                 type="imageUrl"
                 value={this.state.imageUrl}
+                style={{marginRight: 20}}
                 />
+                <FlatButton
+                  secondary
+                  label='Upload Image'
+                  />
               </div>
               <div>
                 <TextField
                   onChange={this.handleCommentChange}
                   floatingLabelText="Description"
+                  hintText="Additional Comments (color, model, size, etc)"
                   type="comments"
                   rows={2}
-                  multiLine='true'
+                  multiLine={true}
                   value={this.state.comments}
                   style={{textAlign: 'left'}}
                 />
-              </div>
-              <div>
-                <FlatButton secondary label='Upload Image'/>
               </div>
             </form>
           </div>

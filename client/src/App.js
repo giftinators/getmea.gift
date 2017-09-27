@@ -5,7 +5,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {colors} from 'material-ui/styles';
 import {
   BrowserRouter as Router,
-  Route,
+  Route
 } from 'react-router-dom';
 import Homepage from './Homepage';
 import WishListPage from './WishListPage';
