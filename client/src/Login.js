@@ -89,7 +89,7 @@ export default class Login extends Component {
                 value={this.state.password}
               /><br />
             </form>
-            <p>Don't have an account? <Link to={'/signup'} onClick={this.toggleOpen}>Create one</Link></p>
+            <p>Don't have an account? <Link to={'/signup'} open={true} onClick={this.toggleOpen}>Create one</Link></p>
           </div>
         </Dialog>
       </div>

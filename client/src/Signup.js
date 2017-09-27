@@ -14,7 +14,7 @@ export default class Signup extends Component {
     super(props);
 
     this.state = {
-      open: this.props.open || true,
+      open: this.props.open,
       username: '',
       password: '',
       verifyPassword: ''
@@ -103,10 +103,10 @@ export default class Signup extends Component {
                 floatingLabelText="verify password"
                 type="password"
                 value={this.state.verifyPassword}
-                errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords don\'t match"}
+                errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords don't match"}
               /><br />
             </form>
-            <p>Already have an account? <Link to={'/login'} onClick={this.toggleOpen}>Login</Link></p>
+            <p>Already have an account? <Link to={'/login'} open={true} onClick={this.toggleOpen}>Login</Link></p>
           </div>
         </Dialog>
       </div>
