@@ -15,15 +15,21 @@ export default class Signup extends Component {
     super(props);
 
     this.state = {
-      open: this.props.open,
+      open: this.props.open || true,
       username: '',
       password: '',
       verifyPassword: ''
     };
 
+    this.toggleOpen = () => {
+      this.setState({open: !this.state.open})
+    }
     this.handleOpen = () => {
       this.setState({open: true});
     };
+    this.handleClose = () => {
+      this.setState({open: false});
+    }
     this.handleEmailChange = (e, newValue) => {
       this.setState({username: newValue})
     };
@@ -45,7 +51,7 @@ export default class Signup extends Component {
           console.log(response);
           this.setState({open: false});
         } else {
-
+          console.log('nope')
         }
       })
       .catch(function (error) {
@@ -98,10 +104,10 @@ export default class Signup extends Component {
                 floatingLabelText="verify password"
                 type="password"
                 value={this.state.verifyPassword}
-                errorText="Passwords don't match"
+                errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords don\'t match"}
               /><br />
             </form>
-            <p>Already have an account? <Link to={'/login'}>Login</Link></p>
+            <p>Already have an account? <Link to={'/login'} onClick={this.toggleOpen}>Login</Link></p>
           </div>
         </Dialog>
       </div>
