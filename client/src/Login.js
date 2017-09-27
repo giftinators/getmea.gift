@@ -66,7 +66,7 @@ export default class Login extends Component {
 
     return (
       <div>
-        <RaisedButton secondary label="Login" onClick={this.handleOpen} />
+        <RaisedButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
         <Dialog
           title="Login"
           actions={actions}
