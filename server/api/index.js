@@ -34,6 +34,13 @@ router.get('/users/:username', (req, res) => {
 // new route for testing Passport authentication
 router.post('/signup', passport.authenticate('local-signup', {
   successRedirect: '/',
+  failureRedirect: '/signup',
+  failureFlash: true
+}))
+
+// Login router
+router.post('/login', passport.authenticate('local-login', {
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 }))
