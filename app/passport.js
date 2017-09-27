@@ -5,7 +5,7 @@ module.exports = function(passport) {
 
 // Passport Session setup
   passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user._id);
   });
 
   passport.deserializeUser(function(id, done) {
@@ -17,18 +17,17 @@ module.exports = function(passport) {
   // Local Signup Strategy
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
-    passwordField: 'password',
-    passReqToCallback: true
+    passwordField: 'password'
   },
-  function(req, username, password, done) {
-    process.nextTick(function() {
+  function(username, password, done) {
+
       User.findOne({'username': username }, function(err, user) {
         if (err) {
           return done(err);
         }
         // Check to see if there is already a user with provided username
         if (user) {
-          return done(null, false, req.flash('signupMessage', 'Username is taken.'));
+          return done('user already exists');
         } else {
           var newUser = new User();
 
@@ -46,26 +45,25 @@ module.exports = function(passport) {
           });
         }
       });
-    });
+
   }));
 
   passport.use('local-login', new LocalStrategy({
     usernameField: 'username',
-    passwordField: 'password',
-    passReqToCallback: true
+    passwordField: 'password'
   },
-  function(req, username, password, done) {
+  function(username, password, done) {
     User.findOne({ 'username': username }, function(err, user) {
       if (err) {
         return done(err);
       }
       // If user is not found, return the flash messages
       if (!user) {
-        return done(null, false, req.flash('loginMessage', 'Username not found.'));
+        return done('user not found', false);
       }
       // If user is found but the provided password is incorrect:
-      if (!user.validPassword(passord)) {
-        return done(null, false, req.flash('loginMessage', 'Incorrect username/password.'));
+      if (!user.validPassword(password)) {
+        return done('incorrect password', false);
       }
       // If username and password are corret, return successfully
       return done(null, user);

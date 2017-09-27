@@ -19,10 +19,9 @@ mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 // Passport
-app.use(session({secret: 'thiscanbeanyfuckingthing'}));
+app.use(session({secret: 'G3tM3@.g1f+', resave: false, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 require('../app/passport.js')(passport);
 
 
