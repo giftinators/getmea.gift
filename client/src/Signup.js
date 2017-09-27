@@ -4,7 +4,6 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
-import flash from 'connect-flash';
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
