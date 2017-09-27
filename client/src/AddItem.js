@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import axios from 'axios';
 
 /**
 * A modal dialog can only be closed by selecting one of the actions.
@@ -16,7 +17,6 @@ export default class Login extends Component {
     url: '',
     imageUrl: '',
     comments: '',
-    private: false,
     errorText: '*Required'
   };
 
@@ -46,6 +46,7 @@ export default class Login extends Component {
     this.setState({imageUrl: newValue})
   }
 
+  //trying to edit so that errortext goes away when they type something
   handleErrorText = (e) => {
     console.log(e.target.value)
     if(e.target.value.length) {
@@ -53,6 +54,25 @@ export default class Login extends Component {
     } else {
       this.setState({errorText: '*Required'});
     }
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('/api/items', {
+      title: this.state.title,
+      price: this.state.price,
+      url: this.state.url,
+      imageUrl: this.state.imageUrl,
+      comments: this.state.comments
+    })
+    .then((response) => {
+      if (response.data) {
+        this.setState({open: false})
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   render() {
@@ -65,8 +85,8 @@ export default class Login extends Component {
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={!this.state.title || !this.state.password}
-        onClick={this.handleClose}
+        disabled={!this.state.title || !this.state.price}
+        onClick={this.handleSubmit}
       />,
     ];
 
@@ -126,6 +146,7 @@ export default class Login extends Component {
                 <TextField
                   onChange={this.handleCommentChange}
                   floatingLabelText="Description"
+                  hintText="Additional Comments (color, model, size, etc)"
                   type="comments"
                   rows={2}
                   multiLine='true'
