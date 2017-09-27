@@ -16,7 +16,8 @@ export default class Login extends Component {
     url: '',
     imageUrl: '',
     comments: '',
-    private: false
+    private: false,
+    errorText: '*Required'
   };
 
   handleOpen = () => {
@@ -45,6 +46,15 @@ export default class Login extends Component {
     this.setState({imageUrl: newValue})
   }
 
+  handleErrorText = (e) => {
+    console.log(e.target.value)
+    if(e.target.value.length) {
+      this.setState({errorText: ''});
+    } else {
+      this.setState({errorText: '*Required'});
+    }
+  }
+
   render() {
     const actions = [
       <FlatButton
@@ -71,36 +81,46 @@ export default class Login extends Component {
           modal={true}
           open={this.state.open}
         >
-          <div style={{textAlign: 'center'}}>
+          <div style={{marginLeft: 150}}>
             <form>
-              <TextField
-                onChange={this.handleTitleChange}
-                floatingLabelText="Item Name"
-                type="title"
-                value={this.state.title}
-                errorText="Item Name is Required"
-              /><br />
-              <TextField
+              <div>
+                <TextField
+                  onChange={this.handleTitleChange}
+                  floatingLabelText="Item Name"
+                  type="title"
+                  value={this.state.title}
+                  errorText={this.state.errorText}
+                  style={{marginRight: 30}}
+                />
+                <TextField
                 onChange={this.handlePriceChange}
                 floatingLabelText="Price"
                 type="price"
                 value={this.state.price}
-                errorText="Price is Required"
+                errorText={this.state.errorText}
                 style={{maxWidth: 75}}
-              /><br />
-              <TextField
-                onChange={this.handleUrlChange}
-                floatingLabelText="Link to Item"
-                type="url"
-                value={this.state.url}
-              />
+                />
+              </div>
+              <div>
+                <TextField
+                  onChange={this.handleUrlChange}
+                  floatingLabelText="Link to Item"
+                  type="url"
+                  value={this.state.url}
+                />
+              </div>
               <div>
                 <TextField
                 onChange={this.handleImageUrlChange}
                 floatingLabelText="Image Url"
                 type="imageUrl"
                 value={this.state.imageUrl}
+                style={{marginRight: 20}}
                 />
+                <FlatButton
+                  secondary
+                  label='Upload Image'
+                  />
               </div>
               <div>
                 <TextField
@@ -112,9 +132,6 @@ export default class Login extends Component {
                   value={this.state.comments}
                   style={{textAlign: 'left'}}
                 />
-              </div>
-              <div>
-                <FlatButton secondary label='Upload Image'/>
               </div>
             </form>
           </div>
