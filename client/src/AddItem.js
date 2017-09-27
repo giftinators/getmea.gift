@@ -9,11 +9,11 @@ import axios from 'axios';
 * A modal dialog can only be closed by selecting one of the actions.
 */
 
-export default class Login extends Component {
+export default class AddItem extends Component {
   state = {
     open: false,
     title: '',
-    price: null,
+    price: 0.00,
     url: '',
     imageUrl: '',
     comments: '',
@@ -54,25 +54,6 @@ export default class Login extends Component {
     } else {
       this.setState({errorText: '*Required'});
     }
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post('/api/items', {
-      title: this.state.title,
-      price: this.state.price,
-      url: this.state.url,
-      imageUrl: this.state.imageUrl,
-      comments: this.state.comments
-    })
-    .then((response) => {
-      if (response.data) {
-        this.setState({open: false})
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-    })
   }
 
   render() {
@@ -149,7 +130,7 @@ export default class Login extends Component {
                   hintText="Additional Comments (color, model, size, etc)"
                   type="comments"
                   rows={2}
-                  multiLine='true'
+                  multiLine={true}
                   value={this.state.comments}
                   style={{textAlign: 'left'}}
                 />
