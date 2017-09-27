@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-
+import axios from 'axios';
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
@@ -16,7 +15,7 @@ export default class Signup extends Component {
 
     this.state = {
       open: this.props.open,
-      email: '',
+      username: '',
       password: '',
       verifyPassword: ''
     };
@@ -24,20 +23,31 @@ export default class Signup extends Component {
     this.handleOpen = () => {
       this.setState({open: true});
     };
-
-    this.handleClose = () => {
-      this.setState({open: false});
-    };
-
     this.handleEmailChange = (e, newValue) => {
-      this.setState({email: newValue})
-    }
+      this.setState({username: newValue})
+    };
     this.handlePasswordChange = (e, newValue) => {
       this.setState({password: newValue})
-    }
+    };
     this.handleVerifyPasswordChange = (e, newValue) => {
       this.setState({verifyPassword: newValue})
-    }
+    };
+    this.handleSubmit = (e) => {
+      e.preventDefault();
+      console.log('username:', this.state.username, 'pass:', this.state.password)
+      axios.post('api/signup', {
+        username: this.state.username,
+        password: this.state.password
+      })
+      .then((response) => {
+        console.log(response);
+        this.setState({open: false});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    };
+
   }
   render() {
     const actions = [
@@ -49,8 +59,8 @@ export default class Signup extends Component {
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={!this.state.email || !this.state.password}
-        onClick={this.handleClose}
+        disabled={!this.state.username || !this.state.password}
+        onClick={this.handleSubmit}
       />,
     ];
 
@@ -63,13 +73,12 @@ export default class Signup extends Component {
           open={this.state.open}
         >
           <div style={{textAlign: 'center'}}>
-            <form>
+            <form onSubmit={this.handleSubmit}>
               <TextField
                 onChange={this.handleEmailChange}
-                hintText="email"
-                floatingLabelText="email"
-                type="email"
-                value={this.state.email}
+                hintText="username"
+                floatingLabelText="username"
+                value={this.state.username}
               /><br />
               <TextField
                 onChange={this.handlePasswordChange}
@@ -94,7 +103,3 @@ export default class Signup extends Component {
     );
   }
 }
-
-const CreateAccountLink = () => (
-  <div>Login or <a href="#">Create Account</a></div>
-)

@@ -4,7 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Signup from './Signup.js';
+import axios from 'axios';
 
 /**
 * A modal dialog can only be closed by selecting one of the actions.
@@ -16,21 +16,33 @@ export default class Login extends Component {
     username: '',
     password: ''
   };
-
   handleOpen = () => {
     this.setState({open: true});
   };
-
   handleClose = () => {
     this.setState({open: false});
   };
-
   handleUsernameChange = (e, newValue) => {
     this.setState({username: newValue})
   }
   handlePasswordChange = (e, newValue) => {
     this.setState({password: newValue})
   }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('logging in as ', this.state.username);
+    axios.post('/api/login', {
+      username: this.state.username,
+      password: this.state.password
+    })
+    .then((response) => {
+      console.log(response);
+      this.setState({open: false});
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  };
 
   render() {
     const actions = [
@@ -43,7 +55,7 @@ export default class Login extends Component {
         label="Submit"
         primary={true}
         disabled={!this.state.username || !this.state.password}
-        onClick={this.handleClose}
+        onClick={this.handleSubmit}
       />,
     ];
 
