@@ -4,6 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
+import flash from 'connect-flash';
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
@@ -40,8 +41,12 @@ export default class Signup extends Component {
         password: this.state.password
       })
       .then((response) => {
-        console.log(response);
-        this.setState({open: false});
+        if(response.data) {
+          console.log(response);
+          this.setState({open: false});
+        } else {
+
+        }
       })
       .catch(function (error) {
         console.log(error);
