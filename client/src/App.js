@@ -13,6 +13,8 @@ import Footer from './Footer';
 import Login from './Login';
 import Signup from './Signup';
 
+import './App.scss';
+
 //overwrite default theme
 const muiTheme = getMuiTheme({
   palette: {

@@ -3,6 +3,7 @@ import {Paper, RaisedButton} from 'material-ui';
 import { Flex, Box } from 'reflexbox'
 
 import balloons from './balloons.jpg'
+import './Homepage.scss';
 
 const style = {
   hero: {
@@ -16,7 +17,8 @@ const style = {
     color: 'white',
     margin: '0px auto',
     verticalAlign: 'middle',
-    fontSize: 45
+    fontSize: 45,
+    textAlign: 'center'
   }
 }
 
@@ -44,22 +46,24 @@ class Homepage extends Component {
               </Box>
             </Flex>
           </Paper>
-          <Flex justify="center" p={4} align='center'>
-            <Box w={1} p={1}>
+          <div className="row">
+            <div className="col">
               <img style={{width:'100%'}} src="http://via.placeholder.com/1800x1200?text=screenshot+of+app" alt="screenshot"/>
-            </Box>
-            <Box w={1} p={1}>
-              <div>Marketing content here</div>
-            </Box>
-          </Flex>
-          <Flex justify="center" p={4} pt={0} align='center'>
-            <Box w={1} p={1}>
-              <div>Marketing content here</div>
-            </Box>
-            <Box w={1} p={1}>
+            </div>
+            <div className="col">
+              <h1>Heading 1</h1>
+              <div>Marketing content paragraph.</div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <h1>Heading 2</h1>
+              <div>Marketing content paragraph.</div>
+            </div>
+            <div className="col">
               <img style={{width:'100%'}} src="http://via.placeholder.com/1800x1200?text=screenshot+of+app" alt="screenshot"/>
-            </Box>
-          </Flex>
+            </div>
+          </div>
         </div>
     );
   }

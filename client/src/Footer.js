@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 // import {AppBar} from 'material-ui';
 
+const style = {
+  wrapper: {
+    backgroundColor: '#fafafa',
+    padding: 25
+  }
+};
 
 class Footer extends Component {
   constructor(props) {
@@ -15,8 +21,8 @@ class Footer extends Component {
 
   render() {
     return (
-        <div className="Footer">
-          <h1>Footer</h1>
+        <div className="Footer" style={style.wrapper}>
+          <div className="copywrite">&copy; 2017 Get Me A Gift</div>
         </div>
     );
   }
