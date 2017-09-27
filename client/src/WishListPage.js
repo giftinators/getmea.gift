@@ -22,7 +22,10 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import AddItem  from './AddItem';
 // end of wishlist menu imports
 
-
+// Get Gift modal imports
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+// end Get Gift modal imports
 
 
 const style = {
@@ -80,38 +83,87 @@ class WishListPage extends Component {
     super(props);
 
     this.state = {
-      userData: [
-        {
-          name: 'Bike',
-          price: '$9.99',
-          link: <RaisedButton label="Give This Gift" secondary={true} style={style} />,
-          image: 'http://www.wigglestatic.com/product-media/5360108808/Wiggle-Road-Bike-Road-Bikes-Black-1WGMY16R7048UK0001-6.jpg?w=2000&h=2000&a=7'
-        },
-        {
-          name: 'PS4',
-          price: '$109.99',
-          link: <RaisedButton label="Give This Gift" secondary={true} style={style} />,
-          image: 'http://cdn.images.express.co.uk/img/dynamic/143/590x/PS4-Pro-review-734721.jpg'
-        },
-        {
-          name: 'basketball',
-          price: '$.99',
-          link: <RaisedButton label="Give This Gift" secondary={true} style={style} />,
-          image: 'http://shop.wilson.com/media/catalog/product/cache/38/image/9df78eab33525d08d6e5fb8d27136e95/w/t/wtb0516r-1.jpg'
-        },
-        {
-        name: 'Gifted',
-        price: '$119.91',
-        link: <RaisedButton label="Gifted" primary={true} style={style} />,
-        image: 'https://cdn0.iconfinder.com/data/icons/love-wedding-valentine-1/512/30-512.png'
-      }
-    ],
+      modalActions: [
+           <FlatButton
+             label="Yes. I'm positive I will get this gift."
+             primary={true}
+             onClick={this.handleModalClose}
+           />,
+           <FlatButton
+             label="No. I'm not totally sure I will get this gift."
+             primary={true}
+             onClick={this.handleModalClose}
+           />,
+         ],
+    userData: {
+    _id:"59c9ca9d9abf99a03260e2ed"
+    ,username:"ross","__v":12
+    ,wishlists:[{"_id":"59cacd20d5cabadddb751b65"
+    ,title:"Christmas List"
+    ,secret:false
+    ,user_id:"59c9ca9d9abf99a03260e2ed"
+    ,__v:1
+    ,items:[{_id:"59cacd33d5cabadddb751b66"
+    ,title:"New Balance - 247 Classic"
+    ,price:79.99
+    ,comments:"I wear a size 10.5"
+    ,url:"http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D"
+    ,list_id:"59cacd20d5cabadddb751b65"
+    ,user_id:"59c9ca9d9abf99a03260e2ed"
+    ,__v:0
+    ,purchased:false
+    ,timestamp:"2017-09-26T21:57:07.058Z"}]}
+  ]},
+    currentList: {"_id":"59cacd20d5cabadddb751b65"
+    ,title:"Christmas List"
+    ,secret:false
+    ,user_id:"59c9ca9d9abf99a03260e2ed"
+    ,__v:1
+    ,items:[{_id:"59cacd33d5cabadddb751b66"
+    ,title:"New Balance - 247 Classic"
+    ,price:79.99
+    ,comments:"I wear a size 10.5"
+    ,url:"http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D"
+    ,list_id:"59cacd20d5cabadddb751b65"
+    ,user_id:"59c9ca9d9abf99a03260e2ed"
+    ,__v:0
+    ,purchased:false
+    ,timestamp:"2017-09-26T21:57:07.058Z"}]},
     listName: 'Public List',
-    menuName: 'Make List Private'
-  }
+    menuName: 'Make List Private',
+    open: false,
+    modalState: false,
+    actions: [
+      <FlatButton
+      label="Yes"
+      primary={true}
+      keyboardFocused={true}
+      onClick={()=>{this.handleModalOpen()}}
+      />,
+      <FlatButton
+        label="No"
+        primary={true}
+        keyboardFocused={true}
+        onClick={()=>{this.handleClose()}}
+      />,
+    ]
+
+    }
+
+    this.getUserData()
 
   }
 
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
+  handleOpen = () => {
+    this.setState({open: true});
+  };
+
+
+  // toggles list from private to public
   toggleListType() {
     var list = this.state.listName
     if (list === 'Public List') {
@@ -121,6 +173,45 @@ class WishListPage extends Component {
     }
   }
 
+  // API call to fetch user data
+  getUserData() {
+    var config = {
+        method: 'GET',
+         mode: 'no-cors'
+        }
+    fetch("/api/users/ross", config)
+    .then((res)=>{
+      return res.json()
+    })
+    .then((res)=>{
+      this.setState({ userData: res })
+      this.setState({currentList: res.wishlists[1]})
+      this.checkIfPublic()
+    })
+    .then(()=>{
+      return
+    })
+  }
+
+  handleModalOpen = () => {
+    this.handleClose()
+    this.setState({ modalState: true });
+  };
+
+  handleModalClose = () => {
+    this.setState({ modalState: false });
+  };
+
+  // Checks if list is set to private or public
+  checkIfPublic() {
+    if (this.state.currentList.secret) {
+      this.setState({ listName: 'Private List' })
+    } else {
+      this.setState({ listName: 'Public List' })
+  }
+}
+
+  // Adds item to this.state.userData array in the form of an object to be rendered
   addThing() {
     var temp = {}
     temp.name = 'Bike'
@@ -135,7 +226,6 @@ class WishListPage extends Component {
   // componentWillMount() {
   // }
   // <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
-
   render() {
     return (
     <div style={style.backgroundStyle}>
@@ -149,25 +239,32 @@ class WishListPage extends Component {
           <AddItem />
           <br/>
           <br/>
-                  <div>
-                  <Toolbar style={{width: '100%', backgroundColor: '#304FFE', color: 'white'}}>
-                    <ToolbarGroup style={{fontSize: 30}} >
-                      Kennys Christmas Wishlist
-                    </ToolbarGroup>
-                    <ToolbarGroup>
-                    <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
-                      <FontIcon className="muidocs-icon-custom-sort" />
-                      <ToolbarSeparator />
-                      <IconMenu iconButtonElement={
-                          <IconButton>
-                            <NavigationExpandMoreIcon />
-                          </IconButton>
-                        }>
-                        <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
-                        <MenuItem primaryText="Delete List" />
-                      </IconMenu>
-                    </ToolbarGroup>
-                  </Toolbar>
+            <div>
+            <Toolbar style={{width: '100%', backgroundColor: '#304FFE', color: 'white'}}>
+              <ToolbarGroup style={{fontSize: 30}} >
+                {this.state.userData.wishlists[0].title}
+              </ToolbarGroup>
+              <ToolbarGroup>
+              <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
+                <FontIcon className="muidocs-icon-custom-sort" />
+                <ToolbarSeparator />
+                <IconMenu iconButtonElement={
+                    <IconButton>
+                      <NavigationExpandMoreIcon />
+                    </IconButton>
+                  }>
+                  <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
+                  <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+                  {
+                    this.state.userData.wishlists.map((name, index) =>{
+                      return (
+                        <MenuItem style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{this.setState({ currentList: this.state.userData.wishlists[index] }) }} />
+                      )
+                    })
+                  }
+                </IconMenu>
+              </ToolbarGroup>
+            </Toolbar>
         <Table>
 
         <TableBody>
@@ -178,33 +275,61 @@ class WishListPage extends Component {
           </TableRow>
         </TableBody>
 
-          <TableBody
-            displayRowCheckbox={false}
-          >
-            {this.state.userData.map( (row, index) => (
-              <TableRow hoverable={true} key={index}>
-                <TableRowColumn style={{fontSize: 18}}>{row.name}</TableRowColumn>
-                <TableRowColumn  style={{fontSize: 18}}>{row.price}</TableRowColumn>
-                <TableRowColumn  style={{fontSize: 18}}><a href="www.yahoo.com">{row.link}</a></TableRowColumn>
+            <TableBody
+              displayRowCheckbox={false}
+            >
+            {
+                this.state.currentList.items.map((row, index) => (
+                <TableRow hoverable={true} key={index}>
+                  <TableRowColumn style={{fontSize: 18, width: '43%'}}>{row.title}</TableRowColumn>
+                  <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
+                  <TableRowColumn style={{color: 'white'}} >          <div>
+                  <Dialog
+                  actions={this.state.actions}
+                  modal={false}
+                  open={this.state.open}
+                  onRequestClose={this.handleClose}
+                  >
 
-                <TableRowColumn hoverable={true} style={{ height: 140}}>
-                  <Paper style={{maxWidth: 120, marginTop: 10, maxHeight: 120}} zDepth={1} >
-                    <img alt="button" style={style.images} src={row.image}/>
-                  </Paper>
+                  <p style={{color: 'black'}}>{row.title}</p>
+                  <p style={{color: 'black'}}>Price: ${row.price}</p>
+                  <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
+                  <Paper style ={{maxHeight: 290, maxWidth: 290}}><img style={{maxHeight: 290, maxWidth: 290}} src="https://dsw.scene7.com/is/image/DSWShoes/404995_001_ss_01?$colpg$"/></Paper>
+                  <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: '#96beff', border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
+                  <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
+                  </Dialog>
+                                              <Dialog
 
-                </TableRowColumn>
-              </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </div>
+                              actions={this.state.modalActions}
+                              modal={true}
+                              open={this.state.modalState}>
+                              <h2><img style={{height: 20, width: 20}} src="http://www.iconsdb.com/icons/preview/dark-gray/high-importance-xxl.png" /> Are you sure you are going to get this gift?</h2>
+                              If you claim this gift, it will disappear. And nobody else will be able to get this for {this.state.userData.username[0].toUpperCase()+this.state.userData.username.slice(1)}.
+                            </Dialog>
+                    <RaisedButton secondary={true} label="Get Gift" onClick={this.handleOpen} />
+                  </div></TableRowColumn>
+
+                  <TableRowColumn hoverable={true} style={{ height: 140}}>
+                    <Paper style={{maxWidth: 120, marginTop: 10, maxHeight: 120}} zDepth={1} >
+                      <img alt="button" style={style.images} src='https://dsw.scene7.com/is/image/DSWShoes/404995_001_ss_01?$colpg$'/>
+                    </Paper>
+
+                    </TableRowColumn>
+                  </TableRow>
+                  ))
+
+              }
+            </TableBody>
+          </Table>
+          </div>
             </div>
         </div>
+
     </div>
+
     );
   }
 }
-
 
 
 export default WishListPage;
