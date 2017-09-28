@@ -86,7 +86,10 @@ export default class Login extends Component {
     var username = this.props.user.username;
 
     var welcomeBack = (
-      <RaisedButton className="LogoutBtn" secondary label={"Logout, "+username} onClick={this.handleLogout} />
+      <div>
+        <Link to={'/'+username}><RaisedButton className="MyListsBtn" secondary label={"My Lists"} /></Link>
+        <RaisedButton className="LogoutBtn" secondary label={"Logout, "+username} onClick={this.handleLogout} />
+      </div>
     );
 
     var loginDiv = (
@@ -121,7 +124,7 @@ export default class Login extends Component {
     );
 
     return (
-      <div>
+      <div className="RightBtns">
         {
           username ? welcomeBack : loginDiv
         }

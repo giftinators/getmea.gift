@@ -6,7 +6,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {colors} from 'material-ui/styles';
 import {
   BrowserRouter as Router,
-  Route
+  Route,
+  Link
 } from 'react-router-dom';
 import Homepage from './Homepage';
 import WishListPage from './WishListPage';
@@ -32,9 +33,7 @@ class App extends Component {
     super();
 
     this.state = {
-      currentUser: {
-        username: 'guest',
-      }
+      currentUser: {}
     };
 
     this.setCurrentUser = (user) => {
@@ -64,7 +63,7 @@ class App extends Component {
         <MuiThemeProvider muiTheme={muiTheme} >
           <div className="App">
             <AppBar
-              title={<span>Get Me A Gift</span>}
+              title={<Link className="logo" to="/">Get Me A Gift</Link>}
               iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser}/>}
               zDepth={4}
             />

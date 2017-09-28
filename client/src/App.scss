@@ -1,7 +1,16 @@
 
 .App {
-  .LoginBtn, .LogoutBtn {
+  .RightBtns {
     margin-top: 5px;
     margin-right: 5px;
+  }
+
+  .MyListsBtn {
+    margin-right: 15px;
+  }
+
+  .logo {
+    color: white;
+    text-decoration: none;
   }
 }
