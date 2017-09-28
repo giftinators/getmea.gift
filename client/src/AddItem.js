@@ -76,7 +76,6 @@ export default class AddItem extends Component {
       url: this.state.url,
       imageUrl: this.state.imageUrl,
       comments: this.state.comments
-
     })
     .then((response) => {
       if (response.data) {
@@ -133,6 +132,7 @@ export default class AddItem extends Component {
           actions={actions}
           modal={true}
           open={this.state.open}
+          autoScrollBodyContent={true}
         >
           <div style={{marginLeft: 150}}>
             <form>
@@ -186,7 +186,7 @@ export default class AddItem extends Component {
                   rows={2}
                   multiLine={true}
                   value={this.state.comments}
-                  style={{textAlign: 'left'}}
+                  style={{textAlign: 'left', width: '70%'}}
                 />
               </div>
             </form>
