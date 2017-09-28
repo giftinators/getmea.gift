@@ -4,16 +4,18 @@ var User = require('./models/user.js');
 module.exports = function(passport) {
 
 // Passport Session setup
-  passport.serializeUser(function(user, done) {
-    console.log('user from serializeUser func:', user)
-    done(null, user.id);
-  });
+//TODO: remove these if we only use express-session
 
-  passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-      done(err, user);
-    });
-  });
+  // passport.serializeUser(function(user, done) {
+  //   var sessionUser = {_id: user._id, username: user.username};
+  //   done(null, sessionUser);
+  // });
+  //
+  // passport.deserializeUser(function(id, done) {
+  //   User.findById(id, function(err, user) {
+  //     done(err, user);
+  //   });
+  // });
 
   // Local Signup Strategy
   passport.use('local-signup', new LocalStrategy({
@@ -22,32 +24,32 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, username, password, done) {
-    process.nextTick(function() {
-      User.findOne({'username': username }, function(err, user) {
-        if (err) {
-          return done(err);
-        }
-        // Check to see if there is already a user with provided username
-        if (user) {
-          return done(null, false, req.flash('signupMessage', 'Username is taken.'));
-        } else {
-          var newUser = new User();
 
-          // Set the user's local credentials
-          newUser.username = username;
-          newUser.password = newUser.generateHash(password);
+    User.findOne({'username': username }, function(err, user) {
+      if (err) {
+        return done(err);
+      }
+      // Check to see if there is already a user with provided username
+      if (user) {
+        return done('username is already taken');
+      } else {
+        var newUser = new User();
 
-          // Save the user
-          newUser.save(function(err) {
-            if (err) {
-              throw err;
-            } else {
-              return done(null, newUser);
-            }
-          });
-        }
-      });
+        // Set the user's local credentials
+        newUser.username = username;
+        newUser.password = newUser.generateHash(password);
+
+        // Save the user
+        newUser.save(function(err) {
+          if (err) {
+            throw err;
+          } else {
+            return done(null, newUser);
+          }
+        });
+      }
     });
+
   }));
 
   passport.use('local-login', new LocalStrategy({
@@ -60,13 +62,13 @@ module.exports = function(passport) {
       if (err) {
         return done(err);
       }
-      // If user is not found, return the flash messages
+      // If user is not found:
       if (!user) {
-        return done(null, false, req.flash('loginMessage', 'Username not found.'));
+        return done('username not found.');
       }
       // If user is found but the provided password is incorrect:
       if (!user.validPassword(password)) {
-        return done(null, false, req.flash('loginMessage', 'Incorrect username/password.'));
+        return done('loginMessage', 'Incorrect username/password.');
       }
       // If username and password are corret, return successfully
       return done(null, user);

@@ -31,57 +31,73 @@ router.get('/users/:username', (req, res) => {
   })
 })
 
-// new route for testing Passport authentication
+//add new user
+/* Example POST data
+{
+	"username": "newuser",
+	"password": (hashed via bcrypt)
+}
+*/
 router.post('/signup', (req, res) => {
-  passport.authenticate('local-signup', (err, user, info) => {
+  passport.authenticate('local-signup', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
     } else {
+      req.session.user_id = user._id;
       res.send(user);
     }
   })(req, res);
 });
 
-// Login router
+//user login
+/* Example POST data
+{
+	"username": "newuser",
+	"password": (hashed via bcrypt)
+}
+*/
 router.post('/login', (req, res) => {
-  passport.authenticate('local-login', (err, user, info) => {
+  passport.authenticate('local-login', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
     } else {
+      req.session.user_id = user._id;
       res.send(user);
     }
   })(req, res);
 });
 
-//create a new user when user signs up
-router.post('/users', (req, res) => {
-  console.log(req.body)
-  var username = req.body.username;
-  var password = req.body.password;
-
-  //check to see if username is in database
-  User.findOne({username: username})
-  .exec(function (err, user) {
-    //if not, create a new user and save into db
-    if(!user) {
-      var newUser = new User({
-        username: username,
-        password: password
-      })
-      newUser.save(function (err, newUser) {
-        if (err) {
-          res.status(500).send({err})
-        } else {
-          res.send({newUser})
-        }
-      })
-      //else tell the user the account already exists
-    } else {
-        console.log('Account already exists');
-        res.redirect('/');
-      }
-  })
-})
+// ** Replaced by /signup and /login **
+//
+// //create a new user when user signs up
+// router.post('/users', (req, res) => {
+//   console.log(req.body)
+//   var username = req.body.username;
+//   var password = req.body.password;
+//
+//   //check to see if username is in database
+//   User.findOne({username: username})
+//   .exec(function (err, user) {
+//     //if not, create a new user and save into db
+//     if(!user) {
+//       var newUser = new User({
+//         username: username,
+//         password: password
+//       })
+//       newUser.save(function (err, newUser) {
+//         if (err) {
+//           res.status(500).send({err})
+//         } else {
+//           res.send({newUser})
+//         }
+//       })
+//       //else tell the user the account already exists
+//     } else {
+//         console.log('Account already exists');
+//         res.redirect('/');
+//       }
+//   })
+// })
 
 
 //add new list to user

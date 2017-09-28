@@ -9,7 +9,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const passport = require('passport');
-const flash = require('connect-flash');
 const session = require('express-session');
 
 
@@ -19,12 +18,14 @@ mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 // Passport
-app.use(session({secret: 'thiscanbeanyfuckingthing'}));
+app.use(session({
+  secret: 'huk',
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
+// app.use(passport.session()); // not using passport sessions anymore
 require('../app/passport.js')(passport);
-
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
