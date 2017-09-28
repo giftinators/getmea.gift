@@ -57,7 +57,6 @@ const style = {
   backgroundStyle: {
     backgroundColor: '#eaf2ff',
     height: '110%',
-    marginBottom: 20,
     paddingBottom: 40
 
   },
