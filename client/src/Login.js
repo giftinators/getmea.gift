@@ -11,45 +11,52 @@ import axios from 'axios';
 */
 
 export default class Login extends Component {
-  state = {
-    open: this.props.open || false,
-    username: '',
-    password: ''
-  };
-  toggleOpen = () => {
-    this.setState({open: !this.state.open})
-  };
-  handleOpen = () => {
-    this.setState({open: true});
-  };
-  handleClose = () => {
-    this.setState({open: false});
-  };
-  handleUsernameChange = (e, newValue) => {
-    this.setState({username: newValue})
-  }
-  handlePasswordChange = (e, newValue) => {
-    this.setState({password: newValue})
-  }
-  handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('logging in as ', this.state.username);
-    axios.post('/api/login', {
-      username: this.state.username,
-      password: this.state.password
-    })
-    .then((response) => {
-      if (response.data) {
-      console.log(response);
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: this.props.open || false,
+      username: '',
+      password: ''
+    };
+
+    this.toggleOpen = () => {
+      this.setState({open: !this.state.open})
+    };
+    this.handleOpen = () => {
+      this.setState({open: true});
+    };
+    this.handleClose = () => {
       this.setState({open: false});
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    };
+    this.handleUsernameChange = (e, newValue) => {
+      this.setState({username: newValue})
+    }
+    this.handlePasswordChange = (e, newValue) => {
+      this.setState({password: newValue})
+    }
+    this.handleSubmit = (e) => {
+      e.preventDefault();
+      console.log('logging in as ', this.state.username);
+      axios.post('/api/login', {
+        username: this.state.username,
+        password: this.state.password
+      })
+      .then((response) => {
+        if (response.data) {
+          console.log('response.data : ', response.data);
+          this.props.setCurrentUser({username: response.data.username});
+          this.setState({open: false});
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    };
   };
 
   render() {
+
     const actions = [
       <FlatButton
         label="Cancel"
@@ -63,6 +70,8 @@ export default class Login extends Component {
         onClick={this.handleSubmit}
       />,
     ];
+
+    // var username = this.props.user.username; 
 
     return (
       <div>
@@ -93,6 +102,8 @@ export default class Login extends Component {
           </div>
         </Dialog>
       </div>
-    );
+    )
   }
+
+
 }

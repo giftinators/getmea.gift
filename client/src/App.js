@@ -31,12 +31,19 @@ class App extends Component {
     super();
 
     this.state = {
+      currentUser: {
+        username: 'guest',
+      }
     };
-  }
 
+    this.setCurrentUser = (user) => {
+      this.setState({currentUser: user});
+      console.log('current user updated to: ', this.state.currentUser.username);
+    }
   // componentWillMount() {
   // }
 
+  }
   render() {
     return (
       <Router>
@@ -44,7 +51,7 @@ class App extends Component {
           <div className="App">
             <AppBar
               title={<span>Get Me A Gift</span>}
-              iconElementRight={<Login />}
+              iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser}/>}
               zDepth={4}
             />
             <Route exact path="/" component={Homepage}/>

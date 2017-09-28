@@ -14,7 +14,7 @@ export default class Signup extends Component {
     super(props);
 
     this.state = {
-      open: this.props.open,
+      open: true,
       username: '',
       password: '',
       verifyPassword: ''
@@ -50,7 +50,7 @@ export default class Signup extends Component {
           console.log(response);
           this.setState({open: false});
         } else {
-          console.log('nope')
+          console.log(response);
         }
       })
       .catch(function (error) {
