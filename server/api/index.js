@@ -25,7 +25,7 @@ router.get('/users/:username', (req, res) => {
     res.json(user);
   })
   .catch((err) => {
-    res.status(404).send({err});
+    res.status(401).send({err});
   })
 })
 
@@ -57,7 +57,7 @@ router.post('/signup', (req, res) => {
         res.send(user);
       })
       .catch((err) => {
-        res.status(404).send({err});
+        res.status(401).send({err});
       });
     }
   })(req, res);
@@ -119,7 +119,7 @@ router.post('/lists', (req, res) => {
     res.send(list);
   })
   .catch((err) => {
-    res.status(404).send({err});
+    res.status(401).send({err});
   });
 });
 
@@ -134,7 +134,7 @@ router.delete('/lists/:id', (req, res) => {
     res.send(`Deleted Wishlist: ${id}`);
   })
   .catch((err) => {
-    res.status(404).send({err});
+    res.status(401).send({err});
   });
 });
 
@@ -159,7 +159,7 @@ router.put('/lists/:id', (req, res) => {
     res.send(list);
   })
   .catch((err) => {
-    res.status(404).send({err});
+    res.status(401).send({err});
   });
 });
 
@@ -192,7 +192,7 @@ router.post('/items', (req, res) => {
     res.send(newItem);
   })
   .catch((err) => {
-    res.status(404).send({err});
+    res.status(401).send({err});
   });
 })
 
@@ -206,7 +206,7 @@ router.delete('/items/:id', (req, res) => {
     res.send(`Deleted Item: ${id}`);
   })
   .catch((err) => {
-    res.status(404).send({err});
+    res.status(401).send({err});
   });
 });
 
