@@ -13,6 +13,7 @@ import Homepage from './Homepage';
 import WishListPage from './WishListPage';
 import Footer from './Footer';
 import Login from './Login';
+import Signup from './Signup';
 
 import './App.scss';
 
@@ -37,6 +38,7 @@ class App extends Component {
 
     this.setCurrentUser = (user) => {
       this.setState({currentUser: user});
+      console.log('current user updated to: ', this.state.currentUser.username);
     }
 
     this.getLoggedInUser = () => {
@@ -68,6 +70,8 @@ class App extends Component {
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" component={WishListPage}/>
             <Route exact path="/:username/:list_id" component={WishListPage}/>
+            <Route path='/login' render={routeProps => <Login open={false}/>} />
+            <Route path='/signup' render={routeProps => <Signup open={false}/>} />
             <Footer />
           </div>
         </MuiThemeProvider>
