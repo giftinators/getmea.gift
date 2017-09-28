@@ -3,20 +3,6 @@ var User = require('./models/user.js');
 
 module.exports = function(passport) {
 
-// Passport Session setup
-//TODO: remove these if we only use express-session
-
-  // passport.serializeUser(function(user, done) {
-  //   var sessionUser = {_id: user._id, username: user.username};
-  //   done(null, sessionUser);
-  // });
-  //
-  // passport.deserializeUser(function(id, done) {
-  //   User.findById(id, function(err, user) {
-  //     done(err, user);
-  //   });
-  // });
-
   // Local Signup Strategy
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',

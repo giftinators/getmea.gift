@@ -20,7 +20,7 @@ export default class Login extends Component {
       username: '',
       password: '',
       verifyPassword: '',
-
+      redirect: false
     };
 
     this.handleOpen = () => {
@@ -89,6 +89,7 @@ export default class Login extends Component {
       axios('/api/logout')
       .then((response) => {
         this.props.setCurrentUser({});
+        this.setState({ redirect: true });
       })
       .catch(function (error) {
         console.log(error);
@@ -107,6 +108,7 @@ export default class Login extends Component {
   };
 
   render() {
+    
     var username = this.props.user.username;
 
     const loginActions = [
