@@ -45,7 +45,7 @@ export default class Login extends Component {
       .then((response) => {
         if (response.data) {
           console.log('response.data : ', response.data);
-          this.props.setCurrentUser({username: response.data.username});
+          this.props.setCurrentUser(response.data);
           this.setState({open: false});
         }
       })
@@ -53,7 +53,19 @@ export default class Login extends Component {
         console.log(error);
       });
     };
+    this.handleLogout = (e) => {
+      e.preventDefault();
+      console.log('logging out');
+      axios('/api/logout')
+      .then((response) => {
+        this.props.setCurrentUser({});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    };
   };
+
 
   render() {
 
@@ -71,9 +83,13 @@ export default class Login extends Component {
       />,
     ];
 
-    // var username = this.props.user.username; 
+    var username = this.props.user.username;
 
-    return (
+    var welcomeBack = (
+      <RaisedButton className="LogoutBtn" secondary label={"Logout, "+username} onClick={this.handleLogout} />
+    );
+
+    var loginDiv = (
       <div>
         <RaisedButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
         <Dialog
@@ -101,6 +117,14 @@ export default class Login extends Component {
             <p>Don't have an account? <Link to={'/signup'} open={true} onClick={this.toggleOpen}>Create one</Link></p>
           </div>
         </Dialog>
+      </div>
+    );
+
+    return (
+      <div>
+        {
+          username ? welcomeBack : loginDiv
+        }
       </div>
     )
   }

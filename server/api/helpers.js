@@ -2,6 +2,32 @@ const User = require('../../app/models/user');
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 
+const getUserById = (user_id) => {
+  return new Promise((resolve, reject) => {
+    User.findById(user_id)
+    .select('-password') //don't send back password
+    .populate({ //gets nested items
+      path: 'wishlists',
+      model: 'List',
+      populate: {
+        path: 'items',
+        model: 'Item'
+      }
+    })
+    .exec()
+    .then((user) => {
+      //check if user doesn't exist
+      if (!user) {
+        reject('user does not exist');
+      }
+
+      resolve(user);
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
 
 const getUser = (username, loggedInUserId) => {
   return new Promise((resolve, reject) => {
@@ -218,6 +244,7 @@ const deleteItem = (user_id, item_id) => {
 
 
 module.exports = {
+  getUserById,
   getUser,
   createList,
   deleteList,
