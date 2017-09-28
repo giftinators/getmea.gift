@@ -15,36 +15,52 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      open: this.props.open || false,
+      open: false,
+      register: false,
       username: '',
-      password: ''
+      password: '',
+      verifyPassword: ''
     };
 
-    this.toggleOpen = () => {
-      this.setState({open: !this.state.open})
-    };
     this.handleOpen = () => {
       this.setState({open: true});
     };
+
     this.handleClose = () => {
       this.setState({open: false});
     };
+
+    this.toggleRegister = () => {
+      this.setState({register: !this.state.register})
+    };
+
     this.handleUsernameChange = (e, newValue) => {
       this.setState({username: newValue})
-    }
+    };
+
     this.handlePasswordChange = (e, newValue) => {
       this.setState({password: newValue})
-    }
+    };
+
+    this.handleVerifyPasswordChange = (e, newValue) => {
+      this.setState({verifyPassword: newValue})
+    };
+
     this.handleSubmit = (e) => {
+      if (this.state.register) {
+        this.handleRegisterSubmit(e);
+      } else {
+        this.handleLoginSubmit(e);
+      }
+    }
+    this.handleLoginSubmit = (e) => {
       e.preventDefault();
-      console.log('logging in as ', this.state.username);
       axios.post('/api/login', {
         username: this.state.username,
         password: this.state.password
       })
       .then((response) => {
         if (response.data) {
-          console.log('response.data : ', response.data);
           this.props.setCurrentUser(response.data);
           this.setState({open: false});
         }
@@ -53,6 +69,25 @@ export default class Login extends Component {
         console.log(error);
       });
     };
+
+    this.handleRegisterSubmit = (e) => {
+      e.preventDefault();
+      axios.post('api/signup', {
+        username: this.state.username,
+        password: this.state.password
+      })
+      .then((response) => {
+        if(response.data) {
+          this.setState({open: false});
+        } else {
+          console.log(response);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    };
+
     this.handleLogout = (e) => {
       e.preventDefault();
       console.log('logging out');
@@ -68,6 +103,7 @@ export default class Login extends Component {
 
 
   render() {
+    var username = this.props.user.username;
 
     const actions = [
       <FlatButton
@@ -80,21 +116,19 @@ export default class Login extends Component {
         primary={true}
         disabled={!this.state.username || !this.state.password}
         onClick={this.handleSubmit}
-      />,
+      />
     ];
-
-    var username = this.props.user.username;
 
     var welcomeBack = (
       <div>
         <Link to={'/'+username}><RaisedButton className="MyListsBtn" secondary label={"My Lists"} /></Link>
-        <RaisedButton className="LogoutBtn" secondary label={"Logout, "+username} onClick={this.handleLogout} />
+        <FlatButton className="LogoutBtn" secondary label={"Logout, "+username} onClick={this.handleLogout} />
       </div>
     );
 
     var loginDiv = (
       <div>
-        <RaisedButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
+        <FlatButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
         <Dialog
           title="Login"
           actions={actions}
@@ -117,19 +151,61 @@ export default class Login extends Component {
                 value={this.state.password}
               /><br />
             </form>
-            <p>Don't have an account? <Link to={'/signup'} open={true} onClick={this.toggleOpen}>Create one</Link></p>
+            <p>Don't have an account? <span style={{cursor: 'pointer'}} onClick={this.toggleRegister}>Create one</span></p>
           </div>
         </Dialog>
       </div>
     );
 
-    return (
-      <div className="RightBtns">
+    var registerDiv = (
+      <div>
+        <Dialog
+          title="Create an account"
+          actions={actions}
+          modal={true}
+          open={this.state.open}
+        >
+          <div style={{textAlign: 'center'}}>
+            <form onSubmit={this.handleSubmit}>
+              <TextField
+                onChange={this.handleUsernameChange}
+                hintText="username"
+                floatingLabelText="username"
+                value={this.state.username}
+              /><br />
+              <TextField
+                onChange={this.handlePasswordChange}
+                hintText="password"
+                floatingLabelText="password"
+                type="password"
+                value={this.state.password}
+                /><br />
+              <TextField
+                onChange={this.handleVerifyPasswordChange}
+                hintText="verify password"
+                floatingLabelText="verify password"
+                type="password"
+                value={this.state.verifyPassword}
+                errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords do not match"}
+              /><br />
+            </form>
+            <p>Already have an account? <span style={{cursor: 'pointer'}} onClick={this.toggleRegister}>Login</span></p>
+          </div>
+        </Dialog>
+      </div>
+    )
+
+    if (this.state.open) {
+      return this.state.register ? registerDiv : loginDiv
+    } else {
+      return (
+        <div className="RightBtns">
         {
           username ? welcomeBack : loginDiv
         }
-      </div>
-    )
+        </div>
+      )
+    }
   }
 
 
