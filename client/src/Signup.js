@@ -38,25 +38,7 @@ export default class Signup extends Component {
     this.handleVerifyPasswordChange = (e, newValue) => {
       this.setState({verifyPassword: newValue})
     };
-    this.handleSubmit = (e) => {
-      e.preventDefault();
-      console.log('username:', this.state.username, 'pass:', this.state.password)
-      axios.post('api/signup', {
-        username: this.state.username,
-        password: this.state.password
-      })
-      .then((response) => {
-        if(response.data) {
-          console.log(response);
-          this.setState({open: false});
-        } else {
-          console.log(response);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    };
+
 
   }
   render() {
