@@ -19,7 +19,8 @@ export default class Login extends Component {
       register: false,
       username: '',
       password: '',
-      verifyPassword: ''
+      verifyPassword: '',
+
     };
 
     this.handleOpen = () => {
@@ -46,13 +47,6 @@ export default class Login extends Component {
       this.setState({verifyPassword: newValue})
     };
 
-    this.handleSubmit = (e) => {
-      if (this.state.register) {
-        this.handleRegisterSubmit(e);
-      } else {
-        this.handleLoginSubmit(e);
-      }
-    }
     this.handleLoginSubmit = (e) => {
       e.preventDefault();
       axios.post('/api/login', {
@@ -106,7 +100,7 @@ export default class Login extends Component {
   render() {
     var username = this.props.user.username;
 
-    const actions = [
+    const loginActions = [
       <FlatButton
         label="Cancel"
         primary={true}
@@ -116,7 +110,25 @@ export default class Login extends Component {
         label="Submit"
         primary={true}
         disabled={!this.state.username || !this.state.password}
-        onClick={this.handleSubmit}
+        onClick={this.handleLoginSubmit}
+      />
+    ];
+
+    const registerActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        disabled={
+                  !this.state.username
+                  || !this.state.password
+                  || this.state.password !== this.state.verifyPassword
+                }
+        onClick={this.handleRegisterSubmit}
       />
     ];
 
@@ -132,7 +144,7 @@ export default class Login extends Component {
         <FlatButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
         <Dialog
           title="Login"
-          actions={actions}
+          actions={loginActions}
           modal={true}
           open={this.state.open}
         >
@@ -162,7 +174,7 @@ export default class Login extends Component {
       <div>
         <Dialog
           title="Create an account"
-          actions={actions}
+          actions={registerActions}
           modal={true}
           open={this.state.open}
         >
