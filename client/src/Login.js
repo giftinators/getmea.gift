@@ -94,19 +94,30 @@ export default class Login extends Component {
         console.log(error);
       });
     };
-  };
 
+    this.handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        if (this.state.register) {
+          this.handleRegisterSubmit(e);
+        } else {
+          this.handleLoginSubmit(e);
+        }
+      }
+    }
+  };
 
   render() {
     var username = this.props.user.username;
 
     const loginActions = [
       <FlatButton
+        type="button"
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
       />,
       <FlatButton
+        type="Submit"
         label="Submit"
         primary={true}
         disabled={!this.state.username || !this.state.password}
@@ -140,7 +151,7 @@ export default class Login extends Component {
     );
 
     var loginDiv = (
-      <div>
+      <div className="login">
         <FlatButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
         <Dialog
           title="Login"
@@ -151,12 +162,14 @@ export default class Login extends Component {
           <div style={{textAlign: 'center'}}>
             <form>
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handleUsernameChange}
                 hintText="username"
                 floatingLabelText="username"
                 value={this.state.username}
               /><br />
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handlePasswordChange}
                 hintText="password"
                 floatingLabelText="password"
@@ -171,7 +184,7 @@ export default class Login extends Component {
     );
 
     var registerDiv = (
-      <div>
+      <div className="register">
         <Dialog
           title="Create an account"
           actions={registerActions}
@@ -181,12 +194,14 @@ export default class Login extends Component {
           <div style={{textAlign: 'center'}}>
             <form onSubmit={this.handleSubmit}>
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handleUsernameChange}
                 hintText="username"
                 floatingLabelText="username"
                 value={this.state.username}
               /><br />
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handlePasswordChange}
                 hintText="password"
                 floatingLabelText="password"
@@ -194,6 +209,7 @@ export default class Login extends Component {
                 value={this.state.password}
                 /><br />
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handleVerifyPasswordChange}
                 hintText="verify password"
                 floatingLabelText="verify password"
