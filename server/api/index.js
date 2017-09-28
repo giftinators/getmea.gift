@@ -43,7 +43,19 @@ router.post('/signup', (req, res) => {
       res.status(401).send({err: err});
     } else {
       req.session.user_id = user._id;
-      res.send(user);
+
+      //create a default list for the new user
+      helpers.createList({
+        title: 'Wishlist',
+        secret: false,
+        user_id: user._id
+      })
+      .then((list) => {
+        res.send(user);
+      })
+      .catch((err) => {
+        res.status(404).send({err});
+      });
     }
   })(req, res);
 });
@@ -189,7 +201,7 @@ router.put('/lists/:id', (req, res) => {
   "price": 79.99,
   "comments": "I wear a size 10.5",
   "url": "http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D",
-  "imageUrl": "http://nb.scene7.com/is/image/NB/mrl247rb_nb_02_i?$dw_temp_default_gallery$",
+  "image_url": "http://nb.scene7.com/is/image/NB/mrl247rb_nb_02_i?$dw_temp_default_gallery$",
   "list_id": "59cab05eec5719b45039976b"
 }
 */
@@ -201,7 +213,7 @@ router.post('/items', (req, res) => {
   item.price = req.body.price;
   item.comments = req.body.comments;
   item.url = req.body.url;
-  item.imageUrl = req.body.imageUrl;
+  item.image_url = req.body.image_url;
   item.list_id = req.body.list_id;
   item.user_id = user_id;
 
