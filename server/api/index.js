@@ -51,6 +51,10 @@ router.post('/signup', (req, res) => {
         user_id: user._id
       })
       .then((list) => {
+        //get the user again which should now have the wishlist
+        return helpers.getUserById(user._id);
+      })
+      .then((user) => {
         res.send(user);
       })
       .catch((err) => {
