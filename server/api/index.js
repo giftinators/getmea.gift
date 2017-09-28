@@ -23,7 +23,7 @@ router.get('/users/:username', (req, res) => {
   //so we can determine if we should send back secret wishlists
   helpers.getUser(req.params.username, loggedInUserId)
   .then((user) => {
-    res.send(user);
+    res.json(user);
   })
   .catch((err) => {
     res.status(404).send({err});
