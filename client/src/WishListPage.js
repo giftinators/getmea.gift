@@ -72,8 +72,7 @@ const style = {
     width: '100%'
   },
   images: {
-    height: 120,
-    maxWidth: 120
+    height: 120
   }
 };
 
@@ -82,6 +81,7 @@ class WishListPage extends Component {
     super(props);
 
     this.state = {
+      props: props,
       modalActions: [
            <FlatButton
              label="Yes. I'm positive I will get this gift."
@@ -174,23 +174,49 @@ class WishListPage extends Component {
 
   // API call to fetch user data
   getUserData() {
-    var config = {
+      //get the username from the url
+      var username = this.props.match.params.username;
+      //get the list_id from the url
+      var list_id = this.props.match.params.list_id;
+      var currentList;
+
+      var config = {
         method: 'GET',
-         mode: 'no-cors'
+        mode: 'no-cors'
+      };
+
+      //fetch the data of the username
+      fetch("/api/users/"+username, config)
+      .then((res)=>{
+        return res.json()
+      })
+      .then((res)=>{
+        console.log(res);
+        //if a list was requested try to find that list
+        if (list_id){
+          //find the specific list and set it to currentList
+          currentList = res.wishlists.filter((list) => {
+            return list._id == list_id;
+          })[0];
+        } else {
+          //if no list is specified just set currentList the first wishlist
+          currentList = res.wishlists[0];
         }
-    fetch("/api/users/ross", config)
-    .then((res)=>{
-      return res.json()
-    })
-    .then((res)=>{
-      this.setState({ userData: res })
-      this.setState({currentList: res.wishlists[1]})
-      this.checkIfPublic()
-    })
-    .then(()=>{
-      return
-    })
-  }
+
+        //if the requested list isn't found then redirect back to user
+        if (list_id && !currentList){
+          this.props.history.push('/'+username)
+        } else {
+          //update the state
+          this.setState({
+            userData: res,
+            currentList: currentList
+          });
+          this.checkIfPublic()
+        }
+
+      })
+    }
 
   handleModalOpen = () => {
     this.handleClose()
@@ -239,7 +265,7 @@ class WishListPage extends Component {
           <br/>
           <br/>
             <div>
-            <Toolbar style={{width: '100%', backgroundColor: '#304FFE', color: 'white'}}>
+            <Toolbar style={{width: '100%', backgroundColor: 'red', color: 'white'}}>
               <ToolbarGroup style={{fontSize: 30}} >
                 {this.state.userData.wishlists[0].title}
               </ToolbarGroup>
@@ -277,6 +303,7 @@ class WishListPage extends Component {
             <TableBody
               displayRowCheckbox={false}
             >
+            {console.log(this.state.props)}
             {
                 this.state.currentList.items.map((row, index) => (
                 <TableRow hoverable={true} key={index}>
@@ -293,7 +320,7 @@ class WishListPage extends Component {
                   <p style={{color: 'black'}}>{row.title}</p>
                   <p style={{color: 'black'}}>Price: ${row.price}</p>
                   <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
-                  <Paper style ={{maxHeight: 290, maxWidth: 290}}><img style={{maxHeight: 290, maxWidth: 290}} src="https://dsw.scene7.com/is/image/DSWShoes/404995_001_ss_01?$colpg$"/></Paper>
+                  <Paper style ={{maxHeight: 290, maxWidth: 290}}><img style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
                   <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: '#96beff', border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
                   <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
                   </Dialog>
@@ -309,8 +336,8 @@ class WishListPage extends Component {
                   </div></TableRowColumn>
 
                   <TableRowColumn hoverable={true} style={{ height: 140}}>
-                    <Paper style={{maxWidth: 120, marginTop: 10, maxHeight: 120}} zDepth={1} >
-                      <img alt="button" style={style.images} src='https://dsw.scene7.com/is/image/DSWShoes/404995_001_ss_01?$colpg$'/>
+                    <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
+                      <img alt="button" style={style.images} src={row.image_url}/>
                     </Paper>
 
                     </TableRowColumn>
