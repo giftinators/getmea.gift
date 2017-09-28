@@ -19,7 +19,8 @@ export default class Login extends Component {
       register: false,
       username: '',
       password: '',
-      verifyPassword: ''
+      verifyPassword: '',
+
     };
 
     this.handleOpen = () => {
@@ -46,13 +47,6 @@ export default class Login extends Component {
       this.setState({verifyPassword: newValue})
     };
 
-    this.handleSubmit = (e) => {
-      if (this.state.register) {
-        this.handleRegisterSubmit(e);
-      } else {
-        this.handleLoginSubmit(e);
-      }
-    }
     this.handleLoginSubmit = (e) => {
       e.preventDefault();
       axios.post('/api/login', {
@@ -78,6 +72,7 @@ export default class Login extends Component {
       })
       .then((response) => {
         if(response.data) {
+          this.props.setCurrentUser(response.data);
           this.setState({open: false});
         } else {
           console.log(response);
@@ -99,13 +94,38 @@ export default class Login extends Component {
         console.log(error);
       });
     };
-  };
 
+    this.handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        if (this.state.register) {
+          this.handleRegisterSubmit(e);
+        } else {
+          this.handleLoginSubmit(e);
+        }
+      }
+    }
+  };
 
   render() {
     var username = this.props.user.username;
 
-    const actions = [
+    const loginActions = [
+      <FlatButton
+        type="button"
+        label="Cancel"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <FlatButton
+        type="Submit"
+        label="Submit"
+        primary={true}
+        disabled={!this.state.username || !this.state.password}
+        onClick={this.handleLoginSubmit}
+      />
+    ];
+
+    const registerActions = [
       <FlatButton
         label="Cancel"
         primary={true}
@@ -114,8 +134,12 @@ export default class Login extends Component {
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={!this.state.username || !this.state.password}
-        onClick={this.handleSubmit}
+        disabled={
+                  !this.state.username
+                  || !this.state.password
+                  || this.state.password !== this.state.verifyPassword
+                }
+        onClick={this.handleRegisterSubmit}
       />
     ];
 
@@ -127,23 +151,25 @@ export default class Login extends Component {
     );
 
     var loginDiv = (
-      <div>
+      <div className="login">
         <FlatButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
         <Dialog
           title="Login"
-          actions={actions}
+          actions={loginActions}
           modal={true}
           open={this.state.open}
         >
           <div style={{textAlign: 'center'}}>
             <form>
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handleUsernameChange}
                 hintText="username"
                 floatingLabelText="username"
                 value={this.state.username}
               /><br />
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handlePasswordChange}
                 hintText="password"
                 floatingLabelText="password"
@@ -158,22 +184,24 @@ export default class Login extends Component {
     );
 
     var registerDiv = (
-      <div>
+      <div className="register">
         <Dialog
           title="Create an account"
-          actions={actions}
+          actions={registerActions}
           modal={true}
           open={this.state.open}
         >
           <div style={{textAlign: 'center'}}>
             <form onSubmit={this.handleSubmit}>
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handleUsernameChange}
                 hintText="username"
                 floatingLabelText="username"
                 value={this.state.username}
               /><br />
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handlePasswordChange}
                 hintText="password"
                 floatingLabelText="password"
@@ -181,6 +209,7 @@ export default class Login extends Component {
                 value={this.state.password}
                 /><br />
               <TextField
+                onKeyPress={this.handleKeyPress}
                 onChange={this.handleVerifyPasswordChange}
                 hintText="verify password"
                 floatingLabelText="verify password"
