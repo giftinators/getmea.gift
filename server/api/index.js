@@ -18,7 +18,6 @@ router.get('/users', (req, res) => {
 //get user
 router.get('/users/:username', (req, res) => {
   var loggedInUserId = '59c9ca9d9abf99a03260e2ed';
-  console.log(req.session);
   //we want to send in the logged in user's id
   //so we can determine if we should send back secret wishlists
   helpers.getUser(req.params.username, loggedInUserId)
@@ -98,39 +97,6 @@ router.get('/me', (req, res) => {
     res.send({});
   });
 });
-
-// ** Replaced by /signup and /login **
-//
-// //create a new user when user signs up
-// router.post('/users', (req, res) => {
-//   console.log(req.body)
-//   var username = req.body.username;
-//   var password = req.body.password;
-//
-//   //check to see if username is in database
-//   User.findOne({username: username})
-//   .exec(function (err, user) {
-//     //if not, create a new user and save into db
-//     if(!user) {
-//       var newUser = new User({
-//         username: username,
-//         password: password
-//       })
-//       newUser.save(function (err, newUser) {
-//         if (err) {
-//           res.status(500).send({err})
-//         } else {
-//           res.send({newUser})
-//         }
-//       })
-//       //else tell the user the account already exists
-//     } else {
-//         console.log('Account already exists');
-//         res.redirect('/');
-//       }
-//   })
-// })
-
 
 //add new list to user
 /* Example POST data
@@ -230,7 +196,6 @@ router.post('/items', (req, res) => {
   });
 })
 
-
 //delete item
 router.delete('/items/:id', (req, res) => {
   var item_id = req.params.id;
@@ -246,4 +211,3 @@ router.delete('/items/:id', (req, res) => {
 });
 
 module.exports = router;
-// how do I also export passport here?

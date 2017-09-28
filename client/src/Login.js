@@ -78,6 +78,7 @@ export default class Login extends Component {
       })
       .then((response) => {
         if(response.data) {
+          this.props.setCurrentUser(response.data);
           this.setState({open: false});
         } else {
           console.log(response);
