@@ -76,6 +76,57 @@ const style = {
   }
 };
 
+function emptyList() {
+  <TableRow>
+   This list is empty af
+  </TableRow>
+}
+
+
+
+function mapData() {
+  return (
+    this.state.currentList.items.map((row, index) => (
+    <TableRow hoverable={true} key={index}>
+      <TableRowColumn style={{fontSize: 18, width: '43%'}}>{row.title}</TableRowColumn>
+      <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
+      <TableRowColumn style={{color: 'white'}} >          <div>
+      <Dialog
+      actions={this.state.actions}
+      modal={false}
+      open={this.state.open}
+      onRequestClose={this.handleClose}
+      >
+
+      <p style={{color: 'black'}}>{row.title}</p>
+      <p style={{color: 'black'}}>Price: ${row.price}</p>
+      <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
+      <Paper style ={{maxHeight: 290, maxWidth: 290}}><img style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
+      <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: '#96beff', border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
+      <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
+      </Dialog>
+                                  <Dialog
+
+                  actions={this.state.modalActions}
+                  modal={true}
+                  open={this.state.modalState}>
+                  <h2><img style={{height: 20, width: 20}} src="http://www.iconsdb.com/icons/preview/dark-gray/high-importance-xxl.png" /> Are you sure you are going to get this gift?</h2>
+                  If you claim this gift, it will disappear. And nobody else will be able to get this for {this.state.userData.username[0].toUpperCase()+this.state.userData.username.slice(1)}.
+                </Dialog>
+        <RaisedButton secondary={true} label="Get Gift" onClick={this.handleOpen} />
+      </div></TableRowColumn>
+
+      <TableRowColumn hoverable={true} style={{ height: 140}}>
+        <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
+          <img alt="button" style={style.images} src={row.image_url || "http://downloadfreesvgicons.com/icons/birthday-and-party-icons/svg-gift-icon-1/svg-gift-icon-1.svg"}/>
+        </Paper>
+
+        </TableRowColumn>
+      </TableRow>
+      ))
+  )
+}
+
 class WishListPage extends Component {
   constructor(props) {
     super(props);
@@ -130,6 +181,7 @@ class WishListPage extends Component {
     ,timestamp:"2017-09-26T21:57:07.058Z"}]},
     listName: 'Public List',
     menuName: 'Make List Private',
+    realTitle: '',
     open: false,
     modalState: false,
     actions: [
@@ -150,7 +202,7 @@ class WishListPage extends Component {
     }
 
     this.getUserData()
-
+    this.setTitle()
   }
 
   handleClose = () => {
@@ -160,6 +212,10 @@ class WishListPage extends Component {
   handleOpen = () => {
     this.setState({open: true});
   };
+
+  setTitle() {
+    this.setState({ realTitle: this.state.currentList.title || 'test' })
+  }
 
 
   // toggles list from private to public
@@ -171,6 +227,8 @@ class WishListPage extends Component {
       this.setState({ listName: 'Public List', menuName: 'Make List Private' })
     }
   }
+
+
 
   // API call to fetch user data
   getUserData() {
@@ -267,7 +325,7 @@ class WishListPage extends Component {
             <div>
             <Toolbar style={{width: '100%', backgroundColor: 'red', color: 'white'}}>
               <ToolbarGroup style={{fontSize: 30}} >
-                {this.state.userData.wishlists[0].title}
+                {this.state.realTitle}
               </ToolbarGroup>
               <ToolbarGroup>
               <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
@@ -305,44 +363,10 @@ class WishListPage extends Component {
             >
             {console.log(this.state.props)}
             {
-                this.state.currentList.items.map((row, index) => (
-                <TableRow hoverable={true} key={index}>
-                  <TableRowColumn style={{fontSize: 18, width: '43%'}}>{row.title}</TableRowColumn>
-                  <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
-                  <TableRowColumn style={{color: 'white'}} >          <div>
-                  <Dialog
-                  actions={this.state.actions}
-                  modal={false}
-                  open={this.state.open}
-                  onRequestClose={this.handleClose}
-                  >
-
-                  <p style={{color: 'black'}}>{row.title}</p>
-                  <p style={{color: 'black'}}>Price: ${row.price}</p>
-                  <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
-                  <Paper style ={{maxHeight: 290, maxWidth: 290}}><img style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
-                  <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: '#96beff', border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
-                  <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
-                  </Dialog>
-                                              <Dialog
-
-                              actions={this.state.modalActions}
-                              modal={true}
-                              open={this.state.modalState}>
-                              <h2><img style={{height: 20, width: 20}} src="http://www.iconsdb.com/icons/preview/dark-gray/high-importance-xxl.png" /> Are you sure you are going to get this gift?</h2>
-                              If you claim this gift, it will disappear. And nobody else will be able to get this for {this.state.userData.username[0].toUpperCase()+this.state.userData.username.slice(1)}.
-                            </Dialog>
-                    <RaisedButton secondary={true} label="Get Gift" onClick={this.handleOpen} />
-                  </div></TableRowColumn>
-
-                  <TableRowColumn hoverable={true} style={{ height: 140}}>
-                    <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
-                      <img alt="button" style={style.images} src={row.image_url}/>
-                    </Paper>
-
-                    </TableRowColumn>
-                  </TableRow>
-                  ))
+              if (this.state.currentList.items) {
+                return <mapData />
+              }
+              return <emptyList />
 
               }
             </TableBody>
