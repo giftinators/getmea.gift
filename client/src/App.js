@@ -69,7 +69,7 @@ class App extends Component {
             />
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" component={WishListPage}/>
-            <Route exact path="/:username/:list_id" component={WishListPage}/>
+            <Route exact path="/:username/:list_id" component={WishListPage} />
             <Route path='/login' render={routeProps => <Login open={false}/>} />
             <Route path='/signup' render={routeProps => <Signup open={false}/>} />
             <Footer />
