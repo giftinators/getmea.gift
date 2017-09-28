@@ -22,11 +22,14 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import AddItem  from './AddItem';
 // end of wishlist menu imports
 
+<<<<<<< HEAD
 // Get Gift modal imports
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 // end Get Gift modal imports
 
+=======
+>>>>>>> rebasing
 
 const style = {
   raisedButton: {
@@ -150,7 +153,11 @@ class WishListPage extends Component {
 
     }
 
+<<<<<<< HEAD
     this.getUserData()
+=======
+  this.getUserData()
+>>>>>>> rebasing
 
   }
 
@@ -178,6 +185,7 @@ class WishListPage extends Component {
     var config = {
         method: 'GET',
          mode: 'no-cors'
+<<<<<<< HEAD
         }
     fetch("/api/users/ross", config)
     .then((res)=>{
@@ -208,6 +216,16 @@ class WishListPage extends Component {
       this.setState({ listName: 'Private List' })
     } else {
       this.setState({ listName: 'Public List' })
+=======
+        };
+    fetch("http://localhost:3001/api/users", config)
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+>>>>>>> rebasing
   }
 }
 
