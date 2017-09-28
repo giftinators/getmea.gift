@@ -72,8 +72,7 @@ const style = {
     width: '100%'
   },
   images: {
-    height: 120,
-    maxWidth: 120
+    height: 120
   }
 };
 
@@ -178,13 +177,13 @@ class WishListPage extends Component {
         method: 'GET',
          mode: 'no-cors'
         }
-    fetch("/api/users/ross", config)
+    fetch("/api/users/ross10", config)
     .then((res)=>{
       return res.json()
     })
     .then((res)=>{
       this.setState({ userData: res })
-      this.setState({currentList: res.wishlists[1]})
+      this.setState({currentList: res.wishlists[0]})
       this.checkIfPublic()
     })
     .then(()=>{
@@ -239,7 +238,7 @@ class WishListPage extends Component {
           <br/>
           <br/>
             <div>
-            <Toolbar style={{width: '100%', backgroundColor: '#304FFE', color: 'white'}}>
+            <Toolbar style={{width: '100%', backgroundColor: 'red', color: 'white'}}>
               <ToolbarGroup style={{fontSize: 30}} >
                 {this.state.userData.wishlists[0].title}
               </ToolbarGroup>
@@ -293,7 +292,7 @@ class WishListPage extends Component {
                   <p style={{color: 'black'}}>{row.title}</p>
                   <p style={{color: 'black'}}>Price: ${row.price}</p>
                   <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
-                  <Paper style ={{maxHeight: 290, maxWidth: 290}}><img style={{maxHeight: 290, maxWidth: 290}} src="https://dsw.scene7.com/is/image/DSWShoes/404995_001_ss_01?$colpg$"/></Paper>
+                  <Paper style ={{maxHeight: 290, maxWidth: 290}}><img style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
                   <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: '#96beff', border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
                   <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
                   </Dialog>
@@ -309,8 +308,8 @@ class WishListPage extends Component {
                   </div></TableRowColumn>
 
                   <TableRowColumn hoverable={true} style={{ height: 140}}>
-                    <Paper style={{maxWidth: 120, marginTop: 10, maxHeight: 120}} zDepth={1} >
-                      <img alt="button" style={style.images} src='https://dsw.scene7.com/is/image/DSWShoes/404995_001_ss_01?$colpg$'/>
+                    <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
+                      <img alt="button" style={style.images} src={row.image_url}/>
                     </Paper>
 
                     </TableRowColumn>
