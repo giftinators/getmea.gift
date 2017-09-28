@@ -7,7 +7,7 @@ const helpers = require('./helpers');
 const passport = require('passport');
 const multer = require('multer');
 
-const upload = multer({ dest: './client/pictures'});
+const upload = multer({ dest: './user/pictures'});
 
 
 
