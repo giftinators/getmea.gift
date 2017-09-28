@@ -17,7 +17,6 @@ router.get('/users', (req, res) => {
 
 //get user
 router.get('/users/:username', (req, res) => {
-  //TODO: get user id from session
   var loggedInUserId = '59c9ca9d9abf99a03260e2ed';
   console.log(req.session);
   //we want to send in the logged in user's id
@@ -67,6 +66,12 @@ router.post('/login', (req, res) => {
   })(req, res);
 });
 
+
+router.get('/logout', (req, res) => {
+  delete req.session.user_id;
+  res.send('success')
+});
+
 // ** Replaced by /signup and /login **
 //
 // //create a new user when user signs up
@@ -110,8 +115,7 @@ router.post('/login', (req, res) => {
 router.post('/lists', (req, res) => {
   var title = req.body.title;
   var secret = req.body.secret;
-  //TODO: get user id from session
-  var user_id = '59c9ca9d9abf99a03260e2ed';
+  var user_id = req.session.user_id;
 
   helpers.createList({
     title: title,
@@ -130,8 +134,7 @@ router.post('/lists', (req, res) => {
 //delete list
 router.delete('/lists/:id', (req, res) => {
   var list_id = req.params.id;
-  //TODO: get user id from session
-  var user_id = '59c9ca9d9abf99a03260e2ed';
+  var user_id = req.session.user_id;
 
   helpers.deleteList(user_id, list_id)
   .then((id) => {
@@ -156,8 +159,7 @@ or
 router.put('/lists/:id', (req, res) => {
   var list_id = req.params.id;
   var listUpdates = req.body;
-  //TODO: get user id from session
-  var user_id = '59c9ca9d9abf99a03260e2ed';
+  var user_id = req.session.user_id;
 
   helpers.updateList(user_id, list_id, listUpdates)
   .then((list) => {
@@ -181,8 +183,7 @@ router.put('/lists/:id', (req, res) => {
 }
 */
 router.post('/items', (req, res) => {
-  //TODO: get user id from session
-  var user_id = '59c9ca9d9abf99a03260e2ed';
+  var user_id = req.session.user_id;
 
   var item = {};
   item.title = req.body.title;
@@ -206,8 +207,7 @@ router.post('/items', (req, res) => {
 //delete item
 router.delete('/items/:id', (req, res) => {
   var item_id = req.params.id;
-  //TODO: get user id from session
-  var user_id = '59c9ca9d9abf99a03260e2ed';
+  var user_id = req.session.user_id;
 
   helpers.deleteItem(user_id, item_id)
   .then((id) => {
