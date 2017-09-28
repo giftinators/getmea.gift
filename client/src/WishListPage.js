@@ -12,6 +12,12 @@ import {
 }
 from 'material-ui';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {colors} from 'material-ui/styles';
+
+
+
 // added for grid stuff, may not need all
 import IconButton from 'material-ui/IconButton';
 // end of list style MUI imports
@@ -43,6 +49,15 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 // end Get Gift modal imports
 
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: colors.indigoA700,
+    primary2Color: colors.indigo400,
+    primary3Color: colors.orange200,
+    accent1Color: colors.blue200,
+    alternateTextColor: colors.white
+  }
+});
 
 const style = {
   raisedButton: {
@@ -315,6 +330,7 @@ class WishListPage extends Component {
   // <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
   render() {
     return (
+      <MuiThemeProvider muiTheme={muiTheme} >
       <div style={style.backgroundStyle}>
         <div style={{minWidth: '100%'}} className="WishListPage">
           <div></div>
@@ -322,7 +338,7 @@ class WishListPage extends Component {
           <br/>
           <span id=''></span>
             <RaisedButton style={style.raisedButton} secondary label="New Wishlist" />
-            <RaisedButton onClick={ ()=>{this.addThing()} } style={style.raisedButton} secondary label="Share"/>
+            <RaisedButton  style={style.raisedButton} secondary label="Share"/>
           <AddItem />
           <br/>
           <br/>
@@ -409,6 +425,7 @@ class WishListPage extends Component {
            </div>
          </div>
        </div>
+       </MuiThemeProvider>
     );
   }
 }
