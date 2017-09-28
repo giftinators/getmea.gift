@@ -13,7 +13,8 @@ import {
 from 'material-ui';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+
 import {colors} from 'material-ui/styles';
 
 
@@ -48,16 +49,6 @@ import AddItem from './AddItem';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 // end Get Gift modal imports
-
-const muiTheme = getMuiTheme({
-  palette: {
-    primary1Color: colors.indigoA700,
-    primary2Color: colors.indigo400,
-    primary3Color: colors.orange200,
-    accent1Color: colors.blue200,
-    alternateTextColor: colors.white
-  }
-});
 
 const style = {
   raisedButton: {
@@ -260,7 +251,6 @@ class WishListPage extends Component {
         return res.json()
       })
       .then((res)=>{
-        console.log(res);
         //if a list was requested try to find that list
         if (list_id){
           //find the specific list and set it to currentList
@@ -330,7 +320,6 @@ class WishListPage extends Component {
   // <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
   render() {
     return (
-      <MuiThemeProvider muiTheme={muiTheme} >
       <div style={style.backgroundStyle}>
         <div style={{minWidth: '100%'}} className="WishListPage">
           <div></div>
@@ -343,7 +332,7 @@ class WishListPage extends Component {
           <br/>
           <br/>
           <div>
-            <Toolbar style={{width: '100%', backgroundColor: 'red', color: 'white'}}>
+            <Toolbar style={{width: '100%', backgroundColor: 'black', color: 'white'}}>
               <ToolbarGroup style={{fontSize: 30}} >
                 {this.state.userData.wishlists[0].title}
               </ToolbarGroup>
@@ -358,7 +347,7 @@ class WishListPage extends Component {
                   }>
                   <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
                   <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-
+                  {console.log(this.primary1Color)}
                   {
                     this.state.userData.wishlists.map((name, index) =>{
                       return (
@@ -425,7 +414,6 @@ class WishListPage extends Component {
            </div>
          </div>
        </div>
-       </MuiThemeProvider>
     );
   }
 }
