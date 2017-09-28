@@ -72,6 +72,17 @@ router.get('/logout', (req, res) => {
   res.send('success')
 });
 
+router.get('/me', (req, res) => {
+  var user_id = req.session.user_id;
+  helpers.getUserById(user_id)
+  .then((user) => {
+    res.send(user);
+  })
+  .catch((err) => {
+    res.send({});
+  });
+});
+
 // ** Replaced by /signup and /login **
 //
 // //create a new user when user signs up

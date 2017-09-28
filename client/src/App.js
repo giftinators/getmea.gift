@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import {AppBar} from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -40,10 +41,23 @@ class App extends Component {
       this.setState({currentUser: user});
       console.log('current user updated to: ', this.state.currentUser.username);
     }
-  // componentWillMount() {
-  // }
+
+    this.getLoggedInUser = () => {
+      axios.get('/api/me')
+      .then((user) => {
+        this.setState({
+          currentUser: user.data
+        })
+      })
+    }
+
 
   }
+
+  componentWillMount() {
+    this.getLoggedInUser();
+  }
+
   render() {
     return (
       <Router>
