@@ -81,6 +81,7 @@ class WishListPage extends Component {
     super(props);
 
     this.state = {
+      props: props,
       modalActions: [
            <FlatButton
              label="Yes. I'm positive I will get this gift."
@@ -173,23 +174,49 @@ class WishListPage extends Component {
 
   // API call to fetch user data
   getUserData() {
-    var config = {
+      //get the username from the url
+      var username = this.props.match.params.username;
+      //get the list_id from the url
+      var list_id = this.props.match.params.list_id;
+      var currentList;
+
+      var config = {
         method: 'GET',
-         mode: 'no-cors'
+        mode: 'no-cors'
+      };
+
+      //fetch the data of the username
+      fetch("/api/users/"+username, config)
+      .then((res)=>{
+        return res.json()
+      })
+      .then((res)=>{
+        console.log(res);
+        //if a list was requested try to find that list
+        if (list_id){
+          //find the specific list and set it to currentList
+          currentList = res.wishlists.filter((list) => {
+            return list._id == list_id;
+          })[0];
+        } else {
+          //if no list is specified just set currentList the first wishlist
+          currentList = res.wishlists[0];
         }
-    fetch("/api/users/ross10", config)
-    .then((res)=>{
-      return res.json()
-    })
-    .then((res)=>{
-      this.setState({ userData: res })
-      this.setState({currentList: res.wishlists[0]})
-      this.checkIfPublic()
-    })
-    .then(()=>{
-      return
-    })
-  }
+
+        //if the requested list isn't found then redirect back to user
+        if (list_id && !currentList){
+          this.props.history.push('/'+username)
+        } else {
+          //update the state
+          this.setState({
+            userData: res,
+            currentList: currentList
+          });
+          this.checkIfPublic()
+        }
+
+      })
+    }
 
   handleModalOpen = () => {
     this.handleClose()
@@ -276,6 +303,7 @@ class WishListPage extends Component {
             <TableBody
               displayRowCheckbox={false}
             >
+            {console.log(this.state.props)}
             {
                 this.state.currentList.items.map((row, index) => (
                 <TableRow hoverable={true} key={index}>
