@@ -126,49 +126,8 @@ class WishListPage extends Component {
         }
         />,
       ],
-      userData: {
-        _id: "59c9ca9d9abf99a03260e2ed",
-        username: "ross",
-        "__v": 12,
-        wishlists: [{
-          "_id": "59cacd20d5cabadddb751b65",
-          title: "Christmas List",
-          secret: false,
-          user_id: "59c9ca9d9abf99a03260e2ed",
-          __v: 1,
-          items: [{
-            _id: "59cacd33d5cabadddb751b66",
-            title: "New Balance - 247 Classic",
-            price: 79.99,
-            comments: "I wear a size 10.5",
-            url: "http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D",
-            list_id: "59cacd20d5cabadddb751b65",
-            user_id: "59c9ca9d9abf99a03260e2ed",
-            __v: 0,
-            purchased: false,
-            timestamp: "2017-09-26T21:57:07.058Z"
-          }]
-        }]
-      },
-      currentList: {
-        "_id": "59cacd20d5cabadddb751b65",
-        title: "Christmas List",
-        secret: false,
-        user_id: "59c9ca9d9abf99a03260e2ed",
-        __v: 1,
-        items: [{
-          _id: "59cacd33d5cabadddb751b66",
-          title: "New Balance - 247 Classic",
-          price: 79.99,
-          comments: "I wear a size 10.5",
-          url: "http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D",
-          list_id: "59cacd20d5cabadddb751b65",
-          user_id: "59c9ca9d9abf99a03260e2ed",
-          __v: 0,
-          purchased: false,
-          timestamp: "2017-09-26T21:57:07.058Z"
-        }]
-      },
+      userData: null,
+      currentList: null,
       listName: 'Public List',
       test: props.muiTheme.palette.textColor,
       menuName: 'Make List Private',
@@ -204,18 +163,10 @@ class WishListPage extends Component {
       ]
 
     }
-    this.getUserData()
   }
 
-  getThemeColors() {
-    var element = document.getElementById("appBar");
-    var tstyle=window.getComputedStyle(element,"");
-    var bgColor= tstyle.getPropertyValue("background-color");
-    this.setState({pj: bgColor})
-    var element = document.getElementById("secondaryColor");
-    // var tstyle=window.getComputedStyle(element,"");
-    var bgColor= tstyle.getPropertyValue("background-color");
-    this.setState({secondaryColor: bgColor})
+  componentWillMount() {
+    this.getUserData();
   }
 
   handleClose = () => {
@@ -255,17 +206,14 @@ class WishListPage extends Component {
       var list_id = this.props.match.params.list_id;
       var currentList;
 
-      var config = {
-        method: 'GET',
-        mode: 'no-cors'
-      };
-
       //fetch the data of the username
-      fetch("/api/users/"+username, config)
+      axios("/api/users/"+username)
       .then((res)=>{
-        return res.json()
+        console.log(res);
+        return res.data;
       })
       .then((res)=>{
+        console.log(res);
         //if a list was requested try to find that list
         if (list_id){
           //find the specific list and set it to currentList
@@ -286,10 +234,11 @@ class WishListPage extends Component {
             userData: res,
             currentList: currentList
           });
-          this.checkIfPublic()
-          this.getThemeColors()
         }
 
+      })
+      .catch((err) => {
+        console.log(err);
       })
     }
 
@@ -300,42 +249,36 @@ class WishListPage extends Component {
 
   renderMessages() {
     //changed just now
-    var username = this.props.match.params.username;
-    var list_id = this.state.currentList._id;
+    if (this.state.currentList){
+      var username = this.props.match.params.username;
+      var list_id = this.state.currentList._id;
 
-      if (this.state.currentList.items.length > 0) {
+      if (this.state.currentList.items && this.state.currentList.items.length > 0) {
         return (
           this.state.userData.wishlists.map((name, index) =>{
             return (
               <Link key={'item'+index} to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
-              this.setState({ currentList: this.state.userData.wishlists[index] })
-        }} /></Link>
-      )})
-        )
-      } else {
-        return (
-          <h1>No Items</h1>
-        )
-      }
+                this.setState({ currentList: this.state.userData.wishlists[index] })
+              }} /></Link>
+            )})
+          )
+        } else {
+          return (
+            <h1>No Items</h1>
+          )
+        }
+    }
   }
 
   handleModalClose = () => {
     this.setState({modalState: false });
   };
 
-  // Checks if list is set to private or public
-  checkIfPublic() {
-    if (this.state.currentList.secret) {
-      this.setState({ listName: 'Private List' })
-    } else {
-      this.setState({ listName: 'Public List' })
-    }
-    this.setState({ currentList: this.state.userData.wishlists[0] })
-  }
 
   render() {
     return (
-      <div style={style.backgroundStyle}>
+      console.log(this.state.currentList),
+      this.state.currentList && <div style={style.backgroundStyle}>
 
 
         <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
@@ -351,10 +294,10 @@ class WishListPage extends Component {
             <div>
               <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
                 <ToolbarGroup style={{fontSize: 30}} >
-                  {this.state.userData.wishlists[0].title}
+                  {this.state.currentList && this.state.currentList.title}
                 </ToolbarGroup>
                 <ToolbarGroup>
-                  <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
+                  <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.currentList.secret ? 'Private List' : 'Public List'} />
                   <FontIcon className="muidocs-icon-custom-sort" />
                   <ToolbarSeparator />
                   <IconMenu iconButtonElement={
@@ -380,22 +323,22 @@ class WishListPage extends Component {
                   displayRowCheckbox={false}
                 >
                   {
-                    this.state.currentList.items.map((row, index) => (
-                <TableRow hoverable={true} key={index}>
-                  <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
-                  <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
-                  <TableRowColumn style={{color: 'white'}} >          <div>
-                  <Dialog
-                  actions={this.state.actions}
-                  modal={false}
-                  open={this.state.open}
-                  onRequestClose={this.handleClose}>
+                    this.state.currentList && this.state.currentList.items && this.state.currentList.items.map((row, index) => (
+                      <TableRow hoverable={true} key={index}>
+                        <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
+                        <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
+                        <TableRowColumn style={{color: 'white'}} >          <div>
+                          <Dialog
+                            actions={this.state.actions}
+                            modal={false}
+                            open={this.state.open}
+                            onRequestClose={this.handleClose}>
 
-                  <p style={{color: 'black'}}>{row.title}</p>
-                  <p style={{color: 'black'}}>Price: ${row.price}</p>
-                  <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
-                  <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
-                  <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
+                            <p style={{color: 'black'}}>{row.title}</p>
+                            <p style={{color: 'black'}}>Price: ${row.price}</p>
+                            <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
+                            <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
+                            <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
                   <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
                   </Dialog>
 
