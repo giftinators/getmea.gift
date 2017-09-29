@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FlatButton from 'material-ui/FlatButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import {
@@ -212,7 +210,7 @@ class WishListPage extends Component {
       if (list_id){
         //find the specific list and set it to currentList
         currentList = res.wishlists.filter((list) => {
-          return list._id == list_id;
+          return list._id === list_id;
         })[0];
       } else {
         //if no list is specified just set currentList the first wishlist
@@ -280,7 +278,7 @@ class WishListPage extends Component {
 
       { this.state.userData._id === this.state.currentList.user_id
         ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
-        : ( null )
+        : null
       }
 
         <div style={{minWidth: '100%'}} className="WishListPage">
