@@ -31,6 +31,7 @@ import axios from 'axios';
 const style = {
   raisedButton: {
     float: 'right',
+    marginTop: 20,
     marginRight: 10,
     marginBottom: 5
   },
@@ -274,70 +275,66 @@ class WishListPage extends Component {
 
   render() {
     return (
-      <div style={style.backgroundStyle}>
+      <div className="container">
 
-      { this.state.userData._id === this.state.currentList.user_id
-        ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
-        : null
-      }
+        { /* Displays the AddItem button only if currentList belongs to currentUser */
+          this.props.currentUser._id === this.state.currentList.user_id
+          ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
+          : null
+        }
 
-        <div style={{minWidth: '100%'}} className="WishListPage">
-          <div style={{width: '65%', textAlign: 'center', marginLeft: '17.0%', borderRadius: '100%'}} >
-            <br/>
-            <span id=''></span>
+        <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
+
+          <div id="topButtons" style={{marginTop: 0}}>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
             <RaisedButton  style={style.raisedButton} secondary label="Share"/>
-            <br/>
-            <br/>
-            <div>
-              <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
-                <ToolbarGroup style={{fontSize: 30}} >
-                  {this.state.userData.wishlists[0].title}
-                </ToolbarGroup>
-                <ToolbarGroup>
-                  <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
-                  <FontIcon className="muidocs-icon-custom-sort" />
-                  <ToolbarSeparator />
-                  <IconMenu iconButtonElement={
-                    <IconButton>
-                      <NavigationExpandMoreIcon />
-                    </IconButton>
-                  }>
-                    <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
-                    <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-                    {this.renderMessages()}
+          </div>
 
-                  </IconMenu>
-                </ToolbarGroup>
-              </Toolbar>
+            <Toolbar zDepth={2} style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
+              <ToolbarGroup style={{fontSize: 30}} >
+                {this.state.userData.wishlists[0].title}
+              </ToolbarGroup>
+              <ToolbarGroup>
+                <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
+                <FontIcon className="muidocs-icon-custom-sort" />
+                <ToolbarSeparator />
+                <IconMenu iconButtonElement={
+                  <IconButton>
+                    <NavigationExpandMoreIcon />
+                  </IconButton>
+                }>
+                  <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
+                  <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+                  {this.renderMessages()}
+
+                </IconMenu>
+              </ToolbarGroup>
+            </Toolbar>
+
+          <div className="paperContainer">
+            <Paper zDepth={2}>
               <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableRowColumn>
-                    </TableRowColumn>
-                  </TableRow>
-                </TableBody>
                 <TableBody
                   displayRowCheckbox={false}
                 >
                   {
                     this.state.currentList.items.map((row, index) => (
-                <TableRow hoverable={true} key={index}>
+                      <TableRow hoverable={true} key={index}>
                   <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                   <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                   <TableRowColumn style={{color: 'white'}} >          <div>
                   <Dialog
-                  actions={this.state.actions}
-                  modal={false}
-                  open={this.state.open}
-                  onRequestClose={this.handleClose}>
+                    actions={this.state.actions}
+                    modal={false}
+                    open={this.state.open}
+                    onRequestClose={this.handleClose}>
 
-                  <p style={{color: 'black'}}>{row.title}</p>
-                  <p style={{color: 'black'}}>Price: ${row.price}</p>
-                  <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
-                  <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
-                  <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
-                  <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
+                    <p style={{color: 'black'}}>{row.title}</p>
+                    <p style={{color: 'black'}}>Price: ${row.price}</p>
+                    <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
+                    <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
+                    <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
+                    <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
                   </Dialog>
 
                   <Dialog
@@ -353,18 +350,18 @@ class WishListPage extends Component {
 
                   <TableRowColumn hoverable={true} style={{ height: 140}}>
                     <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
-                      <img alt="button" style={style.images} src={row.image_url}/>
+                      <img style={style.images} src={row.image_url}/>
                     </Paper>
                   </TableRowColumn>
                   </TableRow>
                 ))}
-
                 </TableBody>
               </Table>
-            </div>
-           </div>
-         </div>
-       </div>
+            </Paper>
+          </div>
+
+        </div>
+      </div>
     );
   }
 }

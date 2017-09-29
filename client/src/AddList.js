@@ -113,9 +113,11 @@ export default class AddList extends Component {
 
     return (
       <div>
-        <RaisedButton secondary label="New WishList" onClick={this.handleOpen}  style={{float: 'right',
-            marginRight: 10,
-            marginBottom: 5}}/>
+        <RaisedButton secondary label="New WishList" onClick={this.handleOpen}  style={
+          { float: 'right',
+            marginTop: 20,
+            marginBottom: 5 }
+          }/>
         <Dialog
           title={Header()}
           actions={actions}
