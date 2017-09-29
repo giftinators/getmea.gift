@@ -4,6 +4,7 @@ import React, {
 from 'react';
 // dded gridList and gridTile for grid divs. May not need all
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import {
   RaisedButton,
@@ -348,17 +349,17 @@ class WishListPage extends Component {
       <div style={style.backgroundStyle}>
         <div style={{minWidth: '100%'}} className="WishListPage">
           <div style={{width: '65%', textAlign: 'center', marginLeft: '17.0%', borderRadius: '100%'}} >
-          <br/>
-          <span id=''></span>
+            <br/>
+            <span id=''></span>
             <RaisedButton style={style.raisedButton} secondary id='secondaryColor' label="New Wishlist" />
             <RaisedButton  style={style.raisedButton} secondary label="Share"/>
-          <AddItem />
-          <br/>
-          <br/>
-          <div>
-            <Toolbar style={{width: '100%', backgroundColor: props.muiTHeme.palette.textColor, color: 'white'}}>
-              <ToolbarGroup style={{fontSize: 30}} >
-                {this.state.userData.wishlists[0].title}
+            <AddItem />
+            <br/>
+            <br/>
+            <div>
+              <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
+                <ToolbarGroup style={{fontSize: 30}} >
+                  {this.state.userData.wishlists[0].title}
               </ToolbarGroup>
               <ToolbarGroup>
               <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
@@ -436,4 +437,4 @@ class WishListPage extends Component {
 }
 
 
-export default WishListPage;
+export default muiThemeable()(WishListPage);
