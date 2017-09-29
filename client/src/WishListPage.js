@@ -2,6 +2,8 @@ import React, {
   Component
 }
 from 'react';
+import { Link } from 'react-router-dom';
+
 // dded gridList and gridTile for grid divs. May not need all
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import muiThemeable from 'material-ui/styles/muiThemeable';
@@ -39,6 +41,7 @@ from 'material-ui/Toolbar';
 
 //Component import
 import AddItem from './AddItem';
+import AddList from './AddList';
 // end of wishlist menu imports
 
 // Get Gift modal imports
@@ -208,7 +211,7 @@ class WishListPage extends Component {
     var bgColor= tstyle.getPropertyValue("background-color");
     this.setState({pj: bgColor})
     var element = document.getElementById("secondaryColor");
-    var tstyle=window.getComputedStyle(element,"");
+    // var tstyle=window.getComputedStyle(element,"");
     var bgColor= tstyle.getPropertyValue("background-color");
     this.setState({secondaryColor: bgColor})
   }
@@ -294,13 +297,17 @@ class WishListPage extends Component {
   };
 
   renderMessages() {
+    //changed just now
+    var username = this.props.match.params.username;
+    var list_id = this.state.currentList._id;
+
       if (this.state.currentList.items.length > 0) {
         return (
           this.state.userData.wishlists.map((name, index) =>{
             return (
-              <MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
+              <Link to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
               this.setState({ currentList: this.state.userData.wishlists[index] })
-        }} />
+        }} /></Link>
       )})
         )
       } else {
@@ -343,12 +350,12 @@ class WishListPage extends Component {
     this.setState({ userData: temp1 })
   }
 
-  componentDidMount() {
-    axios.get('/api/{this.props.match.params.username}/')
-    .then(function(response){
-
-    })
-  }
+  // componentDidMount() {
+  //   axios.get('/api/{this.props.match.params.username}')
+  //   .then(function(response){
+  //
+  //   })
+  // }
   // <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
 
   render() {
@@ -358,7 +365,7 @@ class WishListPage extends Component {
           <div style={{width: '65%', textAlign: 'center', marginLeft: '17.0%', borderRadius: '100%'}} >
             <br/>
             <span id=''></span>
-            <RaisedButton style={style.raisedButton} secondary id='secondaryColor' label="New Wishlist" />
+            <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
             <RaisedButton  style={style.raisedButton} secondary label="Share"/>
             <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
             <br/>

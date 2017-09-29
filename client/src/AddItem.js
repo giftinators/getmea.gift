@@ -58,7 +58,9 @@ export default class AddItem extends Component {
         this.setState({
           errorTextPrice: ''
         })
-        this.setState({price: newValue})
+        if(newValue.toString().length < 10){
+          this.setState({price: newValue})
+        }
       }
     }
 
