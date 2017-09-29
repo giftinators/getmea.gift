@@ -108,7 +108,7 @@ export default class Login extends Component {
   };
 
   render() {
-    
+
     var username = this.props.user.username;
 
     const loginActions = [
@@ -148,13 +148,13 @@ export default class Login extends Component {
     var welcomeBack = (
       <div>
         <Link to={'/'+username}><RaisedButton className="MyListsBtn" secondary label={"My Lists"} /></Link>
-        <FlatButton className="LogoutBtn" secondary label={"Logout, "+username} onClick={this.handleLogout} />
+        <FlatButton className="LogoutBtn" label={"Logout, "+username} onClick={this.handleLogout} />
       </div>
     );
 
     var loginDiv = (
       <div className="login">
-        <FlatButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
+        <RaisedButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
         <Dialog
           title="Login"
           actions={loginActions}
