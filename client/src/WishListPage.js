@@ -344,6 +344,7 @@ class WishListPage extends Component {
   // componentWillMount() {
   // }
   // <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
+
   render() {
     return (
       <div style={style.backgroundStyle}>
@@ -353,7 +354,7 @@ class WishListPage extends Component {
             <span id=''></span>
             <RaisedButton style={style.raisedButton} secondary id='secondaryColor' label="New Wishlist" />
             <RaisedButton  style={style.raisedButton} secondary label="Share"/>
-            <AddItem />
+            <AddItem list={this.state.currentList} />
             <br/>
             <br/>
             <div>
