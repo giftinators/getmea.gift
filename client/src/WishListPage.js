@@ -314,7 +314,7 @@ class WishListPage extends Component {
         )
       } else {
         return (
-          <h1>No Items Here Mother Fucker</h1>
+          <h1>No Items</h1>
         )
       }
   }
