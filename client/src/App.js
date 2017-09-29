@@ -21,11 +21,10 @@ import './App.scss';
 //overwrite default theme
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: colors.indigoA700,
-    primary2Color: colors.indigo400,
-    primary3Color: colors.orange200,
-    accent1Color: colors.blue200,
-    alternateTextColor: colors.white
+    primary1Color: colors.lightBlue500,
+    primary2Color: colors.lightBlue300,
+    primary3Color: colors.lightBlue700,
+    accent1Color: colors.pink400
   }
 });
 

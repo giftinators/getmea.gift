@@ -5,6 +5,8 @@ from 'react';
 import { Link } from 'react-router-dom';
 
 // dded gridList and gridTile for grid divs. May not need all
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
@@ -344,19 +346,11 @@ class WishListPage extends Component {
       style
     }
     />
-    temp.image = 'http://www.wigglestatic.com/product-media/5360108808/Wiggle-Road-Bike-Road-Bikes-Black-1WGMY16R7048UK0001-6.jpg?w=2000&h=2000&a=7'
+    temp.image = "http://www.wigglestatic.com/product-media/5360108808/Wiggle-Road-Bike-Road-Bikes-Black-1WGMY16R7048UK0001-6.jpg?w=2000&h=2000&a=7"
     var temp1 = this.state.userData.slice(0)
     temp1.push(temp)
     this.setState({ userData: temp1 })
   }
-
-  // componentDidMount() {
-  //   axios.get('/api/{this.props.match.params.username}')
-  //   .then(function(response){
-  //
-  //   })
-  // }
-  // <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
 
   render() {
     return (
@@ -391,6 +385,11 @@ class WishListPage extends Component {
                   </IconMenu>
                 </ToolbarGroup>
               </Toolbar>
+              <div>
+                <FloatingActionButton secondary>
+                  <ContentAdd />
+                </FloatingActionButton>
+              </div>
           <Table>
           <TableBody>
             <TableRow>

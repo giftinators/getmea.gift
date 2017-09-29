@@ -20,7 +20,7 @@ export default class Login extends Component {
       username: '',
       password: '',
       verifyPassword: '',
-
+      redirect: false
     };
 
     this.handleOpen = () => {
@@ -89,6 +89,7 @@ export default class Login extends Component {
       axios('/api/logout')
       .then((response) => {
         this.props.setCurrentUser({});
+        this.setState({ redirect: true });
       })
       .catch(function (error) {
         console.log(error);
@@ -107,6 +108,7 @@ export default class Login extends Component {
   };
 
   render() {
+
     var username = this.props.user.username;
 
     const loginActions = [
@@ -146,13 +148,13 @@ export default class Login extends Component {
     var welcomeBack = (
       <div>
         <Link to={'/'+username}><RaisedButton className="MyListsBtn" secondary label={"My Lists"} /></Link>
-        <FlatButton className="LogoutBtn" secondary label={"Logout, "+username} onClick={this.handleLogout} />
+        <FlatButton style={{color: 'white'}}className="LogoutBtn" label={"Logout, "+username} onClick={this.handleLogout} />
       </div>
     );
 
     var loginDiv = (
       <div className="login">
-        <FlatButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
+        <RaisedButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
         <Dialog
           title="Login"
           actions={loginActions}
