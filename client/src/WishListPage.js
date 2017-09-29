@@ -313,6 +313,10 @@ class WishListPage extends Component {
         }} /></Link>
       )})
         )
+      } else {
+        return (
+          <h1>No Items</h1>
+        )
       }
   }
 
