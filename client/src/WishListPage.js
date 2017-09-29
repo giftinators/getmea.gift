@@ -304,7 +304,7 @@ class WishListPage extends Component {
     var username = this.props.match.params.username;
     var list_id = this.state.currentList._id;
 
-      if (this.state.currentList.items.length > 0) {
+      if (this.state.currentList.items.length >= 0) {
         return (
           this.state.userData.wishlists.map((name, index) =>{
             return (
@@ -312,10 +312,6 @@ class WishListPage extends Component {
               this.setState({ currentList: this.state.userData.wishlists[index] })
         }} /></Link>
       )})
-        )
-      } else {
-        return (
-          <h1>No Items</h1>
         )
       }
   }
@@ -352,7 +348,7 @@ class WishListPage extends Component {
             <div>
               <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
                 <ToolbarGroup style={{fontSize: 30}} >
-                  {this.state.userData.wishlists[0].title}
+                  {this.state.currentList.title}
                 </ToolbarGroup>
                 <ToolbarGroup>
                   <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
