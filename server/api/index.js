@@ -25,7 +25,11 @@ router.get('/users', (req, res) => {
 
 //get user
 router.get('/users/:username', (req, res) => {
+<<<<<<< HEAD
   console.log(req.session);
+=======
+  console.log('get request: ', req.session)
+>>>>>>> rebasing
   var loggedInUserId = req.session.user_id;
   //we want to send in the logged in user's id
   //so we can determine if we should send back secret wishlists
@@ -92,6 +96,7 @@ router.post('/login', (req, res) => {
 
 
 router.get('/logout', (req, res) => {
+  console.log(req.session)
   delete req.session.user_id;
   res.send('success')
 });
@@ -125,6 +130,7 @@ router.post('/lists', (req, res) => {
     user_id: user_id
   })
   .then((list) => {
+    console.log('then list, ', list)
     res.send(list);
   })
   .catch((err) => {
