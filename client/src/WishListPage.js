@@ -304,7 +304,7 @@ class WishListPage extends Component {
     var username = this.props.match.params.username;
     var list_id = this.state.currentList._id;
 
-      if (this.state.currentList.items.length >= 0) {
+      if (this.state.currentList.items.length > 0) {
         return (
           this.state.userData.wishlists.map((name, index) =>{
             return (
@@ -313,12 +313,11 @@ class WishListPage extends Component {
         }} /></Link>
       )})
         )
+      } else {
+        return (
+          <h1>No Items</h1>
+        )
       }
-      // else {
-      //   return (
-      //     <h1>No Items Here Mother Fucker</h1>
-      //   )
-      // }
   }
 
   handleModalClose = () => {
