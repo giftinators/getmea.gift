@@ -26,6 +26,7 @@ router.get('/users', (req, res) => {
 //get user
 router.get('/users/:username', (req, res) => {
   console.log('get request: ', req.session)
+
   var loggedInUserId = req.session.user_id;
   //we want to send in the logged in user's id
   //so we can determine if we should send back secret wishlists
