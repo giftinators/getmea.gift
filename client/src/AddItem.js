@@ -93,6 +93,7 @@ export default class AddItem extends Component {
         console.log('response: ', response);
         if (response.data) {
           this.setState({open: false});
+          //rerender WishListPage
           this.props.getdata()
         }
       })
