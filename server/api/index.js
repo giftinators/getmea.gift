@@ -195,7 +195,9 @@ router.post('/items', (req, res) => {
   item.list_id = req.body.list_id;
   item.user_id = user_id;
 
-  console.log('in items: ', user_id)
+
+  console.log('req.session ', req.session.user_id)
+  console.log('in items: ', req.body.list_id)
 
   helpers.addItem(user_id, item)
   .then((newItem) => {

@@ -77,13 +77,16 @@ export default class AddItem extends Component {
 
     this.handleSubmit = (e) => {
       e.preventDefault();
-      console.log('current user ', this.props)
+      console.log('current list ', this.props.list._id)
+      console.log('props ', this.props)
       axios.post('/api/items', {
         title: this.state.title,
         price: this.state.price,
         url: this.state.url,
         image_url: this.state.imageUrl,
-        comments: this.state.comments
+        comments: this.state.comments,
+        list_id: this.props.list._id,
+        user_id: this.props.list.user_id
       })
       .then((response) => {
         console.log(response);
