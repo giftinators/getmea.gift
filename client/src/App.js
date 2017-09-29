@@ -78,8 +78,6 @@ class App extends Component {
             <Route exact path="/" component={Homepage}/>
             <Route exact path="/:username" foo="hi" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
             <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
-            <Route path='/login' render={routeProps => <Login open={false}/>} />
-            <Route path='/signup' render={routeProps => <Signup open={false}/>} />
             <Footer />
           </div>
         </MuiThemeProvider>

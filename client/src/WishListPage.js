@@ -333,25 +333,6 @@ class WishListPage extends Component {
     this.setState({ currentList: this.state.userData.wishlists[0] })
   }
 
-  // Adds item to this.state.userData array in the form of an object to be rendered
-  addThing() {
-    var temp = {}
-    temp.name = 'Bike'
-    temp.price = '$5.99'
-    temp.link = < RaisedButton label = "Give This Gift"
-    secondary = {
-      true
-    }
-    style = {
-      style
-    }
-    />
-    temp.image = "http://www.wigglestatic.com/product-media/5360108808/Wiggle-Road-Bike-Road-Bikes-Black-1WGMY16R7048UK0001-6.jpg?w=2000&h=2000&a=7"
-    var temp1 = this.state.userData.slice(0)
-    temp1.push(temp)
-    this.setState({ userData: temp1 })
-  }
-
   render() {
     return (
       <div style={style.backgroundStyle}>
