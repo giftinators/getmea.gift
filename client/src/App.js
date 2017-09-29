@@ -51,6 +51,14 @@ class App extends Component {
     }
 
 
+      //////
+    this.setCurrentList = (list) => {
+      this.setState({
+        currentList: list
+      })
+    }
+
+
   }
 
   componentWillMount() {
@@ -64,12 +72,12 @@ class App extends Component {
           <div className="App">
             <AppBar id='appBar'
               title={<Link className="logo" to="/">Get Me A Gift</Link>}
-              iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser}/>}
+              iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser} currentList={this.state.currentList}/>}
               zDepth={4}
             />
             <Route exact path="/" component={Homepage}/>
-            <Route exact path="/:username" component={WishListPage}/>
-            <Route exact path="/:username/:list_id" component={WishListPage}/>
+            <Route exact path="/:username" foo="hi" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
+            <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
             <Route path='/login' render={routeProps => <Login open={false}/>} />
             <Route path='/signup' render={routeProps => <Signup open={false}/>} />
             <Footer />

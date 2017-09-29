@@ -5,6 +5,10 @@ const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 const helpers = require('./helpers');
 const passport = require('passport');
+const multer = require('multer');
+
+const upload = multer({ dest: './user/pictures'});
+
 
 
 //get all users
@@ -14,6 +18,10 @@ router.get('/users', (req, res) => {
     res.send({users})
   })
 })
+
+// router.post('/upload', upload.single('photo'), function(req, res, next){
+//   res.end(req.file);
+// });
 
 //get user
 router.get('/users/:username', (req, res) => {
@@ -187,8 +195,13 @@ router.post('/items', (req, res) => {
   item.list_id = req.body.list_id;
   item.user_id = user_id;
 
+
+  console.log('req.session ', req.session.user_id)
+  console.log('in items: ', req.body.list_id)
+
   helpers.addItem(user_id, item)
   .then((newItem) => {
+    console.log('newItem: ', newItem)
     res.send(newItem);
   })
   .catch((err) => {
