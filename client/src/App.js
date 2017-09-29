@@ -48,14 +48,11 @@ class App extends Component {
       })
     }
 
-
-      //////
     this.setCurrentList = (list) => {
       this.setState({
         currentList: list
       })
     }
-
 
   }
 

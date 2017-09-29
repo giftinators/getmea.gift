@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import {
   Table,
@@ -9,7 +8,6 @@ import {
   TableRowColumn
 } from 'material-ui';
 import IconButton from 'material-ui/IconButton';
-import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
 import FontIcon from 'material-ui/FontIcon';
@@ -94,7 +92,7 @@ class WishListPage extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getUserData();
   }
 
@@ -134,7 +132,7 @@ class WishListPage extends Component {
       if (list_id){
         //find the specific list and set it to currentList
         currentList = res.wishlists.filter((list) => {
-          return list._id == list_id;
+          return list._id === list_id;
         })[0];
       } else {
         //if no list is specified just set currentList the first wishlist
@@ -239,7 +237,7 @@ class WishListPage extends Component {
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
-                            <img style={style.images} src={row.image_url}/>
+                            <img alt={''} style={style.images} src={row.image_url}/>
                           </Paper>
                         </TableRowColumn>
                       </TableRow>
