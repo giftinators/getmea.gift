@@ -280,7 +280,7 @@ class WishListPage extends Component {
         //if the requested list isn't found then redirect back to user
         if (list_id && !currentList){
           this.props.history.push('/'+username)
-        } else {
+        } else if (currentList) {
           //update the state
           this.setState({
             userData: res,
@@ -307,7 +307,7 @@ class WishListPage extends Component {
         return (
           this.state.userData.wishlists.map((name, index) =>{
             return (
-              <Link to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
+              <Link key={'item'+index} to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
               this.setState({ currentList: this.state.userData.wishlists[index] })
         }} /></Link>
       )})
@@ -337,7 +337,8 @@ class WishListPage extends Component {
     return (
       <div style={style.backgroundStyle}>
 
-      <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
+
+        <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
 
         <div style={{minWidth: '100%'}} className="WishListPage">
           <div style={{width: '65%', textAlign: 'center', marginLeft: '17.0%', borderRadius: '100%'}} >
@@ -351,35 +352,35 @@ class WishListPage extends Component {
               <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
                 <ToolbarGroup style={{fontSize: 30}} >
                   {this.state.userData.wishlists[0].title}
-              </ToolbarGroup>
-              <ToolbarGroup>
-              <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
-                <FontIcon className="muidocs-icon-custom-sort" />
-                <ToolbarSeparator />
-                <IconMenu iconButtonElement={
+                </ToolbarGroup>
+                <ToolbarGroup>
+                  <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
+                  <FontIcon className="muidocs-icon-custom-sort" />
+                  <ToolbarSeparator />
+                  <IconMenu iconButtonElement={
                     <IconButton>
                       <NavigationExpandMoreIcon />
                     </IconButton>
                   }>
-                  <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
-                  <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-                  {this.renderMessages()}
+                    <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
+                    <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+                    {this.renderMessages()}
 
                   </IconMenu>
                 </ToolbarGroup>
               </Toolbar>
-          <Table>
-          <TableBody>
-            <TableRow>
-              <TableRowColumn>
-            </TableRowColumn>
-          </TableRow>
-          </TableBody>
-            <TableBody
-              displayRowCheckbox={false}
-            >
-            {
-                this.state.currentList.items.map((row, index) => (
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableRowColumn>
+                    </TableRowColumn>
+                  </TableRow>
+                </TableBody>
+                <TableBody
+                  displayRowCheckbox={false}
+                >
+                  {
+                    this.state.currentList.items.map((row, index) => (
                 <TableRow hoverable={true} key={index}>
                   <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                   <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
