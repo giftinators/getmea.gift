@@ -17,6 +17,7 @@ import Signup from './Signup';
 
 import './App.scss';
 
+
 //overwrite default theme
 const muiTheme = getMuiTheme({
   palette: {
@@ -62,7 +63,7 @@ class App extends Component {
       <Router>
         <MuiThemeProvider muiTheme={muiTheme} >
           <div className="App">
-            <AppBar
+            <AppBar id='appBar'
               title={<Link className="logo" to="/">Get Me A Gift</Link>}
               iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser}/>}
               zDepth={4}

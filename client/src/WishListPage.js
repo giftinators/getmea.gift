@@ -3,6 +3,8 @@ import React, {
 }
 from 'react';
 // dded gridList and gridTile for grid divs. May not need all
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 import {
   RaisedButton,
   Table,
@@ -11,13 +13,6 @@ import {
   TableRowColumn
 }
 from 'material-ui';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-
-import {colors} from 'material-ui/styles';
-
-
 
 // added for grid stuff, may not need all
 import IconButton from 'material-ui/IconButton';
@@ -103,6 +98,8 @@ class WishListPage extends Component {
     super(props);
 
     this.state = {
+      secondaryColor: '',
+      pj: '',
       modalActions: [ < FlatButton
         label = "Yes. I'm positive I will get this gift."
         primary = {
@@ -165,6 +162,7 @@ class WishListPage extends Component {
         }]
       },
       listName: 'Public List',
+      test: props.muiTheme.palette.textColor,
       menuName: 'Make List Private',
       open: false,
       modalState: false,
@@ -198,9 +196,18 @@ class WishListPage extends Component {
       ]
 
     }
-
     this.getUserData()
+  }
 
+  getThemeColors() {
+    var element = document.getElementById("appBar");
+    var tstyle=window.getComputedStyle(element,"");
+    var bgColor= tstyle.getPropertyValue("background-color");
+    this.setState({pj: bgColor})
+    var element = document.getElementById("secondaryColor");
+    var tstyle=window.getComputedStyle(element,"");
+    var bgColor= tstyle.getPropertyValue("background-color");
+    this.setState({secondaryColor: bgColor})
   }
 
   handleClose = () => {
@@ -272,6 +279,7 @@ class WishListPage extends Component {
             currentList: currentList
           });
           this.checkIfPublic()
+          this.getThemeColors()
         }
 
       })
@@ -281,6 +289,23 @@ class WishListPage extends Component {
     this.handleClose()
     this.setState({modalState: true});
   };
+
+  renderMessages() {
+      if (this.state.currentList.items.length > 0) {
+        return (
+          this.state.userData.wishlists.map((name, index) =>{
+            return (
+              <MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
+              this.setState({ currentList: this.state.userData.wishlists[index] })
+        }} />
+      )})
+        )
+      } else {
+        return (
+          <h1>No Items Here Mother Fucker</h1>
+        )
+      }
+  }
 
   handleModalClose = () => {
     this.setState({modalState: false });
@@ -322,17 +347,16 @@ class WishListPage extends Component {
     return (
       <div style={style.backgroundStyle}>
         <div style={{minWidth: '100%'}} className="WishListPage">
-          <div></div>
           <div style={{width: '65%', textAlign: 'center', marginLeft: '17.0%', borderRadius: '100%'}} >
           <br/>
           <span id=''></span>
-            <RaisedButton style={style.raisedButton} secondary label="New Wishlist" />
+            <RaisedButton style={style.raisedButton} secondary id='secondaryColor' label="New Wishlist" />
             <RaisedButton  style={style.raisedButton} secondary label="Share"/>
           <AddItem />
           <br/>
           <br/>
           <div>
-            <Toolbar style={{width: '100%', backgroundColor: 'black', color: 'white'}}>
+            <Toolbar style={{width: '100%', backgroundColor: props.muiTHeme.palette.textColor, color: 'white'}}>
               <ToolbarGroup style={{fontSize: 30}} >
                 {this.state.userData.wishlists[0].title}
               </ToolbarGroup>
@@ -347,14 +371,7 @@ class WishListPage extends Component {
                   }>
                   <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
                   <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-                  {console.log(this.primary1Color)}
-                  {
-                    this.state.userData.wishlists.map((name, index) =>{
-                      return (
-                        <MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
-                          this.setState({ currentList: this.state.userData.wishlists[index] })
-                        }} />
-                      )})}
+                  {this.renderMessages()}
 
                   </IconMenu>
                 </ToolbarGroup>
@@ -385,7 +402,7 @@ class WishListPage extends Component {
                   <p style={{color: 'black'}}>Price: ${row.price}</p>
                   <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
                   <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
-                  <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: '#96beff', border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
+                  <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
                   <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
                   </Dialog>
 
