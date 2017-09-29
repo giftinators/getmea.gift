@@ -26,6 +26,15 @@ import {
 
 import AddItem from './AddItem';
 import AddList from './AddList';
+
+import Share from './Share';
+// end of wishlist menu imports
+
+// Get Gift modal imports
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+// end Get Gift modal imports
+
 import axios from 'axios';
 
 const style = {
@@ -243,18 +252,18 @@ class WishListPage extends Component {
     var username = this.props.match.params.username;
     var list_id = this.state.currentList._id;
 
-    if (this.state.currentList.items.length > 0) {
+    if (this.state.currentList.items.length >= 0) {
       return (
         this.state.userData.wishlists.map((name, index) =>{
           return (
-            <Link to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
+            <Link key={'item'+index} to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
             this.setState({ currentList: this.state.userData.wishlists[index] })
-            }} /></Link>
-          )})
+      }} /></Link>
+    )})
       )
     } else {
       return (
-        <h1>No Items Here Mother Fucker</h1>
+        <h1>No Items</h1>
       )
     }
   }
@@ -287,12 +296,12 @@ class WishListPage extends Component {
 
           <div id="topButtons" style={{marginTop: 0}}>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-            <RaisedButton  style={style.raisedButton} secondary label="Share"/>
+            <Share user={this.props.currentUser} list={this.state.currentList}/>
           </div>
-
+          <div>
             <Toolbar zDepth={2} style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
               <ToolbarGroup style={{fontSize: 30}} >
-                {this.state.userData.wishlists[0].title}
+                {this.state.currentList.title}
               </ToolbarGroup>
               <ToolbarGroup>
                 <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
@@ -310,7 +319,7 @@ class WishListPage extends Component {
                 </IconMenu>
               </ToolbarGroup>
             </Toolbar>
-
+          </div>
           <div className="paperContainer">
             <Paper zDepth={2}>
               <Table>
