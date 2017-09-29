@@ -349,7 +349,6 @@ class WishListPage extends Component {
       <div style={style.backgroundStyle}>
         <div style={{minWidth: '100%'}} className="WishListPage">
           <div style={{width: '65%', textAlign: 'center', marginLeft: '17.0%', borderRadius: '100%'}} >
-<<<<<<< HEAD
             <br/>
             <span id=''></span>
             <RaisedButton style={style.raisedButton} secondary id='secondaryColor' label="New Wishlist" />
@@ -357,15 +356,6 @@ class WishListPage extends Component {
             <AddItem />
             <br/>
             <br/>
-=======
-          <br/>
-          <span id=''></span>
-          <RaisedButton style={style.raisedButton} secondary label="New Wishlist" />
-          <RaisedButton onClick={ ()=>{this.addThing()} } style={style.raisedButton} secondary label="Share"/>
-          <AddItem user={this.props.user} list={this.props.match.params.list_id} />
-          <br/>
-          <br/>
->>>>>>> working on list_id for items post route
             <div>
               <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
                 <ToolbarGroup style={{fontSize: 30}} >
