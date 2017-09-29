@@ -44,6 +44,7 @@ from 'material-ui/Toolbar';
 //Component import
 import AddItem from './AddItem';
 import AddList from './AddList';
+import Share from './Share';
 // end of wishlist menu imports
 
 // Get Gift modal imports

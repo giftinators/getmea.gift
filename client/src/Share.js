@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
-import axios from 'axios';
 
 
 /**
@@ -19,6 +20,7 @@ export default class Share extends Component {
     };
 
     this.handleOpen = () => {
+      console.log(this.props)
       this.setState({open: true});
     };
 
@@ -28,56 +30,10 @@ export default class Share extends Component {
         open: false
       });
     };
+  }
 
-    this.handleTitleChange = (e, newValue) => {
-      if(newValue) {
-        this.setState({
-          errorTextTitle: ''
-        })
-      }
-
-      this.setState({title: newValue})
-    }
-
-    this.updateCheck = function(){
-      this.setState((oldState) => {
-        return {
-          secret: !oldState.secret
-        };
-      });
-    }
-
-
-    this.handleSubmit = (e) => {
-      e.preventDefault();
-      console.log('props in addlist ', this.props)
-      console.log(this.state)
-      axios.post('/api/lists', {
-        title: this.state.title,
-        secret: this.state.secret
-      })
-      .then((response) => {
-        console.log('response: ', response);
-        if (response.data) {
-          this.setState({open: false});
-          //rerender WishListPage
-          this.props.getdata()
-        }
-      })
-      .catch(function (error) {
-        console.log('handlesubmit ', error.response);
-      });
-    };
-
-    //Shows error text and removes it when a value is input
-    this.handleErrorText = (e) => {
-      console.log(e.target.value)
-      if(e.target.value.length) {
-        this.setState({errorText: ''});
-      } else {
-        this.setState({errorText: '*Required'});
-      }
-    }
+  getInitialState() {
+    return {value: '', copied: false};
   }
 
 
@@ -89,50 +45,37 @@ export default class Share extends Component {
         primary={true}
         onClick={this.handleClose}
       />,
-      <FlatButton
-        type="Submit"
-        label="Submit"
-        primary={true}
-        disabled={!this.state.title}
-        onClick={this.handleSubmit}
-      />,
     ];
 
     return (
       <div>
-        <RaisedButton secondary label="New WishList" onClick={this.handleOpen}  style={{float: 'right',
+        <RaisedButton secondary label="Share" onClick={this.handleOpen}  style={{float: 'right',
             marginRight: 10,
             marginBottom: 5}}/>
         <Dialog
-          title={Header()}
+          title="Share This List"
           actions={actions}
           modal={true}
           open={this.state.open}
         >
-          <div style={{marginLeft: 150}}>
-            <form>
-                <TextField
-                  onChange={this.handleTitleChange}
-                  floatingLabelText="List Name"
-                  type="title"
-                  value={this.state.title}
-                  errorText={this.state.errorTextTitle}
-                  style={{marginRight: 30}}
-                /><br />
-                <Checkbox
-                  label="Secret"
-                  checked={this.state.secret}
-                  onCheck={this.updateCheck.bind(this)}
-                  style={styles.checkbox}
-                />
-            </form>
-          </div>
+          <div>
+              <input value={this.state.value}
+                onChange={({target: {value}}) => this.setState({value, copied: false})} />
+
+              <CopyToClipboard text={this.state.value}
+                onCopy={() => this.setState({copied: true})}>
+                <span></span>
+              </CopyToClipboard>
+
+              <CopyToClipboard text={this.state.value}
+                onCopy={() => this.setState({copied: true})}>
+                <button>Copy to clipboard with button</button>
+              </CopyToClipboard>
+
+              {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
+            </div>
         </Dialog>
       </div>
     );
   }
 }
-
-const Header = () => (
-  <div style={{textAlign: 'center'}}> Add List </div>
-)
