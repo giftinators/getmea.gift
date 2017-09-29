@@ -69,10 +69,15 @@ class App extends Component {
               zDepth={4}
             />
             <Route exact path="/" component={Homepage}/>
+<<<<<<< HEAD
             <Route exact path="/:username" component={WishListPage}/>
             <Route exact path="/:username/:list_id" component={WishListPage}/>
             <Route path='/login' render={routeProps => <Login open={false}/>} />
             <Route path='/signup' render={routeProps => <Signup open={false}/>} />
+=======
+            <Route exact path="/:username" component={WishListPage} user={this.state.currentUser}/>
+            <Route exact path="/:username/:list_id" component={WishListPage} user={this.state.currentUser}/>
+>>>>>>> working on list_id for items post route
             <Footer />
           </div>
         </MuiThemeProvider>

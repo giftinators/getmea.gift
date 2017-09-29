@@ -19,9 +19,9 @@ router.get('/users', (req, res) => {
   })
 })
 
-router.post('/upload', upload.single('photo'), function(req, res, next){
-  res.end(req.file);
-});
+// router.post('/upload', upload.single('photo'), function(req, res, next){
+//   res.end(req.file);
+// });
 
 //get user
 router.get('/users/:username', (req, res) => {
@@ -195,8 +195,11 @@ router.post('/items', (req, res) => {
   item.list_id = req.body.list_id;
   item.user_id = user_id;
 
+  console.log('in items: ', user_id)
+
   helpers.addItem(user_id, item)
   .then((newItem) => {
+    console.log(newItem)
     res.send(newItem);
   })
   .catch((err) => {

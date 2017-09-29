@@ -12,109 +12,120 @@ import Dropzone from 'react-dropzone';
 */
 
 export default class AddItem extends Component {
-  state = {
-    open: false,
-    title: '',
-    price: 0.00,
-    url: '',
-    imageUrl: '',
-    comments: '',
-    errorTextPrice: '*Required',
-    errorTextTitle: '*Required'
-  };
+  constructor (props) {
+    super(props);
 
-  handleOpen = () => {
-    this.setState({open: true});
-  };
-
-  handleClose = () => {
-    this.setState({
+    this.state = {
+      open: false,
+      title: '',
+      price: 0.00,
+      url: '',
+      imageUrl: '',
+      comments: '',
       errorTextPrice: '*Required',
-      errorTextTitle: '*Required',
-      open: false
-    });
-  };
+      errorTextTitle: '*Required'
+    };
 
-  handleTitleChange = (e, newValue) => {
-    if(newValue) {
+    this.handleOpen = () => {
+      this.setState({open: true});
+    };
+
+    this.handleClose = () => {
       this.setState({
-        errorTextTitle: ''
-      })
-    }
+        errorTextPrice: '*Required',
+        errorTextTitle: '*Required',
+        open: false
+      });
+    };
 
-    this.setState({title: newValue})
-  }
-  handlePriceChange = (e, newValue) => {
-    if(isNaN(newValue)) {
-      this.setState({
-        errorTextPrice: 'Number Only'
-      })
-    } else {
-      this.setState({
-        errorTextPrice: ''
-      })
-      this.setState({price: newValue})
-    }
-  }
-  handleUrlChange = (e, newValue) => {
-    this.setState({url: newValue})
-  }
-  handleCommentChange = (e, newValue) => {
-    this.setState({comments: newValue})
-  }
-
-  //figure out how to add an upload image button
-  handleImageUrlChange = (e, newValue) => {
-    this.setState({imageUrl: newValue})
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post('/api/items', {
-      title: this.state.title,
-      price: this.state.price,
-      url: this.state.url,
-      imageUrl: this.state.imageUrl,
-      comments: this.state.comments
-    })
-    .then((response) => {
-      if (response.data) {
-        console.log(response);
-        this.setState({open: false});
+    this.handleTitleChange = (e, newValue) => {
+      if(newValue) {
+        this.setState({
+          errorTextTitle: ''
+        })
       }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  };
-  //trying to edit so that errortext goes away when they type something
-  handleErrorText = (e) => {
-    console.log(e.target.value)
-    if(e.target.value.length) {
-      this.setState({errorText: ''});
-    } else {
-      this.setState({errorText: '*Required'});
-    }
-  }
 
-  dropHandler = (file) => {
-    var photo = new FormData();
-    photo.append('photo', file[0]);
-    axios.post('/upload', photo, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      this.setState({title: newValue})
+    }
+
+    this.handlePriceChange = (e, newValue) => {
+      if(isNaN(newValue)) {
+        this.setState({
+          errorTextPrice: 'Number Only'
+        })
+      } else {
+        this.setState({
+          errorTextPrice: ''
+        })
+        this.setState({price: newValue})
+      }
+    }
+
+    this.handleUrlChange = (e, newValue) => {
+      this.setState({url: newValue})
+    }
+
+    this.handleCommentChange = (e, newValue) => {
+      this.setState({comments: newValue})
+    }
+
+    //figure out how to add an upload image button
+
+    this.handleImageUrlChange = (e, newValue) => {
+      this.setState({imageUrl: newValue})
+    }
+
+    this.handleSubmit = (e) => {
+      e.preventDefault();
+      console.log('current user ', this.props)
+      axios.post('/api/items', {
+        title: this.state.title,
+        price: this.state.price,
+        url: this.state.url,
+        image_url: this.state.imageUrl,
+        comments: this.state.comments
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data) {
+          this.setState({open: false});
         }
-    })
+      })
+      .catch(function (error) {
+        console.log('handlesubmit ', error.response);
+      });
+    };
+    //trying to edit so that errortext goes away when they type something
+    this.handleErrorText = (e) => {
+      console.log(e.target.value)
+      if(e.target.value.length) {
+        this.setState({errorText: ''});
+      } else {
+        this.setState({errorText: '*Required'});
+      }
+    }
+
+  //   this.dropHandler = (file) => {
+  //     var photo = new FormData();
+  //     photo.append('photo', file[0]);
+  //     axios.post('/api/upload', photo, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data'
+  //         }
+  //     })
+  //   }
   }
 
   render() {
     const actions = [
       <FlatButton
+        type="button"
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
       />,
       <FlatButton
+        type="Submit"
         label="Submit"
         primary={true}
         disabled={!this.state.title || !this.state.price}
@@ -136,7 +147,6 @@ export default class AddItem extends Component {
         >
           <div style={{marginLeft: 150}}>
             <form>
-              <div>
                 <TextField
                   onChange={this.handleTitleChange}
                   floatingLabelText="Item Name"
@@ -144,40 +154,31 @@ export default class AddItem extends Component {
                   value={this.state.title}
                   errorText={this.state.errorTextTitle}
                   style={{marginRight: 30}}
-                />
+                /><br />
                 <TextField
-                onChange={this.handlePriceChange}
-                floatingLabelText="Price"
-                type="price"
-                value={this.state.price}
-                errorText={this.state.errorTextPrice}
-                style={{maxWidth: 100}}
-                />
-              </div>
-              <br />
-              <div>
+                  onChange={this.handlePriceChange}
+                  floatingLabelText="Price"
+                  type="price"
+                  value={this.state.price}
+                  errorText={this.state.errorTextPrice}
+                  style={{maxWidth: 100}}
+                /><br />
                 <TextField
                   onChange={this.handleUrlChange}
                   floatingLabelText="Link to Item"
                   type="url"
                   value={this.state.url}
-                />
-              </div>
-              <div>
+                /><br />
                 <TextField
-                onChange={this.handleImageUrlChange}
-                floatingLabelText="Image Url"
-                type="imageUrl"
-                value={this.state.imageUrl}
-                style={{marginRight: 20}}
+                  onChange={this.handleImageUrlChange}
+                  floatingLabelText="Image Url"
+                  type="imageUrl"
+                  value={this.state.imageUrl}
+                  style={{marginRight: 20}}
                 />
                 <Dropzone disableClick={false} multiple={false} accept={'image/*'} onDrop={this.dropHandler} style={{maxHeight: 50, maxWidth: 150}}>
                   <FlatButton secondary label="Upload Photo"></FlatButton>
-                </Dropzone>
-              </div>
-              <div>
-              </div>
-              <div>
+                </Dropzone><br />
                 <TextField
                   onChange={this.handleCommentChange}
                   floatingLabelText="Description"
@@ -188,7 +189,6 @@ export default class AddItem extends Component {
                   value={this.state.comments}
                   style={{textAlign: 'left', width: '70%'}}
                 />
-              </div>
             </form>
           </div>
         </Dialog>
