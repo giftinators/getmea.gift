@@ -303,7 +303,6 @@ class WishListPage extends Component {
     //changed just now
     var username = this.props.match.params.username;
     var list_id = this.state.currentList._id;
-    console.log(this.state.userData)
 
       if (this.state.currentList.items.length >= 0) {
         return (

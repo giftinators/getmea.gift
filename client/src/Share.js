@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+
 
 
 /**
@@ -15,12 +16,13 @@ export default class Share extends Component {
     super(props);
 
     this.state = {
-      value: '',
-      copied: false
+      //sets the value of the text needed to be copied to the current location
+      value: window.location.origin+'/'+this.props.user.username+'/'+this.props.list._id,
+      copied: false,
+      open: false
     };
 
     this.handleOpen = () => {
-      console.log(this.props)
       this.setState({open: true});
     };
 
@@ -41,7 +43,7 @@ export default class Share extends Component {
     const actions = [
       <FlatButton
         type="button"
-        label="Cancel"
+        label="Close"
         primary={true}
         onClick={this.handleClose}
       />,
@@ -59,8 +61,12 @@ export default class Share extends Component {
           open={this.state.open}
         >
           <div>
-              <input value={this.state.value}
-                onChange={({target: {value}}) => this.setState({value, copied: false})} />
+              <TextField value={this.state.value}
+                name="url"
+                hintText=""
+                onChange={({target: {value}}) => this.setState({value, copied: false})}
+                style={{width: 300, marginRight: 50}}
+                />
 
               <CopyToClipboard text={this.state.value}
                 onCopy={() => this.setState({copied: true})}>
@@ -69,7 +75,7 @@ export default class Share extends Component {
 
               <CopyToClipboard text={this.state.value}
                 onCopy={() => this.setState({copied: true})}>
-                <button>Copy to clipboard with button</button>
+                <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
               </CopyToClipboard>
 
               {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
