@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import Dropzone from 'react-dropzone';
@@ -143,11 +144,20 @@ export default class AddItem extends Component {
       />,
     ];
 
+    const style = {
+      margin: 0,
+      top: 'auto',
+      right: 30,
+      bottom: 30,
+      left: 'auto',
+      position: 'fixed',
+    };
+
     return (
       <div>
-        <RaisedButton secondary label="+" onClick={this.handleOpen}  style={{float: 'right',
-            marginRight: 10,
-            marginBottom: 5}}/>
+        <FloatingActionButton secondary onClick={this.handleOpen} style={style}>
+          <ContentAdd />
+        </FloatingActionButton>
         <Dialog
           title={Header()}
           actions={actions}

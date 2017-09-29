@@ -336,13 +336,15 @@ class WishListPage extends Component {
   render() {
     return (
       <div style={style.backgroundStyle}>
+
+      <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
+
         <div style={{minWidth: '100%'}} className="WishListPage">
           <div style={{width: '65%', textAlign: 'center', marginLeft: '17.0%', borderRadius: '100%'}} >
             <br/>
             <span id=''></span>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
             <RaisedButton  style={style.raisedButton} secondary label="Share"/>
-            <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
             <br/>
             <br/>
             <div>
@@ -366,11 +368,6 @@ class WishListPage extends Component {
                   </IconMenu>
                 </ToolbarGroup>
               </Toolbar>
-              <div>
-                <FloatingActionButton secondary>
-                  <ContentAdd />
-                </FloatingActionButton>
-              </div>
           <Table>
           <TableBody>
             <TableRow>
