@@ -30,11 +30,6 @@ import AddList from './AddList';
 import Share from './Share';
 // end of wishlist menu imports
 
-// Get Gift modal imports
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-// end Get Gift modal imports
-
 import axios from 'axios';
 
 const style = {
