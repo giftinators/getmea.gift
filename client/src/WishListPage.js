@@ -110,7 +110,28 @@ class WishListPage extends Component {
 
     this.state = {
       userData: {
-        wishlists: [ {title: "My Public List"} ]
+        _id: "59c9ca9d9abf99a03260e2ed",
+        username: "ross",
+        "__v": 12,
+        wishlists: [{
+          "_id": "59cacd20d5cabadddb751b65",
+          title: "Christmas List",
+          secret: false,
+          user_id: "59c9ca9d9abf99a03260e2ed",
+          __v: 1,
+          items: [{
+            _id: "59cacd33d5cabadddb751b66",
+            title: "New Balance - 247 Classic",
+            price: 79.99,
+            comments: "I wear a size 10.5",
+            url: "http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D",
+            list_id: "59cacd20d5cabadddb751b65",
+            user_id: "59c9ca9d9abf99a03260e2ed",
+            __v: 0,
+            purchased: false,
+            timestamp: "2017-09-26T21:57:07.058Z"
+          }]
+        }]
       },
       currentList: {
         "_id": "59cacd20d5cabadddb751b65",
@@ -208,7 +229,6 @@ class WishListPage extends Component {
           currentList: currentList
         });
         this.checkIfPublic()
-        this.getThemeColors()
       }
 
     })
@@ -258,8 +278,10 @@ class WishListPage extends Component {
     return (
       <div style={style.backgroundStyle}>
 
-
-        <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
+      { this.state.userData._id === this.state.currentList.user_id
+        ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
+        : ( null )
+      }
 
         <div style={{minWidth: '100%'}} className="WishListPage">
           <div style={{width: '65%', textAlign: 'center', marginLeft: '17.0%', borderRadius: '100%'}} >
@@ -328,7 +350,7 @@ class WishListPage extends Component {
                     If you claim this gift, it will disappear. And nobody else will be able to get this for {this.state.userData.username[0].toUpperCase()+this.state.userData.username.slice(1)}.
                   </Dialog>
 
-                  <RaisedButton secondary={true} label="Get Gift" onClick={this.handleOpen} />
+                  <RaisedButton secondary={true} label="Get Gift" onClick={this.handleOpen.bind(this)} />
                   </div></TableRowColumn>
 
                   <TableRowColumn hoverable={true} style={{ height: 140}}>
