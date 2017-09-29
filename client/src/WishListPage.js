@@ -347,7 +347,7 @@ class WishListPage extends Component {
             <br/>
             <span id=''></span>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-            <RaisedButton  style={style.raisedButton} secondary label="Share"/>
+            <Share user={this.props.currentUser} list={this.state.currentList}/>
             <br/>
             <br/>
             <div>
