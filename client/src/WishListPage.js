@@ -315,7 +315,7 @@ class WishListPage extends Component {
                         </TableRowColumn>
                       </TableRow>
                     ))
-        `         }
+                 }
                 </TableBody>
               </Table>
             </Paper>
