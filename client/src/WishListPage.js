@@ -44,6 +44,7 @@ from 'material-ui/Toolbar';
 //Component import
 import AddItem from './AddItem';
 import AddList from './AddList';
+import Share from './Share';
 // end of wishlist menu imports
 
 // Get Gift modal imports
@@ -303,7 +304,7 @@ class WishListPage extends Component {
     var username = this.props.match.params.username;
     var list_id = this.state.currentList._id;
 
-      if (this.state.currentList.items.length > 0) {
+      if (this.state.currentList.items.length >= 0) {
         return (
           this.state.userData.wishlists.map((name, index) =>{
             return (
@@ -345,13 +346,13 @@ class WishListPage extends Component {
             <br/>
             <span id=''></span>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-            <RaisedButton  style={style.raisedButton} secondary label="Share"/>
+            <Share user={this.props.currentUser} list={this.state.currentList}/>
             <br/>
             <br/>
             <div>
               <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
                 <ToolbarGroup style={{fontSize: 30}} >
-                  {this.state.userData.wishlists[0].title}
+                  {this.state.currentList.title}
                 </ToolbarGroup>
                 <ToolbarGroup>
                   <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
