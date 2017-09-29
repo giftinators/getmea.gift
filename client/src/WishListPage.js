@@ -294,7 +294,7 @@ class WishListPage extends Component {
             <Share user={this.props.currentUser} list={this.state.currentList}/>
           </div>
           <div>
-            <Toolbar zDepth={2} style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
+            <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
               <ToolbarGroup style={{fontSize: 30}} >
                 {this.state.currentList.title}
               </ToolbarGroup>
