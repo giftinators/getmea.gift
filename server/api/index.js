@@ -201,7 +201,7 @@ router.post('/items', (req, res) => {
 
   helpers.addItem(user_id, item)
   .then((newItem) => {
-    console.log(newItem)
+    console.log('newItem: ', newItem)
     res.send(newItem);
   })
   .catch((err) => {

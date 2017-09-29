@@ -46,6 +46,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 // end Get Gift modal imports
 
+import axios from 'axios';
+
 const style = {
   raisedButton: {
     float: 'right',
@@ -341,8 +343,12 @@ class WishListPage extends Component {
     this.setState({ userData: temp1 })
   }
 
-  // componentWillMount() {
-  // }
+  componentDidMount() {
+    axios.get('/api/{this.props.match.params.username}/')
+    .then(function(response){
+
+    })
+  }
   // <RaisedButton style={style.raisedButton} secondary label="Add Item"/>
 
   render() {
@@ -354,7 +360,7 @@ class WishListPage extends Component {
             <span id=''></span>
             <RaisedButton style={style.raisedButton} secondary id='secondaryColor' label="New Wishlist" />
             <RaisedButton  style={style.raisedButton} secondary label="Share"/>
-            <AddItem list={this.state.currentList} />
+            <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
             <br/>
             <br/>
             <div>

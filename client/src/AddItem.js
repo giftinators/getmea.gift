@@ -48,6 +48,7 @@ export default class AddItem extends Component {
       this.setState({title: newValue})
     }
 
+    //sets price in state and make sure user only enters a number
     this.handlePriceChange = (e, newValue) => {
       if(isNaN(newValue)) {
         this.setState({
@@ -89,16 +90,18 @@ export default class AddItem extends Component {
         user_id: this.props.list.user_id
       })
       .then((response) => {
-        console.log(response);
+        console.log('response: ', response);
         if (response.data) {
           this.setState({open: false});
+          this.props.getdata()
         }
       })
       .catch(function (error) {
         console.log('handlesubmit ', error.response);
       });
     };
-    //trying to edit so that errortext goes away when they type something
+
+    //Shows error text and removes it when a value is input
     this.handleErrorText = (e) => {
       console.log(e.target.value)
       if(e.target.value.length) {
@@ -108,16 +111,17 @@ export default class AddItem extends Component {
       }
     }
 
-  //   this.dropHandler = (file) => {
-  //     var photo = new FormData();
-  //     photo.append('photo', file[0]);
-  //     axios.post('/api/upload', photo, {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data'
-  //         }
-  //     })
-  //   }
+    // this.dropHandler = (file) => {
+    //   var photo = new FormData();
+    //   photo.append('photo', file[0]);
+    //   axios.post('/api/upload', photo, {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data'
+    //       }
+    //   })
+    // }
   }
+
 
   render() {
     const actions = [
