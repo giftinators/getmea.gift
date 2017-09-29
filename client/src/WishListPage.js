@@ -112,56 +112,17 @@ class WishListPage extends Component {
     super(props);
 
     this.state = {
-      userData: {
-        _id: "59c9ca9d9abf99a03260e2ed",
-        username: "ross",
-        "__v": 12,
-        wishlists: [{
-          "_id": "59cacd20d5cabadddb751b65",
-          title: "Christmas List",
-          secret: false,
-          user_id: "59c9ca9d9abf99a03260e2ed",
-          __v: 1,
-          items: [{
-            _id: "59cacd33d5cabadddb751b66",
-            title: "New Balance - 247 Classic",
-            price: 79.99,
-            comments: "I wear a size 10.5",
-            url: "http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D",
-            list_id: "59cacd20d5cabadddb751b65",
-            user_id: "59c9ca9d9abf99a03260e2ed",
-            __v: 0,
-            purchased: false,
-            timestamp: "2017-09-26T21:57:07.058Z"
-          }]
-        }]
-      },
-      currentList: {
-        "_id": "59cacd20d5cabadddb751b65",
-        title: "Christmas List",
-        secret: false,
-        user_id: "59c9ca9d9abf99a03260e2ed",
-        __v: 1,
-        items: [{
-          _id: "59cacd33d5cabadddb751b66",
-          title: "New Balance - 247 Classic",
-          price: 79.99,
-          comments: "I wear a size 10.5",
-          url: "http://www.newbalance.com/pd/247-classic/MRL247-C.html?dwvar_MRL247-C_color=Navy&default=true#color=Navy&width=D",
-          list_id: "59cacd20d5cabadddb751b65",
-          user_id: "59c9ca9d9abf99a03260e2ed",
-          __v: 0,
-          purchased: false,
-          timestamp: "2017-09-26T21:57:07.058Z"
-        }]
-      },
+      userData: null,
+      currentList: null,
       listName: 'Public List',
       menuName: 'Make List Private',
       open: false,
       modalState: false,
     }
+  }
 
-    this.getUserData()
+  componentWillMount() {
+    this.getUserData();
   }
 
   handleClose() {
@@ -200,22 +161,19 @@ class WishListPage extends Component {
     var list_id = this.props.match.params.list_id;
     var currentList;
 
-    var config = {
-      method: 'GET',
-      mode: 'no-cors'
-    };
-
     //fetch the data of the username
-    fetch("/api/users/"+username, config)
+    axios("/api/users/"+username)
     .then((res)=>{
-      return res.json()
+      console.log(res);
+      return res.data;
     })
     .then((res)=>{
+      console.log(res);
       //if a list was requested try to find that list
       if (list_id){
         //find the specific list and set it to currentList
         currentList = res.wishlists.filter((list) => {
-          return list._id === list_id;
+          return list._id == list_id;
         })[0];
       } else {
         //if no list is specified just set currentList the first wishlist
@@ -225,15 +183,17 @@ class WishListPage extends Component {
       //if the requested list isn't found then redirect back to user
       if (list_id && !currentList){
         this.props.history.push('/'+username)
-      } else {
+      } else if (currentList) {
         //update the state
         this.setState({
           userData: res,
           currentList: currentList
         });
-        this.checkIfPublic()
       }
 
+    })
+    .catch((err) => {
+      console.log(err);
     })
   }
 
@@ -244,22 +204,24 @@ class WishListPage extends Component {
 
   renderMessages() {
     //changed just now
-    var username = this.props.match.params.username;
-    var list_id = this.state.currentList._id;
+    if (this.state.currentList){
+      var username = this.props.match.params.username;
+      var list_id = this.state.currentList._id;
 
-    if (this.state.currentList.items.length >= 0) {
-      return (
-        this.state.userData.wishlists.map((name, index) =>{
-          return (
-            <Link key={'item'+index} to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
-            this.setState({ currentList: this.state.userData.wishlists[index] })
-      }} /></Link>
-    )})
-      )
-    } else {
-      return (
-        <h1>No Items</h1>
-      )
+      if (this.state.currentList.items && this.state.currentList.items.length > 0) {
+        return (
+          this.state.userData.wishlists.map((name, index) =>{
+            return (
+              <Link key={'item'+index} to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
+                this.setState({ currentList: this.state.userData.wishlists[index] })
+              }} /></Link>
+            )})
+          )
+      } else {
+        return (
+          <h1>No Items</h1>
+        )
+      }
     }
   }
 
@@ -267,20 +229,10 @@ class WishListPage extends Component {
     this.setState({modalState: false });
   }
 
-  // Checks if list is set to private or public
-  checkIfPublic() {
-    if (this.state.currentList.secret) {
-      this.setState({ listName: 'Private List' })
-    } else {
-      this.setState({ listName: 'Public List' })
-    }
-    this.setState({ currentList: this.state.userData.wishlists[0] })
-  }
 
   render() {
     return (
-      <div className="container">
-
+      this.state.currentList && <div className="container" style={style.backgroundStyle}>
         { /* Displays the AddItem button only if currentList belongs to currentUser */
           this.props.currentUser._id === this.state.currentList.user_id
           ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
@@ -291,6 +243,7 @@ class WishListPage extends Component {
 
           <div id="topButtons" style={{marginTop: 0}}>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
+
             <Share user={this.props.currentUser} list={this.state.currentList}/>
           </div>
           <div>
@@ -322,48 +275,51 @@ class WishListPage extends Component {
                   displayRowCheckbox={false}
                 >
                   {
-                    this.state.currentList.items.map((row, index) => (
+                    this.state.currentList && this.state.currentList.items && this.state.currentList.items.map((row, index) => (
                       <TableRow hoverable={true} key={index}>
-                  <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
-                  <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
-                  <TableRowColumn style={{color: 'white'}} >          <div>
-                  <Dialog
-                    actions={this.state.actions}
-                    modal={false}
-                    open={this.state.open}
-                    onRequestClose={this.handleClose}>
+                        <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
+                        <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
+                        <TableRowColumn style={{color: 'white'}} >
+                          <div>
+                            <Dialog
+                              actions={this.state.actions}
+                              modal={false}
+                              open={this.state.open}
+                              onRequestClose={this.handleClose}>
 
-                    <p style={{color: 'black'}}>{row.title}</p>
-                    <p style={{color: 'black'}}>Price: ${row.price}</p>
-                    <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
-                    <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
-                    <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
-                    <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
-                  </Dialog>
+                              <p style={{color: 'black'}}>{row.title}</p>
+                              <p style={{color: 'black'}}>Price: ${row.price}</p>
+                              <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
+                              <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
+                              <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
+                              <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
 
-                  <Dialog
-                    actions={modalActions}
-                    modal={true}
-                    open={this.state.modalState}>
-                    <h2><img alt="" style={{height: 20, width: 20}} src="http://www.iconsdb.com/icons/preview/dark-gray/high-importance-xxl.png" /> Are you sure you are going to get this gift?</h2>
-                    If you claim this gift, it will disappear. And nobody else will be able to get this for {this.state.userData.username[0].toUpperCase()+this.state.userData.username.slice(1)}.
-                  </Dialog>
+                              </Dialog>
 
-                  <RaisedButton secondary={true} label="Get Gift" onClick={this.handleOpen.bind(this)} />
-                  </div></TableRowColumn>
+                              <Dialog
+                              actions={modalActions}
+                              modal={true}
+                              open={this.state.modalState}>
+                              <h2><img alt="" style={{height: 20, width: 20}} src="http://www.iconsdb.com/icons/preview/dark-gray/high-importance-xxl.png" /> Are you sure you are going to get this gift?</h2>
+                              If you claim this gift, it will disappear. And nobody else will be able to get this for {this.state.userData.username[0].toUpperCase()+this.state.userData.username.slice(1)}.
+                            </Dialog>
 
-                  <TableRowColumn hoverable={true} style={{ height: 140}}>
-                    <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
-                      <img style={style.images} src={row.image_url}/>
-                    </Paper>
-                  </TableRowColumn>
-                  </TableRow>
-                ))}
+                            <RaisedButton secondary={true} label="Get Gift" onClick={this.handleOpen.bind(this)} />
+                          </div>
+                        </TableRowColumn>
+
+                        <TableRowColumn hoverable={true} style={{ height: 140}}>
+                          <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
+                            <img style={style.images} src={row.image_url}/>
+                          </Paper>
+                        </TableRowColumn>
+                      </TableRow>
+                    ))
+        `         }
                 </TableBody>
               </Table>
             </Paper>
           </div>
-
         </div>
       </div>
     );

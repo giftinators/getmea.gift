@@ -49,6 +49,7 @@ const getUser = (username, loggedInUserId) => {
       }
 
       //Only return secret wishlists if user is owner
+      console.log(loggedInUserId, user._id);
       if (loggedInUserId == user._id) {
         resolve(user);
       } else {
