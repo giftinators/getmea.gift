@@ -93,6 +93,7 @@ class WishListPage extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     this.getUserData();
   }
 
@@ -158,17 +159,21 @@ class WishListPage extends Component {
 
   renderMessages() {
     //changed just now
-    if (this.state.currentList){
+    if (this.state.currentList) {
       var username = this.props.match.params.username;
-      var list_id = this.state.currentList._id;
 
       if (this.state.currentList.items && this.state.currentList.items.length > 0) {
         return (
-          this.state.userData.wishlists.map((name, index) =>{
+          this.state.userData.wishlists.map((list, index) => {
             return (
-              <Link key={'item'+index} to={'/'+username+'/'+list_id}><MenuItem key={'item'+index} style={{borderBottom: '1px solid silver'}} primaryText={this.state.userData.wishlists[index].title} onClick={ ()=>{
-                this.setState({ currentList: this.state.userData.wishlists[index] })
-              }} /></Link>
+              <MenuItem
+                key={index}
+                style={{borderBottom: '1px solid silver'}}
+                primaryText={list.title}
+                onClick={ () => {
+                  this.props.history.push('/'+username+'/'+list._id);
+                  this.setState({currentList: list});
+                }} />
             )})
           )
       } else {
