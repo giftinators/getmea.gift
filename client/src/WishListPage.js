@@ -268,14 +268,14 @@ class WishListPage extends Component {
           isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
         }
 
-        <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
+        <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
             <AppBar title={(
               <div>
                 {this.state.currentList.title.toUpperCase()}
                 <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
               </div> )}
-              style={{color: 'white', marginTop: 50}}
+              style={{color: 'white'}}
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
