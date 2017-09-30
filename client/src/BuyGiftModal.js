@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import Error from 'material-ui/svg-icons/alert/error';
-
+import axios from 'axios';
 
 class BuyGiftModal extends React.Component {
   constructor(props) {
@@ -27,15 +27,28 @@ class BuyGiftModal extends React.Component {
       });
     }
 
+    this.deleteItem = (index) => {
+      console.log(this.props.item._id)
+   var id = this.props.item._id
+   axios.delete("/api/items/" + id)
+   .then(() => {
+     this.props.getUserData()
+   })
+ }
+
     this.handleModalOpen = () => {
       this.handleClose()
       this.setState({modalOpen: true});
     }
 
+
     this.handleModalClose = () => {
       this.setState({modalOpen: false });
     }
+
   }
+
+
 
   render() {
     const actions = [ < FlatButton
@@ -65,6 +78,7 @@ class BuyGiftModal extends React.Component {
     ];
 
     if (this.state.open) {
+      console.log(this.props);
       return (
         <Dialog
           actions={actions}
@@ -76,7 +90,7 @@ class BuyGiftModal extends React.Component {
           <p style={{color: 'black'}}>{this.props.item.title}</p>
           <p style={{color: 'black'}}>Price: ${this.props.item.price}</p>
           <p style={{color: 'black'}}>Comments from {this.props.userData.username[0].toUpperCase()+''+this.props.userData.username.slice(1)}: {this.props.item.comments}</p>
-          <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={this.props.item.image_url}/></Paper>
+          {this.props.item.image_url && <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={this.props.item.image_url}/></Paper>}
           <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={this.props.item.url} target="_blank">Click Here</a></p>
           <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
 
@@ -95,7 +109,12 @@ class BuyGiftModal extends React.Component {
         </Dialog>
       )
     } else {
-      return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
+         if (!this.props.isListOwner) {
+           return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
+         } else {
+           return <RaisedButton primary label="Delete" onClick={()=>{this.deleteItem(this.props.index)}} />
+         }
+
     }
   }
 }

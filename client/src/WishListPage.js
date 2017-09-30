@@ -243,7 +243,7 @@ class WishListPage extends Component {
     ];
 
     const topRightMenu = (
-      <IconMenu iconButtonElement={
+      this.state.currentList && <IconMenu iconButtonElement={
         <IconButton>
           <NavigationExpandMoreIcon />
         </IconButton>
@@ -279,11 +279,11 @@ class WishListPage extends Component {
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
-                ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
-                     <Lock style={{padding: 12, color: 'white'}}/>
+                  ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
+                    <Lock style={{padding: 12, color: 'white'}}/>
                   </IconButton>)
-                : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
-                     <Unlock style={{padding: 12, color: 'white'}} />
+                  : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
+                    <Unlock style={{padding: 12, color: 'white'}} />
                   </IconButton>)
               }
             >
@@ -307,7 +307,7 @@ class WishListPage extends Component {
             open={this.state.shareOpen}
             onRequestClose={this.handleShareClose.bind(this)}
             handleClose={this.handleShareClose.bind(this)}
-            />
+          />
 
           <Dialog
             actions={deleteActions}
@@ -330,7 +330,7 @@ class WishListPage extends Component {
                         <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
-                          <BuyGiftModal item={row} userData={this.state.userData}/>
+                          <BuyGiftModal item={row} index={index} getUserData={this.getUserData.bind(this)} isListOwner={isListOwner} userData={this.state.userData}/>
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
