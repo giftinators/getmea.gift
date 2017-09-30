@@ -79,8 +79,6 @@ class WishListPage extends Component {
     this.state = {
       userData: null,
       currentList: null,
-      listName: 'Public List',
-      menuName: 'Make List Private',
       open: false,
       modalState: false,
       deleteOpen: false
@@ -91,21 +89,16 @@ class WishListPage extends Component {
     this.getUserData();
   }
 
-    // toggles list from private to public
+  // toggles list from private to public
   toggleListType() {
-    var list = this.state.listName
-    if (list === 'Public List') {
-      this.setState({
-        listName: 'Private List',
-        menuName: 'Make List Public'
-      })
-    } else {
-      this.setState({
-        listName: 'Public List',
-        menuName: 'Make List Private'
+      axios.put('/api/lists/'+this.state.currentList._id, {
+        secret: !this.state.currentList.secret
+      }).then((res) => {
+        this.setState({
+          currentList: res.data
+        })
       })
     }
-  }
 
   // API call to fetch user data
   getUserData() {
@@ -200,7 +193,7 @@ class WishListPage extends Component {
 
   render() {
 
-    var isListOwner;
+    var isListOwner = false;
     if (this.state.currentList){
        isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
     }
@@ -255,7 +248,7 @@ class WishListPage extends Component {
             <AppBar title={(
               <div>
                 {this.state.currentList.title.toUpperCase()}
-                <span style={{fontSize: 14, padding: 10}}>{this.state.listName}</span>
+                <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
               </div> )}
               style={{color: 'white'}}
               iconElementRight={topRightMenu}
