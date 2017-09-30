@@ -4,7 +4,9 @@ import {
   Table,
   TableBody,
   TableRow,
-  TableRowColumn
+  TableRowColumn,
+  FlatButton,
+  Dialog
 } from 'material-ui';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
@@ -74,7 +76,8 @@ class WishListPage extends Component {
       listName: 'Public List',
       menuName: 'Make List Private',
       open: false,
-      modalState: false
+      modalState: false,
+      deleteOpen: false
     }
   }
 
@@ -160,7 +163,45 @@ class WishListPage extends Component {
     }
   }
 
+  handleDelete() {
+    axios.delete('/api/lists/'+this.state.currentList._id)
+    .then((res) => {
+      console.log(res.data);
+      this.setState({
+        deleteOpen: false
+      })
+      this.props.history.push('/'+this.props.match.params.username)
+    })
+  }
+
+  handleDeleteOpen() {
+    this.setState({
+      deleteOpen: true
+    })
+  }
+
+  handleDeleteClose() {
+    console.log(this);
+    this.setState({
+      deleteOpen: false
+    })
+  }
+
   render() {
+
+    const deleteActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.handleDeleteClose.bind(this)}
+      />,
+      <FlatButton
+        label="Delete List"
+        secondary={true}
+        onClick={this.handleDelete.bind(this)}
+      />,
+    ];
+
     const topRightMenu = (
       this.state.currentList &&
       <IconMenu iconButtonElement={
@@ -169,7 +210,7 @@ class WishListPage extends Component {
         </IconButton>
       }>
         <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} />
-        <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+        <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" onClick={this.handleDeleteOpen.bind(this)} />
         {this.renderMessages()}
       </IconMenu>
     );
@@ -203,6 +244,15 @@ class WishListPage extends Component {
             >
             </AppBar>
           </div>
+
+          <Dialog
+            actions={deleteActions}
+            modal={false}
+            open={this.state.deleteOpen}
+            onRequestClose={this.handleDeleteClose.bind(this)}
+          >
+            Discard draft?
+          </Dialog>
 
           <div className="paperContainer">
             <Paper zDepth={2}>
