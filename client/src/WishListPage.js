@@ -175,7 +175,6 @@ class WishListPage extends Component {
         </IconButton>
       }>
 
-        {/* Don't show unless user is list owner */}
         {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <LockOpen /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
         {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
         {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} /> }
