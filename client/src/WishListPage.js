@@ -270,11 +270,7 @@ class WishListPage extends Component {
 
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
-            <AppBar title={(
-              <div>
-                {this.state.currentList.title.toUpperCase()}
-                <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
-              </div> )}
+            <AppBar title={this.state.currentList.title.toUpperCase()}
               style={{color: 'white'}}
               iconElementRight={topRightMenu}
               iconElementLeft={

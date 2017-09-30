@@ -146,10 +146,7 @@ export default class Login extends Component {
     ];
 
     var welcomeBack = (
-      <div>
-        <Link to={'/'+username}><RaisedButton className="MyListsBtn" secondary label={"My Lists"} /></Link>
-        <FlatButton style={{color: 'white'}}className="LogoutBtn" label={"Logout, "+username} onClick={this.handleLogout} />
-      </div>
+      <RaisedButton secondary style={{color: 'white'}} className="LogoutBtn" label={"Logout, "+username} onClick={this.handleLogout} />
     );
 
     var loginDiv = (
