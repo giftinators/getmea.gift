@@ -15,6 +15,7 @@ import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Lock from 'material-ui/svg-icons/action/lock';
+import LockOpen from 'material-ui/svg-icons/action/lock-open';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
@@ -182,7 +183,6 @@ class WishListPage extends Component {
       </IconMenu>
     );
 
-
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
 
@@ -203,11 +203,15 @@ class WishListPage extends Component {
             <AppBar title={(
               <div>
                 {this.state.currentList.title.toUpperCase()}
-                <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
-              </div> )}
+              </div>
+            )}
               style={{color: 'white'}}
               iconElementRight={topRightMenu}
-              showMenuIconButton={false}
+              iconElementLeft={
+                this.state.currentList.secret
+                ? (<Lock style={{padding: 12, color: 'white'}}/>)
+                : (<LockOpen style={{padding: 12, color: 'white', alt: 'Public List'}} />)
+              }
             >
             </AppBar>
           </div>
