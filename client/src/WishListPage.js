@@ -19,23 +19,16 @@ import {
   ToolbarSeparator,
   ToolbarTitle
 } from 'material-ui/Toolbar';
+import AppBar from 'material-ui/AppBar';
 
 import AddItem from './AddItem';
 import AddList from './AddList';
 import BuyGiftModal from './BuyGiftModal';
-
 import Share from './Share';
-// end of wishlist menu imports
 
 import axios from 'axios';
 
 const style = {
-  raisedButton: {
-    float: 'right',
-    marginTop: 20,
-    marginRight: 10,
-    marginBottom: 5
-  },
   listStyle: {
     marginLeft: 200,
     paddingLeft: 200,
@@ -88,7 +81,7 @@ class WishListPage extends Component {
       listName: 'Public List',
       menuName: 'Make List Private',
       open: false,
-      modalState: false,
+      modalState: false
     }
   }
 
@@ -185,6 +178,26 @@ class WishListPage extends Component {
   }
 
   render() {
+    const topRightMenu = (
+      <IconMenu iconButtonElement={
+        <IconButton>
+          <NavigationExpandMoreIcon />
+        </IconButton>
+      }>
+          <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
+          <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+          {this.renderMessages()}
+
+      </IconMenu>
+    );
+
+    const title = (
+      <div>
+        {this.state.currentList.title.toUpperCase()}
+        <span>{this.state.listName}</span>
+      </div>
+    )
+
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
 
@@ -202,26 +215,14 @@ class WishListPage extends Component {
           </div>
 
           <div>
-            <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
-              <ToolbarGroup style={{fontSize: 30}} >
-                {this.state.currentList.title}
-              </ToolbarGroup>
-              <ToolbarGroup>
-                <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
-                <FontIcon className="muidocs-icon-custom-sort" />
-                <ToolbarSeparator />
-                <IconMenu iconButtonElement={
-                  <IconButton>
-                    <NavigationExpandMoreIcon />
-                  </IconButton>
-                }>
-                  <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
-                  <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-                  {this.renderMessages()}
+            <AppBar title=''
+              style={{color: 'white'}}
+              iconElementRight={topRightMenu}
+            >
 
-                </IconMenu>
-              </ToolbarGroup>
-            </Toolbar>
+              <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
+
+            </AppBar>
           </div>
 
           <div className="paperContainer">
