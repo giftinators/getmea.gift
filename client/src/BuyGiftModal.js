@@ -46,13 +46,6 @@ class BuyGiftModal extends React.Component {
       this.setState({modalOpen: false });
     }
 
-<<<<<<< HEAD
-=======
-    this.deleteItem = (index) => {
-      axios.post("/items/"+this.props.currentList.items[index]._id)
-    }
-
->>>>>>> rebase
   }
 
 
@@ -116,12 +109,7 @@ class BuyGiftModal extends React.Component {
         </Dialog>
       )
     } else {
-<<<<<<< HEAD
          if (!this.props.isListOwner) {
-=======
-         console.log(this.props.userData.currentUser.username)
-         if (this.props.userData.currentUser.username === undefined) {
->>>>>>> rebase
            return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
          } else {
            return <RaisedButton primary label="Delete" onClick={()=>{this.deleteItem(this.props.index)}} />
