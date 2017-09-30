@@ -101,7 +101,7 @@ export default class AddList extends Component {
         type="button"
         label="Cancel"
         primary={true}
-        onClick={this.handleClose}
+        onClick={this.props.handleClose}
       />,
       <FlatButton
         type="Submit"
@@ -113,17 +113,12 @@ export default class AddList extends Component {
     ];
 
     return (
-      <div>
-        <RaisedButton secondary label="New WishList" onClick={this.handleOpen}  style={
-          { float: 'right',
-            marginTop: 20,
-            marginBottom: 5 }
-          }/>
         <Dialog
           title={Header()}
           actions={actions}
           modal={true}
-          open={this.state.open}
+          open={this.props.open}
+          onRequestClose={this.props.onRequestClose}
         >
           <div style={{marginLeft: 150}}>
             <form>
@@ -144,7 +139,6 @@ export default class AddList extends Component {
             </form>
           </div>
         </Dialog>
-      </div>
     );
   }
 }
