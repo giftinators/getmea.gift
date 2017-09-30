@@ -27,22 +27,15 @@ class BuyGiftModal extends React.Component {
       });
     }
 
-      this.deleteItem = (index) => {
-     var id = this.props.item._id
-     axios.delete("/api/items/" + id)
-     .then(() => {
-       this.props.getUserData()
-     })
-   }
-
-   this.gtItem = (index) => {
-  var id = this.props.item._id
-  axios.delete("/api/item/" + id)
-  .then(() => {
-    this.props.getUserData()
-    this.handleModalClose()
-  })
-}
+    this.deleteItem = (index) => {
+   console.log(this.props.item._id)
+   var id = this.props.item._id
+   axios.delete("/api/items/" + id)
+   .then(() => {
+     this.props.getUserData()
+     this.handleModalClose()
+   })
+ }
 
     this.handleModalOpen = () => {
       this.handleClose()
@@ -76,7 +69,7 @@ class BuyGiftModal extends React.Component {
     const modalActions = [ < FlatButton
       label = "Yes. I'm positive I will get this gift."
       primary
-      onClick={()=>{ this.gtItem(this.props.index) }}
+      onClick = { ()=>{this.deleteItem(this.props.index)} }
       />,
       < FlatButton
       label = "No. I'm not totally sure I will get this gift."
@@ -99,7 +92,7 @@ class BuyGiftModal extends React.Component {
           <p style={{color: 'black'}}>Price: ${this.props.item.price}</p>
           <p style={{color: 'black'}}>Comments from {this.props.userData.username[0].toUpperCase()+''+this.props.userData.username.slice(1)}: {this.props.item.comments}</p>
           {this.props.item.image_url && <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={this.props.item.image_url}/></Paper>}
-          <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={this.props.item.url} target="_blank">Click Here</a></p>
+          <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.props.primary, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={this.props.item.url} target="_blank">Click Here</a></p>
           <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
 
         </Dialog>
@@ -120,7 +113,7 @@ class BuyGiftModal extends React.Component {
          if (!this.props.isListOwner) {
            return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
          } else {
-           return <RaisedButton primary label="Delete" onClick={()=>{ this.deleteItem(this.props.index) }} />
+           return <RaisedButton primary label="Delete" onClick={()=>{this.deleteItem(this.props.index)}} />
          }
 
     }
