@@ -1,7 +1,5 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
-import List from 'material-ui/List/List';
-import ListItem from 'material-ui/List/ListItem';
 import Person from 'material-ui/svg-icons/social/person';
 
 const styles = {

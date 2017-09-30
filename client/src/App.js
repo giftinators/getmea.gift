@@ -83,7 +83,7 @@ class App extends Component {
                 iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser} currentList={this.state.currentList}/>}
                 zDepth={4}
               ></AppBar>
-              <AppDrawer history={this.props.history} currentUser={this.state.currentUser} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
+              <AppDrawer currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
               <Route exact path="/" component={Homepage}/>
               <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
               <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />

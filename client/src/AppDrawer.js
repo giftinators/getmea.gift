@@ -8,8 +8,9 @@ import Unlock from 'material-ui/svg-icons/action/lock-open';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import ProfileMenuSection from './ProfileMenuSection';
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import {withRouter} from 'react-router';
 
-const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, history}) => {
+const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, history, setCurrentList}) => {
   console.log('history: ', history);
   const renderLists = () => {
 
@@ -22,7 +23,11 @@ const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, histor
             style={{borderBottom: '1px solid silver'}}
             rightIcon={list.secret ? <Lock /> : <Unlock />}
             primaryText={list.title}
-            onClick={ () => {history.push('/'+username+'/'+list._id)} }
+            onClick={ () => {
+              history.push('/'+username+'/'+list._id);
+              setCurrentList(list);
+              toggleDrawer();
+            } }
           ></MenuItem>
         )
       })
@@ -51,4 +56,4 @@ const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, histor
   );
 }
 
-export default muiThemeable()(AppDrawer);
+export default withRouter(muiThemeable()(AppDrawer));
