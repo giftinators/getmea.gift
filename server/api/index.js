@@ -26,7 +26,6 @@ router.get('/users', (req, res) => {
 //get user
 router.get('/users/:username', (req, res) => {
   var loggedInUserId = req.session.user_id;
-  console.log(loggedInUserId)
   //we want to send in the logged in user's id
   //so we can determine if we should send back secret wishlists
   helpers.getUser(req.params.username, loggedInUserId)
@@ -92,7 +91,6 @@ router.post('/login', (req, res) => {
 
 
 router.get('/logout', (req, res) => {
-  console.log(req.session)
   delete req.session.user_id;
   res.send('success')
 });
@@ -126,7 +124,6 @@ router.post('/lists', (req, res) => {
     user_id: user_id
   })
   .then((list) => {
-    console.log('then list, ', list)
     res.send(list);
   })
   .catch((err) => {
@@ -198,13 +195,8 @@ router.post('/items', (req, res) => {
   item.list_id = req.body.list_id;
   item.user_id = user_id;
 
-
-  console.log('req.session ', req.session.user_id)
-  console.log('in items: ', req.body.list_id)
-
   helpers.addItem(user_id, item)
   .then((newItem) => {
-    console.log('newItem: ', newItem)
     res.send(newItem);
   })
   .catch((err) => {
