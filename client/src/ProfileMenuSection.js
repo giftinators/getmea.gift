@@ -23,7 +23,7 @@ const ProfileMenuSection = ({currentUser}) => {
       <Avatar style={styles.avatar} icon={<Person />}/>
 
       <span style={styles.name}>
-        {currentUser.username.toUpperCase()}
+        {currentUser.username ? currentUser.username.toUpperCase() : 'GUEST'}
       </span>
     </div>
   )
