@@ -319,13 +319,24 @@ class WishListPage extends Component {
                 <TableBody
                   displayRowCheckbox={false}
                 >
+                {console.log(this.props)}
                   {
                     this.state.currentList && this.state.currentList.items && this.state.currentList.items.map((row, index) => (
                       <TableRow hoverable={true} key={index}>
                         <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
+<<<<<<< HEAD
                           <BuyGiftModal item={row} index={index} getUserData={this.getUserData.bind(this)} isListOwner={isListOwner} userData={this.state.userData}/>
+=======
+<<<<<<< HEAD
+                          <BuyGiftModal item={row} userData={this.state.userData}/>
+=======
+                          <div>
+                            <BuyGiftModal item={row} currentList={this.state.currentList} index={index} userData={this.props}/>
+                          </div>
+>>>>>>> rebase
+>>>>>>> rebase
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
