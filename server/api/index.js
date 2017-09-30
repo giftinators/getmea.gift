@@ -147,7 +147,7 @@ router.delete('/lists/:id', (req, res) => {
 });
 
 
-//add new list to user
+//update list
 /* Example POST data
 {
 	"title": "New List Name"
