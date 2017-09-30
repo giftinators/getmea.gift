@@ -24,7 +24,10 @@ export default class AddItem extends Component {
       imageUrl: '',
       comments: '',
       errorTextPrice: '*Required',
-      errorTextTitle: '*Required'
+      errorTextTitle: '*Required',
+      fileReceived: false,
+      file: null,
+      fileName: ''
     };
 
     this.handleOpen = () => {
@@ -78,31 +81,6 @@ export default class AddItem extends Component {
     this.handleImageUrlChange = (e, newValue) => {
       this.setState({imageUrl: newValue})
     }
-
-    this.handleSubmit = (e) => {
-      e.preventDefault();
-      axios.post('/api/items', {
-        title: this.state.title,
-        price: this.state.price,
-        url: this.state.url,
-        image_url: this.state.imageUrl,
-        comments: this.state.comments,
-        list_id: this.props.list._id,
-        user_id: this.props.list.user_id
-      })
-      .then((response) => {
-        console.log('response: ', response);
-        if (response.data) {
-          this.setState({open: false});
-          //rerender WishListPage
-          this.props.getdata()
-        }
-      })
-      .catch(function (error) {
-        console.log('handlesubmit ', error.response);
-      });
-    };
-
     //Shows error text and removes it when a value is input
     this.handleErrorText = (e) => {
       console.log(e.target.value)
@@ -113,17 +91,77 @@ export default class AddItem extends Component {
       }
     }
 
-    // this.dropHandler = (file) => {
-    //   var photo = new FormData();
-    //   photo.append('photo', file[0]);
-    //   axios.post('/api/upload', photo, {
-    //       headers: {
-    //         'Content-Type': 'multipart/form-data'
-    //       }
-    //   })
-    // }
-  }
+    this.handleSubmit = (e) => {
+      e.preventDefault();
+      //upload file and post to database
+      this.uploadFile();
+    };
 
+    this.uploadFile = () => {
+      const files = this.state.files;
+
+      /* map over all of the images, upload them, and post them to db
+      (right now there is only 1 image, but can be
+      changed later to accept and render multiple images) */
+      const uploaders = files.map(file => {
+        // Initial FormData
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("tags", `getmeagift`);
+        formData.append("upload_preset", "sgazd2ix"); //preset is with account
+        formData.append("api_key", "737998977447549"); //key is based on account
+        formData.append("timestamp", (Date.now() / 1000) | 0);
+
+        // Make an AJAX upload request using Axios
+        return axios.post("https://api.cloudinary.com/v1_1/getmeagift/image/upload", formData, {
+          headers: { "X-Requested-With": "XMLHttpRequest" },
+        })
+        .then(response => {
+          const data = response.data;
+          //url of image
+          const fileURL = data.secure_url
+          //set the state to the new url
+          this.setState({
+            imageUrl: fileURL
+          })
+
+          //Now that the imageUrl is ready, post the item to the database
+          axios.post('/api/items', {
+            title: this.state.title,
+            price: this.state.price,
+            url: this.state.url,
+            image_url: this.state.imageUrl,
+            comments: this.state.comments,
+            list_id: this.props.list._id,
+            user_id: this.props.list.user_id
+          })
+          .then((response) => {
+            console.log('response: ', response);
+            if (response.data) {
+              this.setState({open: false});
+              //rerender WishListPage
+              this.props.getdata()
+            }
+          })
+          .catch(function (error) {
+            console.log('handlesubmit ', error.response);
+          })
+        })
+      });
+    }
+
+    this.onDrop = (files) => {
+      if(files) {
+        this.setState({
+          fileReceived: true,
+          fileName: files[0].name,
+          files: files
+        });
+      console.log('received file: ', files)
+    }
+
+  }
+}
 
   render() {
     const actions = [
@@ -187,16 +225,20 @@ export default class AddItem extends Component {
                   type="url"
                   value={this.state.url}
                 /><br />
-                <TextField
-                  onChange={this.handleImageUrlChange}
-                  floatingLabelText="Image Url"
-                  type="imageUrl"
-                  value={this.state.imageUrl}
-                  style={{marginRight: 20}}
-                />
-                <Dropzone disableClick={false} multiple={false} accept={'image/*'} onDrop={this.dropHandler} style={{maxHeight: 50, maxWidth: 150}}>
+
+                {!this.state.fileReceived ? <TextField
+                                              onChange={this.handleImageUrlChange}
+                                              floatingLabelText="Image Url"
+                                              type="imageUrl"
+                                              value={this.state.imageUrl}
+                                              style={{marginRight: 20}}
+                                              /> : <div></div>}
+
+                <Dropzone disableClick={false} multiple={false} accept={'image/*'} onDrop={this.onDrop} style={{maxHeight: 50, maxWidth: 150}}>
                   <FlatButton secondary label="Upload Photo"></FlatButton>
-                </Dropzone><br />
+                </Dropzone>
+                {this.state.fileReceived ? <span style={{color: 'blue', width: 150}}>{this.state.fileName}</span> : null}
+                <br />
                 <TextField
                   onChange={this.handleCommentChange}
                   floatingLabelText="Description"
