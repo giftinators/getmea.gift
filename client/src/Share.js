@@ -16,6 +16,10 @@ export default class Share extends Component {
     super(props);
 
     this.state = {
+<<<<<<< HEAD
+=======
+      value: window.location.origin+'/'+this.props.user.username+'/'+this.props.list._id,
+>>>>>>> share btn
       copied: false,
       open: false
     };
@@ -60,7 +64,11 @@ export default class Share extends Component {
     ];
 
     //sets the value of the text needed to be copied to the current location
+<<<<<<< HEAD
     const value = window.location.href;
+=======
+    const value = window.location.origin+'/'+this.props.user.username+'/'+this.props.list._id;
+>>>>>>> share btn
 
     return (
       <div>
@@ -86,7 +94,11 @@ export default class Share extends Component {
               onCopy={() => this.handleCopied() }>
               <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
             </CopyToClipboard>
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> share btn
             {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
           </div>
         </Dialog>
