@@ -31,7 +31,7 @@ class App extends Component {
     super();
 
     this.state = {
-      currentUser: {}
+      currentUser: null
     };
 
     this.setCurrentUser = (user) => {
@@ -64,7 +64,7 @@ class App extends Component {
     return (
       <Router>
         <MuiThemeProvider muiTheme={muiTheme} >
-          <div className="App">
+          { this.state.currentUser && <div className="App">
             <AppBar id='appBar'
               title={<Link className="logo" to="/">Get Me A Gift</Link>}
               iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser} currentList={this.state.currentList}/>}
@@ -75,6 +75,8 @@ class App extends Component {
             <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
             <Footer />
           </div>
+          }
+
         </MuiThemeProvider>
       </Router>
     );
