@@ -12,6 +12,11 @@ import IconMenu from 'material-ui/IconMenu';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
+import Divider from 'material-ui/Divider';
+import Delete from 'material-ui/svg-icons/action/delete';
+import Lock from 'material-ui/svg-icons/action/lock';
+import PersonAdd from 'material-ui/svg-icons/social/person-add';
+import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
 import AddItem from './AddItem';
 import AddList from './AddList';
@@ -169,8 +174,11 @@ class WishListPage extends Component {
           <NavigationExpandMoreIcon />
         </IconButton>
       }>
-        <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} />
-        <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+        <MenuItem rightIcon={<Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} />
+        <MenuItem primaryText="Delete List" rightIcon={<Delete />} />
+        <MenuItem primaryText="Share" rightIcon={<PersonAdd />} />
+        <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} />
+        <Divider />
         {this.renderMessages()}
       </IconMenu>
     );
@@ -217,9 +225,7 @@ class WishListPage extends Component {
                         <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
-                          <div>
-                            <BuyGiftModal item={row} userData={this.state.userData}/>
-                          </div>
+                          <BuyGiftModal item={row} userData={this.state.userData}/>
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
