@@ -17,7 +17,7 @@ import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Lock from 'material-ui/svg-icons/action/lock';
-import LockOpen from 'material-ui/svg-icons/action/lock-open';
+import Unlock from 'material-ui/svg-icons/action/lock-open';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
