@@ -84,18 +84,14 @@ class WishListPage extends Component {
 
     // toggles list from private to public
   toggleListType() {
-    var list = this.state.listName
-    if (list === 'Public List') {
+    axios.put('/api/lists/'+this.state.currentList._id, {
+      secret: !this.state.currentList.secret
+    }).then((res) => {
+      console.log(res.data);
       this.setState({
-        listName: 'Private List',
-        menuName: 'Make List Public'
+        currentList: res.data
       })
-    } else {
-      this.setState({
-        listName: 'Public List',
-        menuName: 'Make List Private'
-      })
-    }
+    })
   }
 
   // API call to fetch user data
@@ -167,15 +163,15 @@ class WishListPage extends Component {
 
   render() {
     const topRightMenu = (
+      this.state.currentList &&
       <IconMenu iconButtonElement={
         <IconButton>
           <NavigationExpandMoreIcon />
         </IconButton>
       }>
-          <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
-          <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-          {this.renderMessages()}
-
+        <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} />
+        <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+        {this.renderMessages()}
       </IconMenu>
     );
 
@@ -200,7 +196,7 @@ class WishListPage extends Component {
             <AppBar title={(
               <div>
                 {this.state.currentList.title.toUpperCase()}
-                <span style={{fontSize: 14, padding: 10}}>{this.state.listName}</span>
+                <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
               </div> )}
               style={{color: 'white'}}
               iconElementRight={topRightMenu}
