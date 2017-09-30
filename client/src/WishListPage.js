@@ -17,6 +17,7 @@ import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Lock from 'material-ui/svg-icons/action/lock';
+import Unlock from 'material-ui/svg-icons/action/lock-open';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
@@ -194,6 +195,11 @@ class WishListPage extends Component {
 
   render() {
 
+    var isListOwner;
+    if (this.state.currentList){
+       isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
+    }
+
     const deleteActions = [
       <FlatButton
         label="Cancel"
@@ -215,11 +221,12 @@ class WishListPage extends Component {
         </IconButton>
       }>
 
-        <MenuItem rightIcon={<Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} />
-        <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} />
-        <MenuItem primaryText="Share" rightIcon={<PersonAdd />} />
-        <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} />
-        <Divider />
+        {/* Don't show unless user is list owner */}
+        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <Unlock /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
+        {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
+        {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} /> }
+        {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} /> }
+        {isListOwner && <Divider /> }
 
         {this.renderMessages()}
       </IconMenu>
@@ -230,9 +237,7 @@ class WishListPage extends Component {
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
 
         { /* Displays the AddItem button only if currentList belongs to currentUser */
-          this.props.currentUser._id === this.state.currentList.user_id
-            ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
-            : null
+          isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
         }
 
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
