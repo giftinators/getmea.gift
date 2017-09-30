@@ -92,7 +92,6 @@ class WishListPage extends Component {
     axios.put('/api/lists/'+this.state.currentList._id, {
       secret: !this.state.currentList.secret
     }).then((res) => {
-      console.log(res.data);
       this.setState({
         currentList: res.data
       })
@@ -197,7 +196,7 @@ class WishListPage extends Component {
 
           <div id="topButtons" style={{marginTop: 0}}>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-            <Share style={{topMargin: 20}} user={this.props.currentUser} list={this.state.currentList}/>
+            <Share style={{topMargin: 20}} user={this.props.match.params} list={this.state.currentList}/>
           </div>
 
           <div>
