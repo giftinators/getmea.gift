@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import FlatButton from 'material-ui/FlatButton';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import {
-  RaisedButton,
   Table,
   TableBody,
   TableRow,
   TableRowColumn
 } from 'material-ui';
 import IconButton from 'material-ui/IconButton';
-import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
 import FontIcon from 'material-ui/FontIcon';
@@ -26,6 +22,7 @@ import {
 
 import AddItem from './AddItem';
 import AddList from './AddList';
+import BuyGiftModal from './BuyGiftModal';
 
 import Share from './Share';
 // end of wishlist menu imports
@@ -81,32 +78,6 @@ const style = {
   }
 };
 
-const actions = [ < FlatButton
-  label = "Yes"
-  primary = { true }
-  keyboardFocused = { true }
-  onClick = { () => { this.handleModalOpen() } }
-  />,
-  < FlatButton
-  label = "No"
-  primary = { true }
-  keyboardFocused = { true }
-  onClick = { () => { this.handleClose() } }
-  />,
-];
-
-const modalActions = [ < FlatButton
-  label = "Yes. I'm positive I will get this gift."
-  primary
-  onClick = { this.handleModalClose }
-  />,
-  < FlatButton
-  label = "No. I'm not totally sure I will get this gift."
-  primary
-  onClick = { this.handleModalClose }
-  />
-];
-
 class WishListPage extends Component {
   constructor(props) {
     super(props);
@@ -121,20 +92,8 @@ class WishListPage extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getUserData();
-  }
-
-  handleClose() {
-    this.setState({
-      open: false
-    });
-  }
-
-  handleOpen() {
-    this.setState({
-      open: true
-    });
   }
 
     // toggles list from private to public
@@ -173,7 +132,7 @@ class WishListPage extends Component {
       if (list_id){
         //find the specific list and set it to currentList
         currentList = res.wishlists.filter((list) => {
-          return list._id == list_id;
+          return list._id === list_id;
         })[0];
       } else {
         //if no list is specified just set currentList the first wishlist
@@ -195,11 +154,6 @@ class WishListPage extends Component {
     .catch((err) => {
       console.log(err);
     })
-  }
-
-  handleModalOpen() {
-    this.handleClose()
-    this.setState({modalState: true});
   }
 
   renderMessages() {
@@ -225,14 +179,10 @@ class WishListPage extends Component {
     }
   }
 
-  handleModalClose() {
-    this.setState({modalState: false });
-  }
-
-
   render() {
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
+
         { /* Displays the AddItem button only if currentList belongs to currentUser */
           this.props.currentUser._id === this.state.currentList.user_id
           ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
@@ -243,9 +193,9 @@ class WishListPage extends Component {
 
           <div id="topButtons" style={{marginTop: 0}}>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-
-            <Share user={this.props.currentUser} list={this.state.currentList}/>
+            <Share style={{topMargin: 20}} user={this.props.currentUser} list={this.state.currentList}/>
           </div>
+
           <div>
             <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
               <ToolbarGroup style={{fontSize: 30}} >
@@ -268,6 +218,7 @@ class WishListPage extends Component {
               </ToolbarGroup>
             </Toolbar>
           </div>
+
           <div className="paperContainer">
             <Paper zDepth={2}>
               <Table>
@@ -281,36 +232,12 @@ class WishListPage extends Component {
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
                           <div>
-                            <Dialog
-                              actions={this.state.actions}
-                              modal={false}
-                              open={this.state.open}
-                              onRequestClose={this.handleClose}>
-
-                              <p style={{color: 'black'}}>{row.title}</p>
-                              <p style={{color: 'black'}}>Price: ${row.price}</p>
-                              <p style={{color: 'black'}}>Comments from {this.state.userData.username[0].toUpperCase()+''+this.state.userData.username.slice(1)}: {row.comments}</p>
-                              <Paper style ={{maxHeight: 290, maxWidth: 290}}><img alt ='' style={{maxHeight: 290, maxWidth: 290}} src={row.image_url}/></Paper>
-                              <p style={{fontSize: 15, color: 'black'}}>Link to product: <a style={{height: 20, textDecoration: 'none',  color: 'white', backgroundColor: this.state.secondaryColor, border: '1px solid #d8e7ff', padding: 1, fontSize: 14, borderRadius: '10%'}} href={row.url} target="_blank">Click Here</a></p>
-                              <h3 style={{textAlign: 'right', marginTop: -50}}>Will you get this gift?</h3>
-
-                              </Dialog>
-
-                              <Dialog
-                              actions={modalActions}
-                              modal={true}
-                              open={this.state.modalState}>
-                              <h2><img alt="" style={{height: 20, width: 20}} src="http://www.iconsdb.com/icons/preview/dark-gray/high-importance-xxl.png" /> Are you sure you are going to get this gift?</h2>
-                              If you claim this gift, it will disappear. And nobody else will be able to get this for {this.state.userData.username[0].toUpperCase()+this.state.userData.username.slice(1)}.
-                            </Dialog>
-
-                            <RaisedButton secondary={true} label="Get Gift" onClick={this.handleOpen.bind(this)} />
+                            <BuyGiftModal item={row} userData={this.state.userData}/>
                           </div>
                         </TableRowColumn>
-
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
-                            <img style={style.images} src={row.image_url}/>
+                            <img alt={''} style={style.images} src={row.image_url}/>
                           </Paper>
                         </TableRowColumn>
                       </TableRow>

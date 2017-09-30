@@ -52,6 +52,7 @@ export default class Share extends Component {
     return (
       <div>
         <RaisedButton secondary label="Share" onClick={this.handleOpen}  style={{float: 'right',
+            marginTop: 20,
             marginRight: 10,
             marginBottom: 5}}/>
         <Dialog

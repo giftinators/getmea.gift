@@ -13,8 +13,6 @@ import Homepage from './Homepage';
 import WishListPage from './WishListPage';
 import Footer from './Footer';
 import Login from './Login';
-import Signup from './Signup';
-
 import './App.scss';
 
 
@@ -50,14 +48,11 @@ class App extends Component {
       })
     }
 
-
-      //////
     this.setCurrentList = (list) => {
       this.setState({
         currentList: list
       })
     }
-
 
   }
 
