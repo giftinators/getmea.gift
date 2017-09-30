@@ -14,9 +14,17 @@ export default class AppDrawer extends React.Component {
   handleToggle = () => this.setState({open: !this.state.open});
 
   render() {
+    const styles = {
+      main: {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          height: '100%',
+      },
+    };
     return (
-      <div>
-        <Drawer open={this.props.open}>
+      <div style={styles.main}>
+        <Drawer open={this.props.open} onClick={this.handleToggle}>
           <MenuItem>Menu Item</MenuItem>
           <MenuItem>Menu Item 2</MenuItem>
         </Drawer>

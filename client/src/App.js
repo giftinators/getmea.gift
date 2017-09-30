@@ -75,7 +75,6 @@ class App extends Component {
         <MuiThemeProvider muiTheme={muiTheme} >
           { this.state.currentUser &&
             <div className='container'>
-              <AppDrawer containerClassName={'container'} toggleDrawer={this.toggleDrawer.bind(this)} open ={this.state.drawerShow}/>
               <div className="App">
               <AppBar id='appBar'
                 title={<Link className="logo" to="/">Get Me A Gift</Link>}
@@ -83,6 +82,7 @@ class App extends Component {
                 iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser} currentList={this.state.currentList}/>}
                 zDepth={4}
               />
+              <AppDrawer containerClassName={'container'} toggleDrawer={this.toggleDrawer.bind(this)} open ={this.state.drawerShow}/>
               <Route exact path="/" component={Homepage}/>
               <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
               <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
