@@ -204,6 +204,24 @@ const addItem = (user_id, item) => {
 }
 
 
+const updateItem = (item_id, itemUpdates) => {
+  return new Promise((resolve, reject) => {
+    //user_id should be from the session
+    //make sure user_id is defined
+      //update the list based on list id and user id and pass in the updates
+      Item.findOneAndUpdate({ _id:item_id }, {$set: itemUpdates}, {new: true}).exec()
+      .then((item) => {
+        //send back the updated list
+        resolve(item);
+      })
+      .catch((err) => {
+        //catch and return any errors
+        reject(err);
+      });
+  })
+};
+
+
 const deleteItem = (user_id, item_id) => {
   return new Promise((resolve, reject) => {
     let deletedItem;
@@ -282,6 +300,7 @@ module.exports = {
   deleteList,
   updateList,
   addItem,
+  updateItem,
   deleteItem,
   gtItem
 }
