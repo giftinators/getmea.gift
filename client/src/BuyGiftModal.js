@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
+import Error from 'material-ui/svg-icons/alert/error';
 
 
 class BuyGiftModal extends React.Component {
@@ -88,7 +89,8 @@ class BuyGiftModal extends React.Component {
           actions={modalActions}
           modal={true}
           open={this.state.modalOpen}>
-          <h2><img alt="" style={{height: 20, width: 20}} src="http://www.iconsdb.com/icons/preview/dark-gray/high-importance-xxl.png" /> Are you sure you are going to get this gift?</h2>
+          <Error style={{float: 'right'}} />
+          <h2>Are you sure you are going to get this gift?</h2>
           If you claim this gift, it will disappear. And nobody else will be able to get this for {this.props.userData.username[0].toUpperCase()+this.props.userData.username.slice(1)}.
         </Dialog>
       )
