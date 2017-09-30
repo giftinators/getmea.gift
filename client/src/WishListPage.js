@@ -167,6 +167,10 @@ class WishListPage extends Component {
     }
   }
 
+  goToList(list_id) {
+    this.props.history.push('/'+this.props.match.params.username+'/'+list_id);
+  }
+
   handleDelete() {
     axios.delete('/api/lists/'+this.state.currentList._id)
     .then((res) => {
@@ -240,7 +244,7 @@ class WishListPage extends Component {
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
 
           <div id="topButtons" style={{marginTop: 0}}>
-            <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
+            <AddList list={this.state.currentList} goToList={this.goToList.bind(this)} getdata={this.getUserData.bind(this)}/>
             <Share style={{topMargin: 20}} user={this.props.currentUser} list={this.state.currentList}/>
           </div>
 
