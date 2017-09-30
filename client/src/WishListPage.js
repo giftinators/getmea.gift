@@ -220,7 +220,7 @@ class WishListPage extends Component {
         <MenuItem primaryText="Share" rightIcon={<PersonAdd />} />
         <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} />
         <Divider />
-
+          
         {this.renderMessages()}
       </IconMenu>
     );
