@@ -72,7 +72,7 @@ export default class AddList extends Component {
       .then((response) => {
         console.log('response: ', response);
         if (response.data) {
-          this.props.handleClose();
+          this.props.handleClose;
           //rerender WishListPage
           this.props.getdata();
           this.props.goToList(response.data._id);
