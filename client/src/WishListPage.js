@@ -20,6 +20,7 @@ import Lock from 'material-ui/svg-icons/action/lock';
 import Unlock from 'material-ui/svg-icons/action/lock-open';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 import AddItem from './AddItem';
 import AddList from './AddList';
@@ -218,7 +219,9 @@ class WishListPage extends Component {
     const topRightMenu = (
       <IconMenu iconButtonElement={
         <IconButton>
-          <NavigationExpandMoreIcon />
+          <FloatingActionButton mini secondary>
+            <NavigationExpandMoreIcon />
+          </FloatingActionButton>
         </IconButton>
       }>
 
@@ -261,7 +264,7 @@ class WishListPage extends Component {
               iconElementLeft={
                 this.state.currentList.secret
                 ? (<Lock style={{padding: 12, color: 'white'}}/>)
-                : (<Unlock style={{padding: 12, color: 'white', alt: 'Public List'}} />)
+                : (<Unlock style={{padding: 12, color: 'white'}} />)
               }
             >
             </AppBar>
