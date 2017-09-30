@@ -153,6 +153,7 @@ class WishListPage extends Component {
 
       if (this.state.currentList.items && this.state.currentList.items.length >= 0) {
         return (
+
           this.state.userData.wishlists.map((list, index) => {
             return (
               <MenuItem
@@ -325,7 +326,7 @@ class WishListPage extends Component {
                         <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
-                          <BuyGiftModal item={row} index={index} getUserData={this.getUserData.bind(this)} isListOwner={isListOwner} userData={this.state.userData}/>
+                          <BuyGiftModal primary={this.props.muiTheme.palette.primary1Color} item={row} index={index} getUserData={this.getUserData.bind(this)} isListOwner={isListOwner} userData={this.state.userData}/>
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
