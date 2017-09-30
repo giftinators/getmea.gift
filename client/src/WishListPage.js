@@ -4,7 +4,9 @@ import {
   Table,
   TableBody,
   TableRow,
-  TableRowColumn
+  TableRowColumn,
+  FlatButton,
+  Dialog
 } from 'material-ui';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
@@ -79,7 +81,8 @@ class WishListPage extends Component {
       listName: 'Public List',
       menuName: 'Make List Private',
       open: false,
-      modalState: false
+      modalState: false,
+      deleteOpen: false
     }
   }
 
@@ -165,7 +168,45 @@ class WishListPage extends Component {
     }
   }
 
+  handleDelete() {
+    axios.delete('/api/lists/'+this.state.currentList._id)
+    .then((res) => {
+      console.log(res.data);
+      this.setState({
+        deleteOpen: false
+      })
+      this.props.history.push('/'+this.props.match.params.username)
+    })
+  }
+
+  handleDeleteOpen() {
+    this.setState({
+      deleteOpen: true
+    })
+  }
+
+  handleDeleteClose() {
+    console.log(this);
+    this.setState({
+      deleteOpen: false
+    })
+  }
+
   render() {
+
+    const deleteActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.handleDeleteClose.bind(this)}
+      />,
+      <FlatButton
+        label="Delete List"
+        secondary={true}
+        onClick={this.handleDelete.bind(this)}
+      />,
+    ];
+
     const topRightMenu = (
       this.state.currentList &&
       <IconMenu iconButtonElement={
@@ -173,11 +214,13 @@ class WishListPage extends Component {
           <NavigationExpandMoreIcon />
         </IconButton>
       }>
+
         <MenuItem rightIcon={<Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} />
-        <MenuItem primaryText="Delete List" rightIcon={<Delete />} />
+        <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} />
         <MenuItem primaryText="Share" rightIcon={<PersonAdd />} />
         <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} />
         <Divider />
+          
         {this.renderMessages()}
       </IconMenu>
     );
@@ -211,6 +254,15 @@ class WishListPage extends Component {
             >
             </AppBar>
           </div>
+
+          <Dialog
+            actions={deleteActions}
+            modal={false}
+            open={this.state.deleteOpen}
+            onRequestClose={this.handleDeleteClose.bind(this)}
+          >
+            Discard draft?
+          </Dialog>
 
           <div className="paperContainer">
             <Paper zDepth={2}>
