@@ -6,6 +6,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import Dropzone from 'react-dropzone';
+import DropzoneComponent from 'react-dropzone-component'
 
 
 /**
@@ -142,6 +143,14 @@ export default class AddItem extends Component {
       />,
     ];
 
+    const componentConfig = {
+            iconFiletypes: ['.jpg', '.png', '.gif'],
+            showFiletypeIcon: true,
+            postUrl: '/uploadHandler'
+        };
+        var djsConfig = { autoProcessQueue: false }
+var eventHandlers = { addedfile: (file) => console.log(file) }
+
     const style = {
       margin: 0,
       top: 'auto',
@@ -194,9 +203,11 @@ export default class AddItem extends Component {
                   value={this.state.imageUrl}
                   style={{marginRight: 20}}
                 />
-                <Dropzone disableClick={false} multiple={false} accept={'image/*'} onDrop={this.dropHandler} style={{maxHeight: 50, maxWidth: 150}}>
-                  <FlatButton secondary label="Upload Photo"></FlatButton>
-                </Dropzone><br />
+                <DropzoneComponent
+                  config={componentConfig}
+                  eventHandlers={eventHandlers}
+                  djsConfig={djsConfig}
+                /><br />
                 <TextField
                   onChange={this.handleCommentChange}
                   floatingLabelText="Description"
