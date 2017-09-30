@@ -242,19 +242,18 @@ const deleteItem = (user_id, item_id) => {
   })
 };
 
-const gtItem = (user_id, item_id) => {
+const gtItem = (item_id) => {
   return new Promise((resolve, reject) => {
     let deletedItem;
     //user_id should be from the session
     //make sure user_id is defined
-    if (true){
       //find the item based on item id and user id and remove it
-      Item.findOne({ _id:item_id, user_id: user_id })
+      Item.findOne({ _id:item_id })
       .then((item) => {
         //store the deleted item for use later
         deletedItem = item;
         //remove item from database
-        return Item.remove({ _id: item_id, user_id: user_id }).exec();
+        return Item.remove({ _id: item_id }).exec();
       })
       .then(() => {
         //find the list of the deleted item
@@ -273,10 +272,6 @@ const gtItem = (user_id, item_id) => {
         //catch and return any errors
         reject(err);
       });
-    } else {
-      //probaby not logged in
-      reject('user not logged in');
-    }
   })
 };
 
