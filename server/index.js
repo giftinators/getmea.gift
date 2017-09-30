@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const passport = require('passport');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 
 //connecting to the mongoose database
@@ -20,6 +21,7 @@ mongoose.Promise = global.Promise;
 // Passport
 app.use(session({
   secret: 'huk',
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
   resave: true,
   saveUninitialized: true
 }));
