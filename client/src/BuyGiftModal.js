@@ -27,6 +27,15 @@ class BuyGiftModal extends React.Component {
       });
     }
 
+    this.deleteItem = (index) => {
+      console.log(this.props.item._id)
+   var id = this.props.item._id
+   axios.delete("/items/" + id)
+   .then(() => {
+     this.getUserData()
+   })
+ }
+
     this.handleModalOpen = () => {
       this.handleClose()
       this.setState({modalOpen: true});
@@ -35,10 +44,6 @@ class BuyGiftModal extends React.Component {
 
     this.handleModalClose = () => {
       this.setState({modalOpen: false });
-    }
-
-    this.deleteItem = (index) => {
-      axios.post("/items/"+this.props.currentList.items[index]._id)
     }
 
   }

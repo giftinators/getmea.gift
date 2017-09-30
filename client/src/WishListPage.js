@@ -4,9 +4,7 @@ import {
   Table,
   TableBody,
   TableRow,
-  TableRowColumn,
-  FlatButton,
-  Dialog
+  TableRowColumn
 } from 'material-ui';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
@@ -79,9 +77,10 @@ class WishListPage extends Component {
     this.state = {
       userData: null,
       currentList: null,
+      listName: 'Public List',
+      menuName: 'Make List Private',
       open: false,
-      modalState: false,
-      deleteOpen: false
+      modalState: false
     }
   }
 
@@ -89,16 +88,16 @@ class WishListPage extends Component {
     this.getUserData();
   }
 
-  // toggles list from private to public
+    // toggles list from private to public
   toggleListType() {
-      axios.put('/api/lists/'+this.state.currentList._id, {
-        secret: !this.state.currentList.secret
-      }).then((res) => {
-        this.setState({
-          currentList: res.data
-        })
+    axios.put('/api/lists/'+this.state.currentList._id, {
+      secret: !this.state.currentList.secret
+    }).then((res) => {
+      this.setState({
+        currentList: res.data
       })
-    }
+    })
+  }
 
   // API call to fetch user data
   getUserData() {
@@ -167,55 +166,9 @@ class WishListPage extends Component {
     }
   }
 
-  goToList(list_id) {
-    this.props.history.push('/'+this.props.match.params.username+'/'+list_id);
-  }
-
-  handleDelete() {
-    axios.delete('/api/lists/'+this.state.currentList._id)
-    .then((res) => {
-      console.log(res.data);
-      this.setState({
-        deleteOpen: false
-      })
-      this.props.history.push('/'+this.props.match.params.username)
-    })
-  }
-
-  handleDeleteOpen() {
-    this.setState({
-      deleteOpen: true
-    })
-  }
-
-  handleDeleteClose() {
-    console.log(this);
-    this.setState({
-      deleteOpen: false
-    })
-  }
-
   render() {
-
-    var isListOwner = false;
-    if (this.state.currentList){
-       isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
-    }
-
-    const deleteActions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={this.handleDeleteClose.bind(this)}
-      />,
-      <FlatButton
-        label="Delete List"
-        secondary={true}
-        onClick={this.handleDelete.bind(this)}
-      />,
-    ];
-
     const topRightMenu = (
+      this.state.currentList &&
       <IconMenu iconButtonElement={
         <IconButton>
           <NavigationExpandMoreIcon />
@@ -230,7 +183,6 @@ class WishListPage extends Component {
         {isListOwner && <Divider /> }
 
         {this.renderMessages()}
-
       </IconMenu>
     );
 
@@ -238,7 +190,9 @@ class WishListPage extends Component {
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
 
         { /* Displays the AddItem button only if currentList belongs to currentUser */
-          isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
+          this.props.currentUser._id === this.state.currentList.user_id
+            ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
+            : null
         }
 
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
@@ -267,35 +221,21 @@ class WishListPage extends Component {
             </AppBar>
           </div>
 
-          <Dialog
-            actions={deleteActions}
-            modal={false}
-            open={this.state.deleteOpen}
-            onRequestClose={this.handleDeleteClose.bind(this)}
-          >
-            Are you sure you want to delete this list?
-          </Dialog>
-
           <div className="paperContainer">
             <Paper zDepth={2}>
               <Table>
                 <TableBody
                   displayRowCheckbox={false}
                 >
-                {console.log(this.props)}
                   {
                     this.state.currentList && this.state.currentList.items && this.state.currentList.items.map((row, index) => (
                       <TableRow hoverable={true} key={index}>
                         <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
-<<<<<<< HEAD
-                          <BuyGiftModal item={row} userData={this.state.userData}/>
-=======
                           <div>
-                            <BuyGiftModal item={row} currentList={this.state.currentList} index={index} userData={this.props}/>
+                            <BuyGiftModal item={row} index={index} userData={this.props}/>
                           </div>
->>>>>>> rebase
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
