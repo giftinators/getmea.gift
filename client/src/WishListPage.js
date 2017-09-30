@@ -156,6 +156,7 @@ class WishListPage extends Component {
               <MenuItem
                 key={index}
                 style={{borderBottom: '1px solid silver'}}
+                rightIcon={list.secret ? <Lock /> : <Unlock />}
                 primaryText={list.title}
                 onClick={ () => {
                   this.props.history.push('/'+username+'/'+list._id);
@@ -268,8 +269,6 @@ class WishListPage extends Component {
                   </IconButton>)
               }
             >
-
-
 
             </AppBar>
           </div>
