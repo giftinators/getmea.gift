@@ -4,7 +4,9 @@ import {
   Table,
   TableBody,
   TableRow,
-  TableRowColumn
+  TableRowColumn,
+  FlatButton,
+  Dialog
 } from 'material-ui';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
@@ -12,6 +14,12 @@ import IconMenu from 'material-ui/IconMenu';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
+import Divider from 'material-ui/Divider';
+import Delete from 'material-ui/svg-icons/action/delete';
+import Lock from 'material-ui/svg-icons/action/lock';
+import Unlock from 'material-ui/svg-icons/action/lock-open';
+import PersonAdd from 'material-ui/svg-icons/social/person-add';
+import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
 import AddItem from './AddItem';
 import AddList from './AddList';
@@ -74,7 +82,8 @@ class WishListPage extends Component {
       listName: 'Public List',
       menuName: 'Make List Private',
       open: false,
-      modalState: false
+      modalState: false,
+      deleteOpen: false
     }
   }
 
@@ -165,16 +174,65 @@ class WishListPage extends Component {
     }
   }
 
+  handleDelete() {
+    axios.delete('/api/lists/'+this.state.currentList._id)
+    .then((res) => {
+      console.log(res.data);
+      this.setState({
+        deleteOpen: false
+      })
+      this.props.history.push('/'+this.props.match.params.username)
+    })
+  }
+
+  handleDeleteOpen() {
+    this.setState({
+      deleteOpen: true
+    })
+  }
+
+  handleDeleteClose() {
+    console.log(this);
+    this.setState({
+      deleteOpen: false
+    })
+  }
+
   render() {
+
+    var isListOwner;
+    if (this.state.currentList){
+       isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
+    }
+
+    const deleteActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.handleDeleteClose.bind(this)}
+      />,
+      <FlatButton
+        label="Delete List"
+        secondary={true}
+        onClick={this.handleDelete.bind(this)}
+      />,
+    ];
+
     const topRightMenu = (
       <IconMenu iconButtonElement={
         <IconButton>
           <NavigationExpandMoreIcon />
         </IconButton>
       }>
-          <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
-          <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-          {this.renderMessages()}
+      
+        {/* Don't show unless user is list owner */}
+        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <Unlock /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
+        {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
+        {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} /> }
+        {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} /> }
+        {isListOwner && <Divider /> }
+
+        {this.renderMessages()}
 
       </IconMenu>
     );
@@ -184,9 +242,7 @@ class WishListPage extends Component {
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
 
         { /* Displays the AddItem button only if currentList belongs to currentUser */
-          this.props.currentUser._id === this.state.currentList.user_id
-            ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
-            : null
+          isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
         }
 
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
@@ -209,6 +265,15 @@ class WishListPage extends Component {
             </AppBar>
           </div>
 
+          <Dialog
+            actions={deleteActions}
+            modal={false}
+            open={this.state.deleteOpen}
+            onRequestClose={this.handleDeleteClose.bind(this)}
+          >
+            Are you sure you want to delete this list?
+          </Dialog>
+
           <div className="paperContainer">
             <Paper zDepth={2}>
               <Table>
@@ -221,9 +286,7 @@ class WishListPage extends Component {
                         <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
-                          <div>
-                            <BuyGiftModal item={row} userData={this.state.userData}/>
-                          </div>
+                          <BuyGiftModal item={row} userData={this.state.userData}/>
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
