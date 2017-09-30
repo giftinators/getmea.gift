@@ -81,7 +81,9 @@ class WishListPage extends Component {
       currentList: null,
       open: false,
       modalState: false,
-      deleteOpen: false
+      deleteOpen: false,
+      shareOpen: false,
+      addListOpen: false
     }
   }
 
@@ -195,6 +197,30 @@ class WishListPage extends Component {
     })
   }
 
+  handleShareOpen() {
+    this.setState({
+      shareOpen: true
+    })
+  }
+
+  handleShareClose() {
+    this.setState({
+      shareOpen: false
+    })
+  }
+
+  handleAddListOpen() {
+    this.setState({
+      addListOpen: true
+    })
+  }
+
+  handleAddListClose() {
+    this.setState({
+      addListOpen: false
+    })
+  }
+
   render() {
 
     var isListOwner = false;
@@ -225,8 +251,8 @@ class WishListPage extends Component {
         {/* Don't show unless user is list owner */}
         {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <LockOpen /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
         {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
-        {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} /> }
-        {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} /> }
+        {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} onClick={this.handleShareOpen.bind(this)}/> }
+        {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} onClick={this.handleAddListOpen.bind(this)}/> }
         {isListOwner && <Divider /> }
 
         {this.renderMessages()}
@@ -242,21 +268,13 @@ class WishListPage extends Component {
         }
 
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
-
-          <div id="topButtons" style={{marginTop: 0}}>
-
-            <AddList list={this.state.currentList} goToList={this.goToList.bind(this)} getdata={this.getUserData.bind(this)}/>
-            { !this.state.currentList.secret && <Share style={{topMargin: 20}} user={this.props.currentUser} list={this.state.currentList}/> }
-
-          </div>
-
           <div>
             <AppBar title={(
               <div>
                 {this.state.currentList.title.toUpperCase()}
-              </div>
-            )}
-              style={{color: 'white'}}
+                <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
+              </div> )}
+              style={{color: 'white', marginTop: 50}}
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
@@ -266,6 +284,24 @@ class WishListPage extends Component {
             >
             </AppBar>
           </div>
+
+
+          <AddList
+            list={this.state.currentList}
+            getdata={this.getUserData.bind(this)}
+            open={this.state.addListOpen}
+            onRequestClose={this.handleAddListClose.bind(this)}
+            handleClose={this.handleAddListClose.bind(this)}
+            state={this.state}
+          />
+
+          <Share
+            user={this.props.currentUser}
+            list={this.state.currentList}
+            open={this.state.shareOpen}
+            onRequestClose={this.handleShareClose.bind(this)}
+            handleClose={this.handleShareClose.bind(this)}
+            />
 
           <Dialog
             actions={deleteActions}

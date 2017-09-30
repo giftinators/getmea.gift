@@ -56,7 +56,7 @@ export default class Share extends Component {
         type="button"
         label="Close"
         primary={true}
-        onClick={this.handleClose}
+        onClick={this.props.handleClose}
       />,
     ];
 
@@ -64,16 +64,12 @@ export default class Share extends Component {
     const value = window.location.href;
 
     return (
-      <div>
-        <RaisedButton secondary label="Share" onClick={this.handleOpen}  style={{float: 'right',
-            marginTop: 20,
-            marginRight: 10,
-        marginBottom: 5}}/>
         <Dialog
           title="Share This List"
           actions={actions}
           modal={true}
-          open={this.state.open}
+          open={this.props.open}
+          onRequestClose={this.props.onRequestClose}
         >
           <div>
             <TextField value={value}
@@ -87,11 +83,9 @@ export default class Share extends Component {
               onCopy={() => this.handleCopied() }>
               <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
             </CopyToClipboard>
-
             {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
           </div>
         </Dialog>
-      </div>
     );
   }
 }

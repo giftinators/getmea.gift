@@ -91,7 +91,6 @@ router.post('/login', (req, res) => {
 
 
 router.get('/logout', (req, res) => {
-  console.log(req.session)
   delete req.session.user_id;
   res.send('success')
 });
@@ -125,7 +124,6 @@ router.post('/lists', (req, res) => {
     user_id: user_id
   })
   .then((list) => {
-    console.log('then list, ', list)
     res.send(list);
   })
   .catch((err) => {
@@ -197,13 +195,8 @@ router.post('/items', (req, res) => {
   item.list_id = req.body.list_id;
   item.user_id = user_id;
 
-
-  console.log('req.session ', req.session.user_id)
-  console.log('in items: ', req.body.list_id)
-
   helpers.addItem(user_id, item)
   .then((newItem) => {
-    console.log('newItem: ', newItem)
     res.send(newItem);
   })
   .catch((err) => {
