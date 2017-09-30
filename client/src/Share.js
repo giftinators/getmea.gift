@@ -82,41 +82,9 @@ export default class Share extends Component {
               onCopy={() => this.handleCopied() }>
               <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
             </CopyToClipboard>
-]
             {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
           </div>
         </Dialog>
     );
   }
 }
-
-// return (
-//   <div>
-//     <RaisedButton secondary label="Share" onClick={this.handleOpen}  style={{float: 'right',
-//         marginTop: 20,
-//         marginRight: 10,
-//     marginBottom: 5}}/>
-//     <Dialog
-//       title="Share This List"
-//       actions={actions}
-//       modal={true}
-//       open={this.state.open}
-//     >
-//       <div>
-//         <TextField value={value}
-//           name="url"
-//           hintText=""
-//           onChange={() => this.setState({copied: false})}
-//           style={{width: 300, marginRight: 50}}
-//         />
-//
-//         <CopyToClipboard text={value}
-//           onCopy={() => this.handleCopied() }>
-//           <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
-//         </CopyToClipboard>
-//
-//         {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
-//       </div>
-//     </Dialog>
-//   </div>
-// );
