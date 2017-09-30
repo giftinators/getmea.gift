@@ -218,4 +218,18 @@ router.delete('/items/:id', (req, res) => {
   });
 });
 
+router.delete('/item/:id', (req, res) => {
+  var item_id = req.params.id;
+  var user_id = req.session.user_id;
+
+  helpers.gtItem(user_id, item_id)
+  .then((id) => {
+    res.send(`Deleted Item: ${id}`);
+  })
+  .catch((err) => {
+    res.status(401).send({err});
+  });
+});
+
+
 module.exports = router;
