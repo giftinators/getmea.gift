@@ -204,6 +204,20 @@ router.post('/items', (req, res) => {
   });
 })
 
+//toggle item purchased
+router.put('/setPurchased/:id', (req, res) => {
+  var item_id = req.params.id;
+  var updates = {purchased: req.body.purchased};
+
+  helpers.updateItem(item_id, updates)
+  .then((list) => {
+    res.send(list);
+  })
+  .catch((err) => {
+    res.status(401).send({err});
+  });
+});
+
 //delete item
 router.delete('/items/:id', (req, res) => {
   var item_id = req.params.id;
