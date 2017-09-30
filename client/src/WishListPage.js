@@ -191,12 +191,6 @@ class WishListPage extends Component {
       </IconMenu>
     );
 
-    const title = (
-      <div>
-        {this.state.currentList.title.toUpperCase()}
-        <span>{this.state.listName}</span>
-      </div>
-    )
 
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
@@ -215,13 +209,15 @@ class WishListPage extends Component {
           </div>
 
           <div>
-            <AppBar title=''
+            <AppBar title={(
+              <div>
+                {this.state.currentList.title.toUpperCase()}
+                <span style={{fontSize: 14, padding: 10}}>{this.state.listName}</span>
+              </div> )}
               style={{color: 'white'}}
               iconElementRight={topRightMenu}
+              showMenuIconButton={false}
             >
-
-              <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
-
             </AppBar>
           </div>
 
