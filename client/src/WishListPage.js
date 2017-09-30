@@ -291,6 +291,7 @@ class WishListPage extends Component {
             open={this.state.addListOpen}
             onRequestClose={this.handleAddListClose.bind(this)}
             handleClose={this.handleAddListClose.bind(this)}
+            state={this.state}
           />
 
           <Share
