@@ -84,13 +84,18 @@ class WishListPage extends Component {
 
     // toggles list from private to public
   toggleListType() {
-    axios.put('/api/lists/'+this.state.currentList._id, {
-      secret: !this.state.currentList.secret
-    }).then((res) => {
+    var list = this.state.listName
+    if (list === 'Public List') {
       this.setState({
-        currentList: res.data
+        listName: 'Private List',
+        menuName: 'Make List Public'
       })
-    })
+    } else {
+      this.setState({
+        listName: 'Public List',
+        menuName: 'Make List Private'
+      })
+    }
   }
 
   // API call to fetch user data
@@ -162,15 +167,15 @@ class WishListPage extends Component {
 
   render() {
     const topRightMenu = (
-      this.state.currentList &&
       <IconMenu iconButtonElement={
         <IconButton>
           <NavigationExpandMoreIcon />
         </IconButton>
       }>
-        <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} />
-        <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-        {this.renderMessages()}
+          <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
+          <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+          {this.renderMessages()}
+
       </IconMenu>
     );
 
@@ -188,14 +193,14 @@ class WishListPage extends Component {
 
           <div id="topButtons" style={{marginTop: 0}}>
             <AddList list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-            { !this.state.currentList.secret && <Share style={{topMargin: 20}} user={this.props.match.params} list={this.state.currentList}/> }
+            <Share style={{topMargin: 20}} user={this.props.currentUser} list={this.state.currentList}/>
           </div>
 
           <div>
             <AppBar title={(
               <div>
                 {this.state.currentList.title.toUpperCase()}
-                <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
+                <span style={{fontSize: 14, padding: 10}}>{this.state.listName}</span>
               </div> )}
               style={{color: 'white'}}
               iconElementRight={topRightMenu}
