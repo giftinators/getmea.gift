@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import {
   Table,
@@ -10,15 +9,8 @@ import {
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
-import FontIcon from 'material-ui/FontIcon';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import MenuItem from 'material-ui/MenuItem';
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-  ToolbarTitle
-} from 'material-ui/Toolbar';
 import AppBar from 'material-ui/AppBar';
 
 import AddItem from './AddItem';
