@@ -220,7 +220,7 @@ class WishListPage extends Component {
         <MenuItem primaryText="Share" rightIcon={<PersonAdd />} />
         <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} />
         <Divider />
-          
+
         {this.renderMessages()}
       </IconMenu>
     );
@@ -261,7 +261,7 @@ class WishListPage extends Component {
             open={this.state.deleteOpen}
             onRequestClose={this.handleDeleteClose.bind(this)}
           >
-            Discard draft?
+            Are you sure you want to delete this list?
           </Dialog>
 
           <div className="paperContainer">
