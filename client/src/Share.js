@@ -16,7 +16,6 @@ export default class Share extends Component {
     super(props);
 
     this.state = {
-      //sets the value of the text needed to be copied to the current location
       value: window.location.origin+'/'+this.props.user.username+'/'+this.props.list._id,
       copied: false,
       open: false
@@ -32,6 +31,18 @@ export default class Share extends Component {
         open: false
       });
     };
+
+    this.handleCopied = () => {
+      this.setState({
+        copied: true
+      });
+
+      setTimeout(() => {
+        this.setState({
+          copied: false
+        })
+      }, 5000);
+    }
   }
 
   getInitialState() {
@@ -49,12 +60,15 @@ export default class Share extends Component {
       />,
     ];
 
+    //sets the value of the text needed to be copied to the current location
+    const value = window.location.origin+'/'+this.props.user.username+'/'+this.props.list._id;
+
     return (
       <div>
         <RaisedButton secondary label="Share" onClick={this.handleOpen}  style={{float: 'right',
             marginTop: 20,
             marginRight: 10,
-            marginBottom: 5}}/>
+        marginBottom: 5}}/>
         <Dialog
           title="Share This List"
           actions={actions}
@@ -62,25 +76,20 @@ export default class Share extends Component {
           open={this.state.open}
         >
           <div>
-              <TextField value={this.state.value}
-                name="url"
-                hintText=""
-                onChange={({target: {value}}) => this.setState({value, copied: false})}
-                style={{width: 300, marginRight: 50}}
-                />
+            <TextField value={value}
+              name="url"
+              hintText=""
+              onChange={() => this.setState({copied: false})}
+              style={{width: 300, marginRight: 50}}
+            />
 
-              <CopyToClipboard text={this.state.value}
-                onCopy={() => this.setState({copied: true})}>
-                <span></span>
-              </CopyToClipboard>
-
-              <CopyToClipboard text={this.state.value}
-                onCopy={() => this.setState({copied: true})}>
-                <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
-              </CopyToClipboard>
-
-              {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
-            </div>
+            <CopyToClipboard text={value}
+              onCopy={() => this.handleCopied() }>
+              <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
+            </CopyToClipboard>
+            
+            {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
+          </div>
         </Dialog>
       </div>
     );
