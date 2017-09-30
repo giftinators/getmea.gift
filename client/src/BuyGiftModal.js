@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import Error from 'material-ui/svg-icons/alert/error';
-
+import axios from 'axios';
 
 class BuyGiftModal extends React.Component {
   constructor(props) {
@@ -32,10 +32,18 @@ class BuyGiftModal extends React.Component {
       this.setState({modalOpen: true});
     }
 
+
     this.handleModalClose = () => {
       this.setState({modalOpen: false });
     }
+
+    this.deleteItem = (index) => {
+      axios.post("/items/"+this.props.currentList.items[index]._id)
+    }
+
   }
+
+
 
   render() {
     const actions = [ < FlatButton
@@ -95,7 +103,13 @@ class BuyGiftModal extends React.Component {
         </Dialog>
       )
     } else {
-      return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
+         console.log(this.props.userData.currentUser.username)
+         if (this.props.userData.currentUser.username === undefined) {
+           return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
+         } else {
+           return <RaisedButton primary label="Delete" onClick={()=>{this.deleteItem(this.props.index)}} />
+         }
+
     }
   }
 }
