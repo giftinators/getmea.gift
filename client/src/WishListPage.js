@@ -17,7 +17,7 @@ import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Lock from 'material-ui/svg-icons/action/lock';
-import Unlock from 'material-ui/svg-icons/action/lock-open';
+import LockOpen from 'material-ui/svg-icons/action/lock-open';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
@@ -223,7 +223,7 @@ class WishListPage extends Component {
       }>
 
         {/* Don't show unless user is list owner */}
-        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <Unlock /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
+        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <LockOpen /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
         {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
         {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} /> }
         {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} /> }
@@ -233,7 +233,6 @@ class WishListPage extends Component {
 
       </IconMenu>
     );
-
 
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
@@ -245,19 +244,25 @@ class WishListPage extends Component {
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
 
           <div id="topButtons" style={{marginTop: 0}}>
+
             <AddList list={this.state.currentList} goToList={this.goToList.bind(this)} getdata={this.getUserData.bind(this)}/>
-            <Share style={{topMargin: 20}} user={this.props.currentUser} list={this.state.currentList}/>
+            { !this.state.currentList.secret && <Share style={{topMargin: 20}} user={this.props.currentUser} list={this.state.currentList}/> }
+
           </div>
 
           <div>
             <AppBar title={(
               <div>
                 {this.state.currentList.title.toUpperCase()}
-                <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
-              </div> )}
+              </div>
+            )}
               style={{color: 'white'}}
               iconElementRight={topRightMenu}
-              showMenuIconButton={false}
+              iconElementLeft={
+                this.state.currentList.secret
+                ? (<Lock style={{padding: 12, color: 'white'}}/>)
+                : (<LockOpen style={{padding: 12, color: 'white', alt: 'Public List'}} />)
+              }
             >
             </AppBar>
           </div>
