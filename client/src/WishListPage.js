@@ -9,32 +9,18 @@ import {
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
-import FontIcon from 'material-ui/FontIcon';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import MenuItem from 'material-ui/MenuItem';
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-  ToolbarTitle
-} from 'material-ui/Toolbar';
+import AppBar from 'material-ui/AppBar';
 
 import AddItem from './AddItem';
 import AddList from './AddList';
 import BuyGiftModal from './BuyGiftModal';
-
 import Share from './Share';
-// end of wishlist menu imports
 
 import axios from 'axios';
 
 const style = {
-  raisedButton: {
-    float: 'right',
-    marginTop: 20,
-    marginRight: 10,
-    marginBottom: 5
-  },
   listStyle: {
     marginLeft: 200,
     paddingLeft: 200,
@@ -87,7 +73,7 @@ class WishListPage extends Component {
       listName: 'Public List',
       menuName: 'Make List Private',
       open: false,
-      modalState: false,
+      modalState: false
     }
   }
 
@@ -181,6 +167,20 @@ class WishListPage extends Component {
   }
 
   render() {
+    const topRightMenu = (
+      <IconMenu iconButtonElement={
+        <IconButton>
+          <NavigationExpandMoreIcon />
+        </IconButton>
+      }>
+          <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
+          <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+          {this.renderMessages()}
+
+      </IconMenu>
+    );
+
+
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
 
@@ -198,26 +198,16 @@ class WishListPage extends Component {
           </div>
 
           <div>
-            <Toolbar style={{width: '100%', backgroundColor: this.props.muiTheme.palette.primary1Color, color: 'white'}}>
-              <ToolbarGroup style={{fontSize: 30}} >
-                {this.state.currentList.title}
-              </ToolbarGroup>
-              <ToolbarGroup>
-                <ToolbarTitle style={{color: 'white', fontSize: 15}} text={this.state.listName} />
-                <FontIcon className="muidocs-icon-custom-sort" />
-                <ToolbarSeparator />
-                <IconMenu iconButtonElement={
-                  <IconButton>
-                    <NavigationExpandMoreIcon />
-                  </IconButton>
-                }>
-                  <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.menuName} />
-                  <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-                  {this.renderMessages()}
-
-                </IconMenu>
-              </ToolbarGroup>
-            </Toolbar>
+            <AppBar title={(
+              <div>
+                {this.state.currentList.title.toUpperCase()}
+                <span style={{fontSize: 14, padding: 10}}>{this.state.listName}</span>
+              </div> )}
+              style={{color: 'white'}}
+              iconElementRight={topRightMenu}
+              showMenuIconButton={false}
+            >
+            </AppBar>
           </div>
 
           <div className="paperContainer">
