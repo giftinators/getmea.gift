@@ -143,7 +143,7 @@ const updateList = (user_id, list_id, listUpdates) => {
     //make sure user_id is defined
     if (user_id){
       //update the list based on list id and user id and pass in the updates
-      List.findOneAndUpdate({ _id:list_id, user_id: user_id }, {$set: listUpdates}, {new: true}).exec()
+      List.findOneAndUpdate({ _id:list_id, user_id: user_id }, {$set: listUpdates}, {new: true}).populate('items').exec()
       .then((list) => {
         //send back the updated list
         resolve(list);
