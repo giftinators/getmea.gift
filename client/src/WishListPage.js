@@ -17,7 +17,7 @@ import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Lock from 'material-ui/svg-icons/action/lock';
-import LockOpen from 'material-ui/svg-icons/action/lock-open';
+import Unlock from 'material-ui/svg-icons/action/lock-open';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
@@ -158,6 +158,7 @@ class WishListPage extends Component {
               <MenuItem
                 key={index}
                 style={{borderBottom: '1px solid silver'}}
+                rightIcon={list.secret ? <Lock /> : <Unlock />}
                 primaryText={list.title}
                 onClick={ () => {
                   this.props.history.push('/'+username+'/'+list._id);
@@ -249,7 +250,7 @@ class WishListPage extends Component {
       }>
 
         {/* Don't show unless user is list owner */}
-        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <LockOpen /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
+        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <Unlock /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
         {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
         {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} onClick={this.handleShareOpen.bind(this)}/> }
         {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} onClick={this.handleAddListOpen.bind(this)}/> }
@@ -278,10 +279,15 @@ class WishListPage extends Component {
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
-                ? (<Lock style={{padding: 12, color: 'white'}}/>)
-                : (<LockOpen style={{padding: 12, color: 'white', alt: 'Public List'}} />)
+                ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
+                     <Lock style={{padding: 12, color: 'white'}}/>
+                  </IconButton>)
+                : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
+                     <Unlock style={{padding: 12, color: 'white'}} />
+                  </IconButton>)
               }
             >
+
             </AppBar>
           </div>
 
