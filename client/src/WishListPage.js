@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import {
   Table,
@@ -67,7 +66,7 @@ const style = {
     width: '100%'
   },
   images: {
-    height: 120
+    width: '100%'
   }
 };
 
@@ -86,7 +85,6 @@ class WishListPage extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.getUserData();
   }
 
@@ -128,15 +126,17 @@ class WishListPage extends Component {
         currentList = res.wishlists.filter((list) => {
           return list._id === list_id;
         })[0];
+
+        //if the requested list isn't found then redirect back to user
+        if (!currentList) {
+          this.props.history.push('/'+username)
+        }
       } else {
         //if no list is specified just set currentList the first wishlist
         currentList = res.wishlists[0];
       }
 
-      //if the requested list isn't found then redirect back to user
-      if (list_id && !currentList){
-        this.props.history.push('/'+username)
-      } else if (currentList) {
+      if (currentList) {
         //update the state
         this.setState({
           userData: res,
@@ -155,7 +155,7 @@ class WishListPage extends Component {
     if (this.state.currentList) {
       var username = this.props.match.params.username;
 
-      if (this.state.currentList.items && this.state.currentList.items.length > 0) {
+      if (this.state.currentList.items && this.state.currentList.items.length >= 0) {
         return (
           this.state.userData.wishlists.map((list, index) => {
             return (
@@ -169,10 +169,6 @@ class WishListPage extends Component {
                 }} />
             )})
           )
-      } else {
-        return (
-          <h1>No Items</h1>
-        )
       }
     }
   }
@@ -203,8 +199,8 @@ class WishListPage extends Component {
 
         { /* Displays the AddItem button only if currentList belongs to currentUser */
           this.props.currentUser._id === this.state.currentList.user_id
-          ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
-          : null
+            ? ( <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/> )
+            : null
         }
 
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
@@ -242,9 +238,11 @@ class WishListPage extends Component {
                           </div>
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
-                          <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
-                            <img alt={''} style={style.images} src={row.image_url}/>
-                          </Paper>
+                          {
+                            row.image_url && <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
+                              <img alt={''} style={style.images} src={row.image_url}/>
+                            </Paper>
+                          }
                         </TableRowColumn>
                       </TableRow>
                     ))

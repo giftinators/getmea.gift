@@ -71,7 +71,7 @@ class App extends Component {
               zDepth={4}
             />
             <Route exact path="/" component={Homepage}/>
-            <Route exact path="/:username" foo="hi" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
+            <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
             <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
             <Footer />
           </div>
