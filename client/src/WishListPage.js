@@ -243,7 +243,7 @@ class WishListPage extends Component {
     ];
 
     const topRightMenu = (
-      <IconMenu iconButtonElement={
+      this.state.currentList && <IconMenu iconButtonElement={
         <IconButton>
           <NavigationExpandMoreIcon />
         </IconButton>
@@ -268,22 +268,22 @@ class WishListPage extends Component {
           isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
         }
 
-        <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center'}} >
+        <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
             <AppBar title={(
               <div>
                 {this.state.currentList.title.toUpperCase()}
                 <span style={{fontSize: 14, padding: 10}}>{this.state.currentList.secret ? 'Private List' : 'Public List'}</span>
               </div> )}
-              style={{color: 'white', marginTop: 50}}
+              style={{color: 'white'}}
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
-                ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
-                     <Lock style={{padding: 12, color: 'white'}}/>
+                  ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
+                    <Lock style={{padding: 12, color: 'white'}}/>
                   </IconButton>)
-                : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
-                     <Unlock style={{padding: 12, color: 'white'}} />
+                  : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
+                    <Unlock style={{padding: 12, color: 'white'}} />
                   </IconButton>)
               }
             >
@@ -307,7 +307,7 @@ class WishListPage extends Component {
             open={this.state.shareOpen}
             onRequestClose={this.handleShareClose.bind(this)}
             handleClose={this.handleShareClose.bind(this)}
-            />
+          />
 
           <Dialog
             actions={deleteActions}
@@ -330,7 +330,7 @@ class WishListPage extends Component {
                         <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
-                          <BuyGiftModal item={row} userData={this.state.userData}/>
+                          <BuyGiftModal item={row} index={index} getUserData={this.getUserData.bind(this)} isListOwner={isListOwner} userData={this.state.userData}/>
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
