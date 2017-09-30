@@ -44,6 +44,7 @@ export default class Share extends Component {
     }
   }
 
+
   getInitialState() {
     return {value: '', copied: false};
   }
@@ -60,7 +61,7 @@ export default class Share extends Component {
     ];
 
     //sets the value of the text needed to be copied to the current location
-    const value = window.location.origin+'/'+this.props.user.username+'/'+this.props.list._id;
+    const value = window.location.href;
 
     return (
       <div>

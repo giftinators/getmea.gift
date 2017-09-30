@@ -74,7 +74,8 @@ export default class AddList extends Component {
         if (response.data) {
           this.setState({open: false});
           //rerender WishListPage
-          this.props.getdata()
+          this.props.getdata();
+          this.props.goToList(response.data._id);
         }
       })
       .catch(function (error) {
