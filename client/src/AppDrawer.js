@@ -1,34 +1,24 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import Menu from 'material-ui/svg-icons/navigation/menu';
+import Close from 'material-ui/svg-icons/navigation/close';
+import { Link } from 'react-router-dom';
 
-export default class AppDrawer extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {open: false};
-  }
-
-  handleToggle = () => this.setState({open: !this.state.open});
-
-  render() {
-    const styles = {
-      main: {
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          height: '100%',
-      },
-    };
-    return (
-      <div style={styles.main}>
-        <Drawer open={this.props.open} onClick={this.handleToggle}>
-          <MenuItem>Menu Item</MenuItem>
-          <MenuItem>Menu Item 2</MenuItem>
-        </Drawer>
-      </div>
-    );
-  }
+const AppDrawer = ({open, toggleDrawer, currentUser}) => {
+  return (
+    <div>
+      <Drawer open={open} onClick={toggleDrawer}>
+        <MenuItem rightIcon={<Close />} onClick={toggleDrawer}>
+          Close
+        </MenuItem>
+        <MenuItem onClick={toggleDrawer}>
+          <Link to={'/'+currentUser.username}>My Lists</Link>
+        </MenuItem>
+        <MenuItem>Menu Item</MenuItem>
+        <MenuItem>Menu Item 2</MenuItem>
+      </Drawer>
+    </div>
+  );
 }
+
+export default AppDrawer;
