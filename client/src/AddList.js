@@ -84,7 +84,7 @@ export default class AddList extends Component {
 
     //Shows error text and removes it when a value is input
     this.handleErrorText = (e) => {
-      console.log(e.target.value)
+      //makae sure the user has entered text
       if(e.target.value.length) {
         this.setState({errorText: ''});
       } else {

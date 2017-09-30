@@ -170,9 +170,8 @@ class WishListPage extends Component {
         </IconButton>
       }>
         <MenuItem onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} />
-          <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
-          {this.renderMessages()}
-
+        <MenuItem style={{borderBottom: '1px solid silver'}} primaryText="Delete List" />
+        {this.renderMessages()}
       </IconMenu>
     );
 
