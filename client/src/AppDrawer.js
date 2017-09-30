@@ -26,7 +26,6 @@ const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists}) => {
             primaryText={list.title}
             onClick={ () => {
               {/*props.history.push('/'+username+'/'+list._id);*/}
-              this.setState({currentList: list});
             }} />
         )
       })
