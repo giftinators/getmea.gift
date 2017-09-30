@@ -261,7 +261,7 @@ class WishListPage extends Component {
               iconElementLeft={
                 this.state.currentList.secret
                 ? (<Lock style={{padding: 12, color: 'white'}}/>)
-                : (<LockOpen style={{padding: 12, color: 'white', alt: 'Public List'}} />)
+                : (<Unlock style={{padding: 12, color: 'white', alt: 'Public List'}} />)
               }
             >
             </AppBar>
