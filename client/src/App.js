@@ -14,7 +14,9 @@ import WishListPage from './WishListPage';
 import Footer from './Footer';
 import Login from './Login';
 import './App.scss';
-
+import Menu from 'material-ui/svg-icons/navigation/menu';
+import AppDrawer from './AppDrawer';
+import IconButton from 'material-ui/IconButton';
 
 //overwrite default theme
 const muiTheme = getMuiTheme({
@@ -31,7 +33,8 @@ class App extends Component {
     super();
 
     this.state = {
-      currentUser: null
+      currentUser: null,
+      drawerShow: false
     };
 
     this.setCurrentUser = (user) => {
@@ -54,6 +57,12 @@ class App extends Component {
       })
     }
 
+    this.toggleDrawer = () => {
+      this.setState({
+        drawerShow: !this.state.drawerShow
+      })
+    }
+
   }
 
   componentWillMount() {
@@ -64,17 +73,22 @@ class App extends Component {
     return (
       <Router>
         <MuiThemeProvider muiTheme={muiTheme} >
-          { this.state.currentUser && <div className="App">
-            <AppBar id='appBar'
-              title={<Link className="logo" to="/">Get Me A Gift</Link>}
-              iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser} currentList={this.state.currentList}/>}
-              zDepth={4}
-            />
-            <Route exact path="/" component={Homepage}/>
-            <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
-            <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
-            <Footer />
-          </div>
+          { this.state.currentUser &&
+            <div className='container'>
+              <AppDrawer containerClassName={'container'} toggleDrawer={this.toggleDrawer.bind(this)} open ={this.state.drawerShow}/>
+              <div className="App">
+              <AppBar id='appBar'
+                title={<Link className="logo" to="/">Get Me A Gift</Link>}
+                iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
+                iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser} currentList={this.state.currentList}/>}
+                zDepth={4}
+              />
+              <Route exact path="/" component={Homepage}/>
+              <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
+              <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
+              <Footer />
+              </div>
+            </div>
           }
 
         </MuiThemeProvider>
