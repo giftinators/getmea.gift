@@ -11,7 +11,6 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import {withRouter} from 'react-router';
 
 const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, history, setCurrentList}) => {
-  console.log('history: ', history);
   const renderLists = () => {
 
     var username = currentUser.username;
