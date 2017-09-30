@@ -62,6 +62,7 @@ export default class Share extends Component {
 
     //sets the value of the text needed to be copied to the current location
     const value = window.location.href;
+
     return (
         <Dialog
           title="Share This List"
