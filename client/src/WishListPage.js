@@ -20,7 +20,6 @@ import Lock from 'material-ui/svg-icons/action/lock';
 import Unlock from 'material-ui/svg-icons/action/lock-open';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 import AddItem from './AddItem';
 import AddList from './AddList';
@@ -219,14 +218,12 @@ class WishListPage extends Component {
     const topRightMenu = (
       <IconMenu iconButtonElement={
         <IconButton>
-          <FloatingActionButton mini secondary>
-            <NavigationExpandMoreIcon />
-          </FloatingActionButton>
+          <NavigationExpandMoreIcon />
         </IconButton>
       }>
 
         {/* Don't show unless user is list owner */}
-        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <LockOpen /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
+        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <Unlock /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
         {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
         {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} /> }
         {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} /> }
@@ -263,10 +260,17 @@ class WishListPage extends Component {
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
-                ? (<Lock style={{padding: 12, color: 'white'}}/>)
-                : (<Unlock style={{padding: 12, color: 'white'}} />)
+                ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
+                     <Lock style={{padding: 12, color: 'white'}}/>
+                  </IconButton>)
+                : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
+                     <Unlock style={{padding: 12, color: 'white'}} />
+                  </IconButton>)
               }
             >
+
+
+
             </AppBar>
           </div>
 
