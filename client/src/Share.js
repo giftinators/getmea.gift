@@ -16,7 +16,6 @@ export default class Share extends Component {
     super(props);
 
     this.state = {
-      value: window.location.origin+'/'+this.props.user.username+'/'+this.props.list._id,
       copied: false,
       open: false
     };
@@ -87,7 +86,7 @@ export default class Share extends Component {
               onCopy={() => this.handleCopied() }>
               <RaisedButton primary label="Copy to clipboard" style={{marginRight: 25}}></RaisedButton>
             </CopyToClipboard>
-            
+
             {this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
           </div>
         </Dialog>
