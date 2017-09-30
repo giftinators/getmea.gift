@@ -271,15 +271,14 @@ class WishListPage extends Component {
         <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
             <AppBar title={this.state.currentList.title.toUpperCase()}
-              style={{color: 'white'}}
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
                   ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
-                    <Lock style={{padding: 12, color: 'white'}}/>
+                    <Lock style={{padding: 12}}/>
                   </IconButton>)
                   : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
-                    <Unlock style={{padding: 12, color: 'white'}} />
+                    <Unlock style={{padding: 12}} />
                   </IconButton>)
               }
             >

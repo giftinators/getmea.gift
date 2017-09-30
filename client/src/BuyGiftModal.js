@@ -112,7 +112,7 @@ class BuyGiftModal extends React.Component {
          if (!this.props.isListOwner) {
            return <RaisedButton secondary label="Get Gift" onClick={this.handleOpen.bind(this)} />
          } else {
-           return <RaisedButton primary label="Delete" onClick={()=>{this.deleteItem(this.props.index)}} />
+           return <RaisedButton secondary label="Delete" onClick={()=>{this.deleteItem(this.props.index)}} />
          }
 
     }
