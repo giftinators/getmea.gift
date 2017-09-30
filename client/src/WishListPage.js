@@ -59,7 +59,8 @@ const style = {
     width: '100%'
   },
   images: {
-    width: '100%'
+    maxHeight: 120,
+    maxWidth: '100%'
   }
 };
 
@@ -108,11 +109,9 @@ class WishListPage extends Component {
     //fetch the data of the username
     axios("/api/users/"+username)
     .then((res)=>{
-      console.log(res);
       return res.data;
     })
     .then((res)=>{
-      console.log(res);
       //if a list was requested try to find that list
       if (list_id){
         //find the specific list and set it to currentList
@@ -228,7 +227,7 @@ class WishListPage extends Component {
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
-                            row.image_url && <Paper style={{marginTop: 10, maxHeight: 120}} zDepth={1} >
+                            row.image_url && <Paper style={{marginTop: 10, maxHeight: 120, textAlign:'center'}} zDepth={1} >
                               <img alt={''} style={style.images} src={row.image_url}/>
                             </Paper>
                           }
