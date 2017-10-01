@@ -6,7 +6,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import Dropzone from 'react-dropzone';
-
+import CircularProgress from 'material-ui/CircularProgress';
 
 /**
 * A modal dialog can only be closed by selecting one of the actions.
@@ -23,7 +23,8 @@ const initialState = {
       errorTextTitle: '*Required',
       fileReceived: false,
       files: null,
-      fileName: ''
+      fileName: '',
+      loading: false
     };
 
 export default class AddItem extends Component {
@@ -41,7 +42,8 @@ export default class AddItem extends Component {
       errorTextTitle: '*Required',
       fileReceived: false,
       files: null,
-      fileName: ''
+      fileName: '',
+      loading: false
     };
 
     this.handleOpen = () => {
@@ -107,6 +109,9 @@ export default class AddItem extends Component {
 
     this.handleSubmit = (e) => {
       e.preventDefault();
+      this.setState({
+        loading: true
+      })
       this.uploadFile();
 
     };
@@ -272,7 +277,8 @@ export default class AddItem extends Component {
                   multiLine={true}
                   value={this.state.comments}
                   style={{textAlign: 'left', width: '70%'}}
-                />
+                /> <br />
+                {this.state.loading ? <CircularProgress style={{position: 'absolute', right: 20, bottom: 75}}/> : null}
             </form>
           </div>
         </Dialog>
