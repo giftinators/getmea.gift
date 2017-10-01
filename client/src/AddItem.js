@@ -22,7 +22,7 @@ const initialState = {
       errorTextPrice: '*Required',
       errorTextTitle: '*Required',
       fileReceived: false,
-      file: null,
+      files: null,
       fileName: ''
     };
 
@@ -40,7 +40,7 @@ export default class AddItem extends Component {
       errorTextPrice: '*Required',
       errorTextTitle: '*Required',
       fileReceived: false,
-      file: null,
+      files: null,
       fileName: ''
     };
 
