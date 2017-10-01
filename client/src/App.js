@@ -64,6 +64,17 @@ class App extends Component {
       })
     }
 
+    this.handleLogout = (e) => {
+      e.preventDefault();
+      axios('/api/logout')
+      .then((response) => {
+        this.setCurrentUser({});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    };
+
   }
 
   componentWillMount() {
@@ -80,10 +91,10 @@ class App extends Component {
               <AppBar id='appBar'
                 title={<Link className="logo" to="/">Get Me A Gift</Link>}
                 iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
-                iconElementRight={<Login setCurrentUser={this.setCurrentUser} user={this.state.currentUser} currentList={this.state.currentList}/>}
+                iconElementRight={<Login handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>}
                 zDepth={4}
               ></AppBar>
-              <AppDrawer currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
+              <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
               <Route exact path="/" component={Homepage}/>
               <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
               <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />

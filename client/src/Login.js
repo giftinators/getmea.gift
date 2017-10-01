@@ -18,8 +18,7 @@ export default class Login extends Component {
       register: false,
       username: '',
       password: '',
-      verifyPassword: '',
-      redirect: false
+      verifyPassword: ''
     };
 
     this.handleOpen = () => {
@@ -82,19 +81,6 @@ export default class Login extends Component {
       });
     };
 
-    this.handleLogout = (e) => {
-      e.preventDefault();
-      console.log('logging out');
-      axios('/api/logout')
-      .then((response) => {
-        this.props.setCurrentUser({});
-        this.setState({ redirect: true });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    };
-
     this.handleKeyPress = (e) => {
       if (e.key === 'Enter') {
         if (this.state.register) {
@@ -145,7 +131,7 @@ export default class Login extends Component {
     ];
 
     var welcomeBack = (
-      <RaisedButton secondary style={{color: 'white'}} className="LogoutBtn" label={"Logout, "+username} onClick={this.handleLogout} />
+      <RaisedButton secondary style={{color: 'white'}} className="LogoutBtn" label={"Logout, "+username} onClick={this.props.handleLogout} />
     );
 
     var loginDiv = (

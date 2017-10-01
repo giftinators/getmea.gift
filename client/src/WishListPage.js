@@ -16,8 +16,11 @@ import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import Lock from 'material-ui/svg-icons/action/lock';
 import Unlock from 'material-ui/svg-icons/action/lock-open';
+
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
@@ -158,8 +161,7 @@ class WishListPage extends Component {
             return (
               <MenuItem
                 key={index}
-                style={{borderBottom: '1px solid silver'}}
-                rightIcon={list.secret ? <Lock /> : <Unlock />}
+                rightIcon={list.secret ? <VisibilityOff /> : <Visibility />}
                 primaryText={list.title}
                 onClick={ () => {
                   this.props.history.push('/'+username+'/'+list._id);
@@ -269,17 +271,17 @@ class WishListPage extends Component {
           isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
         }
 
-        <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center', paddingTop: 50}} >
+        <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
             <AppBar title={this.state.currentList.title.toUpperCase()}
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
                   ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
-                    <Lock style={{padding: 12}}/>
+                    <VisibilityOff style={{padding: 12}}/>
                   </IconButton>)
                   : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
-                    <Unlock style={{padding: 12}} />
+                    <Visibility style={{padding: 12}} />
                   </IconButton>)
               }
             >
