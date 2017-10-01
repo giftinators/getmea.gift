@@ -271,7 +271,7 @@ class WishListPage extends Component {
           isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
         }
 
-        <div className="wishlistContainer" style={{maxWidth: '65%', margin: 'auto', textAlign: 'center', paddingTop: 50}} >
+        <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
             <AppBar title={this.state.currentList.title.toUpperCase()}
               iconElementRight={topRightMenu}
