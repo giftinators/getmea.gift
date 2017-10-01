@@ -16,8 +16,8 @@ import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
-import Lock from 'material-ui/svg-icons/action/lock';
-import Unlock from 'material-ui/svg-icons/action/lock-open';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
@@ -158,8 +158,7 @@ class WishListPage extends Component {
             return (
               <MenuItem
                 key={index}
-                style={{borderBottom: '1px solid silver'}}
-                rightIcon={list.secret ? <Lock /> : <Unlock />}
+                rightIcon={list.secret ? <VisibilityOff /> : <Visibility />}
                 primaryText={list.title}
                 onClick={ () => {
                   this.props.history.push('/'+username+'/'+list._id);
@@ -251,7 +250,7 @@ class WishListPage extends Component {
       }>
 
         {/* Don't show unless user is list owner */}
-        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <Unlock /> : <Lock />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
+        {isListOwner && <MenuItem rightIcon={this.state.currentList.secret ? <Visibility /> : <VisibilityOff />} onClick={()=>{this.toggleListType()}} primaryText={this.state.currentList.secret ? 'Make List Public' : 'Make List Private'} /> }
         {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
         {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} onClick={this.handleShareOpen.bind(this)}/> }
         {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} onClick={this.handleAddListOpen.bind(this)}/> }
@@ -276,10 +275,10 @@ class WishListPage extends Component {
               iconElementLeft={
                 this.state.currentList.secret
                   ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
-                    <Lock style={{padding: 12}}/>
+                    <VisibilityOff style={{padding: 12}}/>
                   </IconButton>)
                   : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
-                    <Unlock style={{padding: 12}} />
+                    <Visibility style={{padding: 12}} />
                   </IconButton>)
               }
             >
