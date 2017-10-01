@@ -128,6 +128,7 @@ export default class AddItem extends Component {
           //rerender WishListPage
           this.props.getdata()
         }
+        this.setState(initialState)
       })
       .catch(function (error) {
         console.log('handlesubmit ', error.response);
@@ -172,8 +173,6 @@ export default class AddItem extends Component {
       } else {
         this.post()
       }
-
-      this.setState(initialState)
     }
 
     this.onDrop = (files) => {
