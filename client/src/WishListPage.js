@@ -20,6 +20,7 @@ import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import Lock from 'material-ui/svg-icons/action/lock';
 import Unlock from 'material-ui/svg-icons/action/lock-open';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
@@ -72,6 +73,12 @@ const style = {
   images: {
     maxHeight: 120,
     maxWidth: '100%'
+  },
+  headline: {
+    fontSize: 24,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
   }
 };
 
@@ -82,11 +89,14 @@ class WishListPage extends Component {
     this.state = {
       userData: null,
       currentList: null,
+      purchasedItems: [],
+      wantedItems: [],
       open: false,
       modalState: false,
       deleteOpen: false,
       shareOpen: false,
-      addListOpen: false
+      addListOpen: false,
+      showPurchased: false
     }
   }
 
@@ -104,6 +114,14 @@ class WishListPage extends Component {
         })
       })
     }
+
+  showPurchased() {
+    this.setState({ showPurchased: true });
+  }
+
+  showWanted() {
+    this.setState({ showPurchased: false });
+  }
 
   // API call to fetch user data
   getUserData() {
@@ -136,10 +154,21 @@ class WishListPage extends Component {
       }
 
       if (currentList) {
+        // filter and push to wanted or purchasedItems arrays
+        var wantedItems = currentList.items.filter( (item) => {
+          return item.purchased === false;
+        });
+
+        var purchasedItems = currentList.items.filter( (item) => {
+          return item.purchased === true;
+        });
+
         //update the state
         this.setState({
           userData: res,
-          currentList: currentList
+          currentList: currentList,
+          wantedItems: wantedItems,
+          purchasedItems: purchasedItems
         });
       }
 
@@ -153,14 +182,11 @@ class WishListPage extends Component {
     //changed just now
     if (this.state.currentList) {
       var username = this.props.match.params.username;
-      t = this.state.userData.wishlist.filter((word)=>{
-        return !word.purchased;
-      })
 
       if (this.state.currentList.items && this.state.currentList.items.length >= 0) {
         return (
-          t.map((list, index) => {
 
+          this.state.userData.wishlists.map((list, index) => {
             return (
               <MenuItem
                 key={index}
@@ -170,8 +196,7 @@ class WishListPage extends Component {
                   this.props.history.push('/'+username+'/'+list._id);
                   this.setState({currentList: list});
                 }} />
-            )
-          })
+            )})
           )
       }
     }
@@ -268,6 +293,8 @@ class WishListPage extends Component {
       </IconMenu>
     );
 
+    var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
+
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
 
@@ -291,6 +318,10 @@ class WishListPage extends Component {
             >
 
             </AppBar>
+            <Tabs>
+              <Tab onActive={this.showWanted.bind(this)} label="Wanted Items" />
+              <Tab onActive={this.showPurchased.bind(this)} label="Purchased Items" />
+            </Tabs>
           </div>
 
 
@@ -327,12 +358,21 @@ class WishListPage extends Component {
                   displayRowCheckbox={false}
                 >
                   {
-                    this.state.currentList && this.state.currentList.items && this.state.currentList.items.map((row, index) => (
+                    list.map((row, index) => (
                       <TableRow hoverable={true} key={index}>
                         <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
                         <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
                         <TableRowColumn style={{color: 'white'}} >
-                          <BuyGiftModal primary={this.props.muiTheme.palette.primary1Color} item={row} index={index} getUserData={this.getUserData.bind(this)} isListOwner={isListOwner} userData={this.state.userData}/>
+                        {!row.purchased &&
+                          <BuyGiftModal
+                            primary={this.props.muiTheme.palette.primary1Color}
+                            item={row}
+                            index={index}
+                            getUserData={this.getUserData.bind(this)}
+                            isListOwner={isListOwner}
+                            userData={this.state.userData}
+                          />
+                        }
                         </TableRowColumn>
                         <TableRowColumn hoverable={true} style={{ height: 140}}>
                           {
