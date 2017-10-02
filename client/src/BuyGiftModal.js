@@ -33,9 +33,9 @@ class BuyGiftModal extends React.Component {
           purchased: true
       })
      .then(() => {
-       console.log(this.props.item)
        this.handleModalClose()
        this.props.getUserData()
+       console.log(this.props.item.purchased)
      })
    }
 

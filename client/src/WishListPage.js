@@ -153,11 +153,14 @@ class WishListPage extends Component {
     //changed just now
     if (this.state.currentList) {
       var username = this.props.match.params.username;
+      t = this.state.userData.wishlist.filter((word)=>{
+        return !word.purchased;
+      })
 
       if (this.state.currentList.items && this.state.currentList.items.length >= 0) {
         return (
+          t.map((list, index) => {
 
-          this.state.userData.wishlists.map((list, index) => {
             return (
               <MenuItem
                 key={index}
@@ -167,7 +170,8 @@ class WishListPage extends Component {
                   this.props.history.push('/'+username+'/'+list._id);
                   this.setState({currentList: list});
                 }} />
-            )})
+            )
+          })
           )
       }
     }
