@@ -6,9 +6,6 @@ import Checkbox from 'material-ui/Checkbox';
 import axios from 'axios';
 
 
-/**
-* A modal dialog can only be closed by selecting one of the actions.
-*/
 
 const styles = {
   block: {
@@ -95,6 +92,9 @@ export default class AddList extends Component {
 
 
   render() {
+    /**
+    * A modal dialog can only be closed by selecting one of the actions.
+    */
     const actions = [
       <FlatButton
         type="button"
