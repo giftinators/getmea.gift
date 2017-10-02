@@ -273,7 +273,17 @@ class WishListPage extends Component {
       }
     }
 
+    var wantedItems = [];
+    var purchasedItems = [];
+    if (this.state.currentList) {
+      wantedItems = this.state.currentList.items.filter( (item) => {
+        return item.purchased === false;
+      });
 
+      purchasedItems = this.state.currentList.items.filter( (item) => {
+        return item.purchased === true;
+      });
+    }
 
     var isListOwner = false;
     if (this.state.currentList){
@@ -312,7 +322,7 @@ class WishListPage extends Component {
       </IconMenu>
     );
 
-    var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
+    var list = this.state.showPurchased ? purchasedItems : wantedItems;
 
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
