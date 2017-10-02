@@ -79,6 +79,12 @@ const style = {
     paddingTop: 16,
     marginBottom: 12,
     fontWeight: 400,
+  },
+  username: {
+    position: 'absolute',
+    top: 0,
+    fontSize: 16,
+    fontWeight: 400,
   }
 };
 
@@ -261,7 +267,7 @@ class WishListPage extends Component {
         return (
           <div>
             {this.state.currentList.title.toUpperCase()} <br/>
-            <div style={{ position: 'absolute', top: 0}}>{this.props.match.params.username}</div>
+            <div style={style.username}>{this.props.match.params.username.toUpperCase()}</div>
             </div>
           )
       }
