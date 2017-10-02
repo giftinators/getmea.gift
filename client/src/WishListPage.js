@@ -64,8 +64,6 @@ class WishListPage extends Component {
       currentListOwner: null,
       purchasedItems: [],
       wantedItems: [],
-      open: false,
-      modalState: false,
       deleteOpen: false,
       shareOpen: false,
       addListOpen: false,
