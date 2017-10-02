@@ -16,9 +16,6 @@ class Footer extends Component {
     };
   }
 
-  // componentWillMount() {
-  // }
-
   render() {
     return (
         <div className="Footer" style={style.wrapper}>
