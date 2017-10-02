@@ -5,10 +5,6 @@ const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 const helpers = require('./helpers');
 const passport = require('passport');
-const multer = require('multer');
-
-const upload = multer({ dest: './user/pictures'});
-
 
 
 //get all users
@@ -18,10 +14,6 @@ router.get('/users', (req, res) => {
     res.send({users})
   })
 })
-
-// router.post('/upload', upload.single('photo'), function(req, res, next){
-//   res.end(req.file);
-// });
 
 //get user
 router.get('/users/:username', (req, res) => {
@@ -89,12 +81,14 @@ router.post('/login', (req, res) => {
   })(req, res);
 });
 
-
+//Logs the user out by clearing the session
 router.get('/logout', (req, res) => {
   delete req.session.user_id;
   res.send('success')
 });
 
+//Sends back the logged in user's info
+//We use this in the react app
 router.get('/me', (req, res) => {
   var user_id = req.session.user_id;
   helpers.getUserById(user_id)
@@ -205,6 +199,11 @@ router.post('/items', (req, res) => {
 })
 
 //toggle item purchased
+/* Example PUT data
+{
+	"purchased": true
+}
+*/
 router.put('/setPurchased/:id', (req, res) => {
   var item_id = req.params.id;
   var updates = {purchased: req.body.purchased};
@@ -232,17 +231,6 @@ router.delete('/items/:id', (req, res) => {
   });
 });
 
-router.delete('/item/:id', (req, res) => {
-  var item_id = req.params.id;
-
-  helpers.gtItem(user_id)
-  .then((id) => {
-    res.send(`Deleted Item: ${id}`);
-  })
-  .catch((err) => {
-    res.status(401).send({err});
-  });
-});
 
 
 module.exports = router;
