@@ -167,7 +167,7 @@ export default class Login extends Component {
                 value={this.state.password}
               /><br />
             </form>
-            <p>Don't have an account? <span style={{cursor: 'pointer'}} onClick={this.toggleRegister}>Create one</span></p>
+            <p>Dont have an account? <span style={{cursor: "pointer"}} onClick={this.toggleRegister}>Create one</span></p>
           </div>
         </Dialog>
       </div>
@@ -226,6 +226,4 @@ export default class Login extends Component {
       )
     }
   }
-
-
 }

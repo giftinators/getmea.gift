@@ -190,7 +190,11 @@ class WishListPage extends Component {
       var username = this.props.match.params.username;
 
       if (this.state.currentList.items && this.state.currentList.items.length >= 0) {
+<<<<<<< HEAD
         return (
+=======
+        return (
+>>>>>>> adding new logo when no items are in list
 
           this.state.userData.wishlists.map((list, index) => {
             return (
@@ -333,7 +337,11 @@ class WishListPage extends Component {
 
         <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
+<<<<<<< HEAD
             <AppBar title={showTitle()}
+=======
+            <AppBar title={this.state.userData.username.toUpperCase() + "'S " + this.state.currentList.title.toUpperCase()}
+>>>>>>> adding new logo when no items are in list
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
