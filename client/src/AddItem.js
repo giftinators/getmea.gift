@@ -4,13 +4,14 @@ import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
-import axios from 'axios';
-import Dropzone from 'react-dropzone';
 import CircularProgress from 'material-ui/CircularProgress';
 
-/**
-* A modal dialog can only be closed by selecting one of the actions.
-*/
+import axios from 'axios';
+
+/* https://github.com/felixrieseberg/React-Dropzone-Component */
+import Dropzone from 'react-dropzone';
+
+
 
 const initialState = {
       open: false,
@@ -68,8 +69,9 @@ export default class AddItem extends Component {
       this.setState({title: newValue})
     }
 
-    //sets price in state and make sure user only enters a number
+    //sets price in state
     this.handlePriceChange = (e, newValue) => {
+      //makes sure user can only enter number
       if(isNaN(newValue)) {
         this.setState({
           errorTextPrice: 'Number Only'
@@ -78,6 +80,7 @@ export default class AddItem extends Component {
         this.setState({
           errorTextPrice: ''
         })
+        //Do not allow a number larger than 9 digits long
         if(newValue.toString().length < 10){
           this.setState({price: newValue})
         }
@@ -92,11 +95,10 @@ export default class AddItem extends Component {
       this.setState({comments: newValue})
     }
 
-    //figure out how to add an upload image button
-
     this.handleImageUrlChange = (e, newValue) => {
       this.setState({imageUrl: newValue})
     }
+
     //Shows error text and removes it when a value is input
     this.handleErrorText = (e) => {
       if(e.target.value.length) {
@@ -109,14 +111,15 @@ export default class AddItem extends Component {
 
     this.handleSubmit = (e) => {
       e.preventDefault();
+      //start loading circle and end when state resets
       this.setState({
         loading: true
       })
       this.uploadFile();
-
     };
 
 
+    //post to DB
     this.post = () => {
       axios.post('/api/items', {
         title: this.state.title,
@@ -133,6 +136,7 @@ export default class AddItem extends Component {
           //rerender WishListPage
           this.props.getdata()
         }
+        //reset the state
         this.setState(initialState)
       })
       .catch(function (error) {
@@ -140,7 +144,6 @@ export default class AddItem extends Component {
       })
     }
 
-    //super messy
     this.uploadFile = () => {
       const files = this.state.files;
 
@@ -159,12 +162,13 @@ export default class AddItem extends Component {
           formData.append("timestamp", (Date.now() / 1000) | 0);
 
           // Make an AJAX upload request using Axios
+          // The url is provided by cloudinary
           return axios.post("https://api.cloudinary.com/v1_1/getmeagift/image/upload", formData, {
             headers: { "X-Requested-With": "XMLHttpRequest" },
           })
           .then(response => {
             const data = response.data;
-            //url of image
+            //url of image in cloudinary
             const fileURL = data.secure_url
             //set the state to the new url
             this.setState({
@@ -176,10 +180,12 @@ export default class AddItem extends Component {
           })
         });
       } else {
+        //if they don't have a file ready to be uploaded just post to database
         this.post()
       }
     }
 
+    //when the file is added (not posted), add file to state
     this.onDrop = (files) => {
       if(files) {
         this.setState({
@@ -255,13 +261,14 @@ export default class AddItem extends Component {
                   value={this.state.url}
                 /><br />
 
-                {!this.state.fileReceived ? <TextField
-                                              onChange={this.handleImageUrlChange}
-                                              floatingLabelText="Image Url"
-                                              type="imageUrl"
-                                              value={this.state.imageUrl}
-                                              style={{marginRight: 20}}
-                                              /> : <div></div>}
+                {!this.state.fileReceived ?
+                  <TextField
+                    onChange={this.handleImageUrlChange}
+                    floatingLabelText="Image Url"
+                    type="imageUrl"
+                    value={this.state.imageUrl}
+                    style={{marginRight: 20}}
+                  /> : <div></div>}
 
                 <Dropzone disableClick={false} multiple={false} accept={'image/*'} onDrop={this.onDrop} style={{maxHeight: 50, maxWidth: 150}}>
                   <FlatButton secondary label="Upload Photo"></FlatButton>
