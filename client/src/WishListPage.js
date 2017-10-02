@@ -32,6 +32,8 @@ import Share from './Share';
 
 import axios from 'axios';
 
+import giftImage from './gift.png';
+
 const style = {
   listStyle: {
     marginLeft: 200,
@@ -199,7 +201,7 @@ class WishListPage extends Component {
        isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
     }
     var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
-    if (this.state.currentList.items.length > 0) {
+    if (list.length > 0) {
       return (
                             list.map((row, index) => (
                       <TableRow hoverable={true} key={index}>
@@ -228,7 +230,7 @@ class WishListPage extends Component {
                     ))
       )
     } else {
-      return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src="http://www.iconsdb.com/icons/preview/caribbean-blue/gift-3-xxl.png" alt='none'/>
+      return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
             </div>
     }
