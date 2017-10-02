@@ -42,7 +42,7 @@ Material-ui comes with all Material Design icons included. They are located in n
 
 Find categories and icon names here: https://material.io/icons/
 
-## WishListPage.js "Documentation"
+## WishListPage.js *Documentation*
 The first thing you see on WishListPage.js is 35 lines of imports.  Almost ALL  of these imports come from `material-ui.com`
 
 Below all the imports - you will see a `const style` variable. This variable holds the "style" object and is where most of the styles are accessed.  You can use, add and edit properties in this variable for later use.
@@ -80,18 +80,15 @@ Default state is set to false. The most important place this is used is on WishL
 So basically this variable is what tells the DOM whether to render the wantedItems list or the purchasedItems list  
 
 
-#######################################################################################
-##                          TOO LONG, DIDN'T READ                                    ##
-#######################################################################################
-TL:TR
+## TOO LONG, DIDN'T READ
 100% of the front end was made using 'material-ui'. Which is just some kind of 'material' framework
 
 There is some CSS used - but it is all used in conjunction with the Material-Ui way of doing things.
 
 Everything else is react, express, nodeJS or mongo.
 
-Material-Ui Documentation: http://www.material-ui.com/#/
-React Documentation: https://reactjs.org/docs/hello-world.html
-Express Documentation: https://expressjs.com/en/guide/routing.html
-nodeJS Documentation:
-Mongo Documentation: https://docs.mongodb.com/manual/
+- Material-Ui Documentation: http://www.material-ui.com/#/
+- React Documentation: https://reactjs.org/docs/hello-world.html
+- Express Documentation: https://expressjs.com/en/guide/routing.html
+- React Router Documentation: https://reacttraining.com/react-router/
+- Mongo Documentation: https://docs.mongodb.com/manual/
