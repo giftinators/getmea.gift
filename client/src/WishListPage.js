@@ -32,6 +32,8 @@ import Share from './Share';
 
 import axios from 'axios';
 
+import giftImage from './gift.png';
+
 const style = {
   listStyle: {
     marginLeft: 200,
@@ -184,6 +186,56 @@ class WishListPage extends Component {
     })
   }
 
+  renderList() {
+    if (this.state.currentList) {
+      this.state.wantedItems = this.state.currentList.items.filter( (item) => {
+        return item.purchased === false;
+      });
+
+      this.state.purchasedItems = this.state.currentList.items.filter( (item) => {
+        return item.purchased === true;
+      });
+    }
+    var isListOwner = false;
+    if (this.state.currentList){
+       isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
+    }
+    var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
+    if (list.length > 0) {
+      return (
+                            list.map((row, index) => (
+                      <TableRow hoverable={true} key={index}>
+                        <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
+                        <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
+                        <TableRowColumn style={{color: 'white'}} >
+                        {!row.purchased &&
+                          <BuyGiftModal
+                            primary={this.props.muiTheme.palette.primary1Color}
+                            item={row}
+                            index={index}
+                            getUserData={this.getUserData.bind(this)}
+                            isListOwner={isListOwner}
+                            userData={this.state.userData}
+                          />
+                        }
+                        </TableRowColumn>
+                        <TableRowColumn hoverable={true} style={{ height: 140}}>
+                          {
+                            row.image_url && <Paper style={{marginTop: 10, maxHeight: 120, textAlign:'center'}} zDepth={1} >
+                              <img alt={''} style={style.images} src={row.image_url}/>
+                            </Paper>
+                          }
+                        </TableRowColumn>
+                      </TableRow>
+                    ))
+      )
+    } else {
+      return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
+              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
+            </div>
+    }
+  }
+
   renderMessages() {
     //changed just now
     if (this.state.currentList) {
@@ -273,14 +325,12 @@ class WishListPage extends Component {
       }
     }
 
-    var wantedItems = [];
-    var purchasedItems = [];
     if (this.state.currentList) {
-      wantedItems = this.state.currentList.items.filter( (item) => {
+      this.state.wantedItems = this.state.currentList.items.filter( (item) => {
         return item.purchased === false;
       });
 
-      purchasedItems = this.state.currentList.items.filter( (item) => {
+      this.state.purchasedItems = this.state.currentList.items.filter( (item) => {
         return item.purchased === true;
       });
     }
@@ -322,7 +372,7 @@ class WishListPage extends Component {
       </IconMenu>
     );
 
-    var list = this.state.showPurchased ? purchasedItems : wantedItems;
+    var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
 
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
@@ -384,33 +434,7 @@ class WishListPage extends Component {
                 <TableBody
                   displayRowCheckbox={false}
                 >
-                  {
-                    list.map((row, index) => (
-                      <TableRow hoverable={true} key={index}>
-                        <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
-                        <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
-                        <TableRowColumn style={{color: 'white'}} >
-                        {!row.purchased &&
-                          <BuyGiftModal
-                            primary={this.props.muiTheme.palette.primary1Color}
-                            item={row}
-                            index={index}
-                            getUserData={this.getUserData.bind(this)}
-                            isListOwner={isListOwner}
-                            userData={this.state.userData}
-                          />
-                        }
-                        </TableRowColumn>
-                        <TableRowColumn hoverable={true} style={{ height: 140}}>
-                          {
-                            row.image_url && <Paper style={{marginTop: 10, maxHeight: 120, textAlign:'center'}} zDepth={1} >
-                              <img alt={''} style={style.images} src={row.image_url}/>
-                            </Paper>
-                          }
-                        </TableRowColumn>
-                      </TableRow>
-                    ))
-                 }
+                  { this.renderList() }
                 </TableBody>
               </Table>
             </Paper>

@@ -27,11 +27,21 @@ class BuyGiftModal extends React.Component {
       });
     }
 
-    this.deleteItem = () => {
+    this.purchaseItem = () => {
     var id = this.props.item._id
      axios.put("/api/setPurchased/" + id, {
           purchased: true
       })
+     .then(() => {
+       this.handleModalClose()
+       this.props.getUserData()
+       console.log(this.props.item.purchased)
+     })
+   }
+
+   this.deleteItem = () => {
+      var id = this.props.item._id
+     axios.delete("/api/items/" + id)
      .then(() => {
        this.handleModalClose()
        this.props.getUserData()
@@ -71,7 +81,7 @@ class BuyGiftModal extends React.Component {
     const modalActions = [ < FlatButton
       label = "Yes. I'm positive I will get this gift."
       primary
-      onClick = { ()=>{this.deleteItem()} }
+      onClick = { ()=>{this.purchaseItem()} }
       />,
       < FlatButton
       label = "No. I'm not totally sure I will get this gift."
