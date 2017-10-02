@@ -1,6 +1,6 @@
 # 🎁 GetMeA.Gift
 
-The project utilizes [express-create-react-app-starter](https://github.com/rosswaycaster/express-create-react-app-starter) to easily bootstrap a React app served up with Express. Also uses [custom-react-scripts](https://github.com/rosswaycaster/express-create-react-app-starter) to add optional support for ES6 decorators, SASS/SCSS, LESS, Stylus, & CSS modules without needing to eject out of Create React App.
+The project utilizes [express-create-react-app-starter](https://github.com/rosswaycaster/express-create-react-app-starter) to easily bootstrap a React app served up with Express. Also uses [custom-react-scripts](https://github.com/kitze/custom-react-scripts) to add optional support for ES6 decorators, SASS/SCSS, LESS, Stylus, & CSS modules without needing to eject out of Create React App.
 
 
 ## Getting Started
