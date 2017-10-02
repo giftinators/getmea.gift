@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import {Paper, RaisedButton} from 'material-ui';
 import { Flex, Box } from 'reflexbox'
 
-import balloons from './balloons.jpg'
+import balloons from './img/balloons.jpg'
+import feature1 from './img/feature1.png'
+import feature2 from './img/feature2.png'
+import feature3 from './img/feature3.png'
 import './Homepage.scss';
 
 const style = {
@@ -39,7 +42,7 @@ class Homepage extends Component {
           <Paper style={style.hero} zDepth={1} rounded={false}>
             <Flex column style={{height:'100%'}} justify="center" align='center'>
               <Box p={2}>
-                <div style={style.heroMessage}>Some kind of call to action here</div>
+                <div style={style.heroMessage}>Create and Share Wishlists!</div>
               </Box>
               <Box p={2}>
                 <RaisedButton secondary label="Get Started" />
@@ -48,20 +51,29 @@ class Homepage extends Component {
           </Paper>
           <div className="row">
             <div className="col">
-              <img style={{width:'100%'}} src="http://via.placeholder.com/1800x1200?text=screenshot+of+app" alt="screenshot"/>
+              <img style={{width:'100%'}} src={feature1} alt="screenshot"/>
             </div>
             <div className="col">
-              <h1>Heading 1</h1>
-              <div>Marketing content paragraph.</div>
+              <h1>Create your own wishlists!</h1>
+              <div>Save all of your wanted products from all over the web in one central location! Organize lists by theme or by event!</div>
             </div>
           </div>
           <div className="row">
             <div className="col">
-              <h1>Heading 2</h1>
-              <div>Marketing content paragraph.</div>
+              <h1>Buy Gifts for Friends!</h1>
+              <div>Indicate that you will purchase a gift from a friend's list so others know not to buy it.</div>
             </div>
             <div className="col">
-              <img style={{width:'100%'}} src="http://via.placeholder.com/1800x1200?text=screenshot+of+app" alt="screenshot"/>
+              <img style={{width:'100%'}} src={feature2} alt="screenshot"/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <img style={{width:'100%'}} src={feature3} alt="screenshot"/>
+            </div>
+            <div className="col">
+              <h1>Share your wishlists</h1>
+              <div>Easily generate share</div>
             </div>
           </div>
         </div>

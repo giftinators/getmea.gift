@@ -3,7 +3,6 @@ import axios from 'axios';
 import {AppBar} from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {colors} from 'material-ui/styles';
 import {
   Router,
   Route,
@@ -14,7 +13,6 @@ import Homepage from './Homepage';
 import WishListPage from './WishListPage';
 import Footer from './Footer';
 import Login from './Login';
-import './App.scss';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import AppDrawer from './AppDrawer';
 import IconButton from 'material-ui/IconButton';
@@ -29,6 +27,13 @@ const muiTheme = getMuiTheme({
     accent1Color: '#008975'
   }
 });
+
+const style = {
+  logo: {
+    color: 'white',
+    textDecoration: 'none'
+  }
+}
 
 class App extends Component {
   constructor() {
@@ -91,7 +96,7 @@ class App extends Component {
             <div className='container'>
               <div className="App">
                 <AppBar id='appBar'
-                  title={<Link className="logo" to="/">Get Me A Gift</Link>}
+                  title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
                   iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
                   iconElementRight={<Login history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>}
                   zDepth={4}

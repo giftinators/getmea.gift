@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 
 
-
-/**
-* A modal dialog can only be closed by selecting one of the actions.
-*/
+/* https://www.npmjs.com/package/react-copy-to-clipboard */
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 export default class Share extends Component {
   constructor (props) {
@@ -36,6 +33,7 @@ export default class Share extends Component {
         copied: true
       });
 
+      //shows the 'copied' text for only 5 seconds
       setTimeout(() => {
         this.setState({
           copied: false
