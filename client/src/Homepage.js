@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {Paper, RaisedButton} from 'material-ui';
 import { Flex, Box } from 'reflexbox'
 
-import balloons from './balloons.jpg'
-import feature1 from './feature1.png'
-import feature2 from './feature2.png'
-import feature3 from './feature3.png'
+import balloons from './img/balloons.jpg'
+import feature1 from './img/feature1.png'
+import feature2 from './img/feature2.png'
+import feature3 from './img/feature3.png'
 import './Homepage.scss';
 
 const style = {

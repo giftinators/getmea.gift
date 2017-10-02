@@ -21,6 +21,7 @@ import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import Lock from 'material-ui/svg-icons/action/lock';
 import Unlock from 'material-ui/svg-icons/action/lock-open';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import Subheader from 'material-ui/Subheader';
 
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
@@ -32,55 +33,18 @@ import Share from './Share';
 
 import axios from 'axios';
 
-import giftImage from './gift.png';
+import giftImage from './img/gift.png';
 
 const style = {
-  listStyle: {
-    marginLeft: 200,
-    paddingLeft: 200,
-    width: '100%'
-  },
-  paperStyle: {
-    width: '100%',
-    height: '100%'
-  },
-  dividerStyle: {
-    width: '100%',
-    marginLeft: 0,
-    paddingLeft: 0
-  },
-  titleStyle: {
-    width: '100%',
-    textAlign: 'center',
-    paddingTop: 15,
-    color: 'white',
-    backgroundColor: '#3D5AFE',
-    paddingBottom: 30,
-    height: '100%'
-  },
+
   backgroundStyle: {
     backgroundColor: '#eaf2ff',
     height: '110%',
     paddingBottom: 40
-
-  },
-  imageStyle: {
-    height: 200,
-  },
-  gridStyles: {
-    textAlign: 'center',
-    minWidth: '100%',
-    width: '100%'
   },
   images: {
     maxHeight: 120,
     maxWidth: '100%'
-  },
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
   },
   username: {
     position: 'absolute',
@@ -97,6 +61,7 @@ class WishListPage extends Component {
     this.state = {
       userData: null,
       currentList: null,
+      currentListOwner: null,
       purchasedItems: [],
       wantedItems: [],
       open: false,
@@ -175,6 +140,7 @@ class WishListPage extends Component {
         this.setState({
           userData: res,
           currentList: currentList,
+          currentListOwner: username,
           wantedItems: wantedItems,
           purchasedItems: purchasedItems
         });
@@ -365,7 +331,8 @@ class WishListPage extends Component {
         {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
         {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} onClick={this.handleShareOpen.bind(this)}/> }
         {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} onClick={this.handleAddListOpen.bind(this)}/> }
-        {isListOwner && <Divider /> }
+        <Divider />
+        <Subheader>{this.state.currentListOwner}'s Other Wishlists </Subheader>
 
         {this.renderMessages()}
 

@@ -2,7 +2,6 @@
 
 The project utilizes [express-create-react-app-starter](https://github.com/rosswaycaster/express-create-react-app-starter) to easily bootstrap a React app served up with Express. Also uses [custom-react-scripts](https://github.com/kitze/custom-react-scripts) to add optional support for ES6 decorators, SASS/SCSS, LESS, Stylus, & CSS modules without needing to eject out of Create React App.
 
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development purposes.
@@ -31,3 +30,13 @@ This will start the client at http://localhost:3000 which will proxy the api ser
 ```
 npm start
 ```
+## API Routes
+
+Download all routes via PostMan templates:
+https://www.getpostman.com/collections/9ad0efc37db5dccc7682
+
+## Material-UI instructions
+
+Material-ui comes with all Material Design icons included. They are located in node_modules/material-ui/svg-icons/<category>/<icon_name>.
+
+Find categories and icon names here: https://material.io/icons/
