@@ -42,7 +42,7 @@ class Homepage extends Component {
           <Paper style={style.hero} zDepth={1} rounded={false}>
             <Flex column style={{height:'100%'}} justify="center" align='center'>
               <Box p={2}>
-                <div style={style.heroMessage}>Some kind of call to action here</div>
+                <div style={style.heroMessage}>Create and Share Wishlists!</div>
               </Box>
               <Box p={2}>
                 <RaisedButton secondary label="Get Started" />
