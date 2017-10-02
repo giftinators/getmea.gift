@@ -8,7 +8,12 @@ import axios from 'axios';
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
-
+const style = {
+  RightBtns: {
+      marginTop: 5,
+      marginRight: 5
+    },
+}
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -218,7 +223,7 @@ export default class Login extends Component {
       return this.state.register ? registerDiv : loginDiv
     } else {
       return (
-        <div className="RightBtns">
+        <div style={style.RightBtns}>
         {
           username ? welcomeBack : loginDiv
         }
