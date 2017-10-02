@@ -32,8 +32,10 @@ require('../app/passport.js')(passport);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//On the server this will serve up our build folder as static files
 app.use(express.static(path.join(__dirname, '../client/build')));
 
+//Use the api routes
 app.use('/api', api);
 
 // The "catchall" handler: for any request that doesn't
