@@ -3,6 +3,9 @@ import {Paper, RaisedButton} from 'material-ui';
 import { Flex, Box } from 'reflexbox'
 
 import balloons from './balloons.jpg'
+import feature1 from './feature1.png'
+import feature2 from './feature2.png'
+import feature3 from './feature3.png'
 import './Homepage.scss';
 
 const style = {
@@ -48,20 +51,29 @@ class Homepage extends Component {
           </Paper>
           <div className="row">
             <div className="col">
-              <img style={{width:'100%'}} src="http://via.placeholder.com/1800x1200?text=screenshot+of+app" alt="screenshot"/>
+              <img style={{width:'100%'}} src={feature1} alt="screenshot"/>
             </div>
             <div className="col">
-              <h1>Heading 1</h1>
-              <div>Marketing content paragraph.</div>
+              <h1>Create your own wishlists!</h1>
+              <div>Save all of your wanted products from all over the web in one central location! Organize lists by theme or by event!</div>
             </div>
           </div>
           <div className="row">
             <div className="col">
-              <h1>Heading 2</h1>
-              <div>Marketing content paragraph.</div>
+              <h1>Buy Gifts for Friends!</h1>
+              <div>Indicate that you will purchase a gift from a friend's list so others know not to buy it.</div>
             </div>
             <div className="col">
-              <img style={{width:'100%'}} src="http://via.placeholder.com/1800x1200?text=screenshot+of+app" alt="screenshot"/>
+              <img style={{width:'100%'}} src={feature2} alt="screenshot"/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <img style={{width:'100%'}} src={feature3} alt="screenshot"/>
+            </div>
+            <div className="col">
+              <h1>Share your wishlists</h1>
+              <div>Easily generate share</div>
             </div>
           </div>
         </div>
