@@ -33,55 +33,18 @@ import Share from './Share';
 
 import axios from 'axios';
 
-import giftImage from './gift.png';
+import giftImage from './img/gift.png';
 
 const style = {
-  listStyle: {
-    marginLeft: 200,
-    paddingLeft: 200,
-    width: '100%'
-  },
-  paperStyle: {
-    width: '100%',
-    height: '100%'
-  },
-  dividerStyle: {
-    width: '100%',
-    marginLeft: 0,
-    paddingLeft: 0
-  },
-  titleStyle: {
-    width: '100%',
-    textAlign: 'center',
-    paddingTop: 15,
-    color: 'white',
-    backgroundColor: '#3D5AFE',
-    paddingBottom: 30,
-    height: '100%'
-  },
+
   backgroundStyle: {
     backgroundColor: '#eaf2ff',
     height: '110%',
     paddingBottom: 40
-
-  },
-  imageStyle: {
-    height: 200,
-  },
-  gridStyles: {
-    textAlign: 'center',
-    minWidth: '100%',
-    width: '100%'
   },
   images: {
     maxHeight: 120,
     maxWidth: '100%'
-  },
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
   },
   username: {
     position: 'absolute',

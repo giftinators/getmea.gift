@@ -23,3 +23,9 @@ npm start
 
 Download all routes via PostMan templates:
 https://www.getpostman.com/collections/9ad0efc37db5dccc7682
+
+## Material-UI instructions
+
+Material-ui comes with all Material Design icons included. They are located in node_modules/material-ui/svg-icons/<category>/<icon_name>.
+
+Find categories and icon names here: https://material.io/icons/
