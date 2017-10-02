@@ -79,6 +79,12 @@ const style = {
     paddingTop: 16,
     marginBottom: 12,
     fontWeight: 400,
+  },
+  username: {
+    position: 'absolute',
+    top: 0,
+    fontSize: 16,
+    fontWeight: 400,
   }
 };
 
@@ -256,6 +262,19 @@ class WishListPage extends Component {
 
   render() {
 
+    const showTitle = () => {
+      if (this.state.currentList) {
+        return (
+          <div>
+            {this.state.currentList.title.toUpperCase()} <br/>
+            <div style={style.username}>{this.props.match.params.username.toUpperCase()}</div>
+            </div>
+          )
+      }
+    }
+
+
+
     var isListOwner = false;
     if (this.state.currentList){
        isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
@@ -304,7 +323,7 @@ class WishListPage extends Component {
 
         <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
-            <AppBar title={this.state.currentList.title.toUpperCase()}
+            <AppBar title={showTitle()}
               iconElementRight={topRightMenu}
               iconElementLeft={
                 this.state.currentList.secret
@@ -315,9 +334,7 @@ class WishListPage extends Component {
                     <Visibility style={{padding: 12}} />
                   </IconButton>)
               }
-            >
-
-            </AppBar>
+            ></AppBar>
             <Tabs>
               <Tab onActive={this.showWanted.bind(this)} label="Wanted Items" />
               <Tab onActive={this.showPurchased.bind(this)} label="Purchased Items" />
