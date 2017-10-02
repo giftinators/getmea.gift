@@ -149,7 +149,7 @@ export default class AddItem extends Component {
         /* map over all of the images, upload them, and post them to db
         (right now there is only 1 image, but can be
         changed later to accept and render multiple images) */
-        const uploaders = files.map(file => {
+        files.map(file => {
           // Initial FormData
           const formData = new FormData();
           formData.append("file", file);

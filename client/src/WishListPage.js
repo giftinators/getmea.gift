@@ -82,6 +82,8 @@ class WishListPage extends Component {
     this.state = {
       userData: null,
       currentList: null,
+      purchasedItems: null,
+      wantedItems: null,
       open: false,
       modalState: false,
       deleteOpen: false,
@@ -136,10 +138,21 @@ class WishListPage extends Component {
       }
 
       if (currentList) {
+        // filter and push to wanted or purchasedItems arrays
+        var wantedItems = currentList.items.filter( (item) => {
+          return item.purchased === false;
+        });
+
+        var purchasedItems = currentList.items.filter( (item) => {
+          return item.purchased === true;
+        });
+
         //update the state
         this.setState({
           userData: res,
-          currentList: currentList
+          currentList: currentList,
+          wantedItems: wantedItems,
+          purchasedItems: purchasedItems
         });
       }
 
