@@ -21,6 +21,7 @@ import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import Lock from 'material-ui/svg-icons/action/lock';
 import Unlock from 'material-ui/svg-icons/action/lock-open';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import Subheader from 'material-ui/Subheader';
 
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
@@ -95,6 +96,7 @@ class WishListPage extends Component {
     this.state = {
       userData: null,
       currentList: null,
+      currentListOwner: null,
       purchasedItems: [],
       wantedItems: [],
       open: false,
@@ -173,6 +175,7 @@ class WishListPage extends Component {
         this.setState({
           userData: res,
           currentList: currentList,
+          currentListOwner: username,
           wantedItems: wantedItems,
           purchasedItems: purchasedItems
         });
@@ -275,6 +278,7 @@ class WishListPage extends Component {
 
     var wantedItems = [];
     var purchasedItems = [];
+
     if (this.state.currentList) {
       wantedItems = this.state.currentList.items.filter( (item) => {
         return item.purchased === false;
@@ -315,7 +319,8 @@ class WishListPage extends Component {
         {isListOwner && <MenuItem primaryText="Delete List" rightIcon={<Delete />} onClick={this.handleDeleteOpen.bind(this)} /> }
         {isListOwner && !this.state.currentList.secret && <MenuItem primaryText="Share" rightIcon={<PersonAdd />} onClick={this.handleShareOpen.bind(this)}/> }
         {isListOwner && <MenuItem primaryText="Create New List" rightIcon={<AddCircle />} onClick={this.handleAddListOpen.bind(this)}/> }
-        {isListOwner && <Divider /> }
+        <Divider />
+        <Subheader>{this.state.currentListOwner}'s Other Wishlists </Subheader>
 
         {this.renderMessages()}
 
