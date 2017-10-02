@@ -3,7 +3,6 @@ import axios from 'axios';
 import {AppBar} from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {colors} from 'material-ui/styles';
 import {
   Router,
   Route,
