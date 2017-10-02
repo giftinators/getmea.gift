@@ -87,8 +87,8 @@ There is some CSS used - but it is all used in conjunction with the Material-Ui 
 
 Everything else is react, express, nodeJS or mongo.
 
-- Material-Ui Documentation: http://www.material-ui.com/#/
-- React Documentation: https://reactjs.org/docs/hello-world.html
-- Express Documentation: https://expressjs.com/en/guide/routing.html
-- React Router Documentation: https://reacttraining.com/react-router/
-- Mongo Documentation: https://docs.mongodb.com/manual/
+- [Material-Ui Documentation](http://www.material-ui.com/#/)
+- [React Documentation](https://reactjs.org/docs/hello-world.html)
+- [Express Documentation](https://expressjs.com/en/guide/routing.html)
+- [React Router Documentation](https://reacttraining.com/react-router/)
+- [Mongo Documentation](https://docs.mongodb.com/manual/)
