@@ -55,6 +55,9 @@ export default class Login extends Component {
         if (response.data) {
           this.props.setCurrentUser(response.data);
           this.setState({open: false});
+          if (this.props.history.location.pathname === '/'){
+            this.props.history.push('/'+this.state.username)
+          }
         }
       })
       .catch(function (error) {
@@ -72,6 +75,9 @@ export default class Login extends Component {
         if(response.data) {
           this.props.setCurrentUser(response.data);
           this.setState({open: false});
+          if (this.props.history.location.pathname === '/'){
+            this.props.history.push('/'+this.state.username)
+          }
         } else {
           console.log(response);
         }
@@ -122,10 +128,10 @@ export default class Login extends Component {
         label="Submit"
         primary={true}
         disabled={
-                  !this.state.username
-                  || !this.state.password
-                  || this.state.password !== this.state.verifyPassword
-                }
+          !this.state.username
+          || !this.state.password
+          || this.state.password !== this.state.verifyPassword
+        }
         onClick={this.handleRegisterSubmit}
       />
     ];
