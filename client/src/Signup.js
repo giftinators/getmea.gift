@@ -48,7 +48,11 @@ export default class Signup extends Component {
       .then((response) => {
         if(response.data) {
           console.log(response);
+          this.props.setCurrentUser(response.data);
           this.setState({open: false});
+          if (this.props.history.location.pathname === '/'){
+            this.props.history.push('/'+this.state.username)
+          }
         } else {
           console.log(response);
         }

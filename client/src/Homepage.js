@@ -7,6 +7,7 @@ import feature1 from './img/feature1.png'
 import feature2 from './img/feature2.png'
 import feature3 from './img/feature3.png'
 import './Homepage.scss';
+import Signup from './Signup.js'
 
 const style = {
   hero: {
@@ -30,7 +31,12 @@ class Homepage extends Component {
     super(props);
 
     this.state = {
+      isSignupVisible: false
     };
+  }
+
+  toggleLogin = () => {
+    this.setState( {isSignupVisible: !this.state.isSignupVisible} )
   }
 
   // componentWillMount() {
@@ -45,7 +51,8 @@ class Homepage extends Component {
                 <div style={style.heroMessage}>Create and Share Wishlists!</div>
               </Box>
               <Box p={2}>
-                <RaisedButton secondary label="Get Started" />
+                <RaisedButton onClick = { ()=>{ this.toggleLogin() } } secondary label="Get Started" />
+                { this.state.isSignupVisible ? <Signup /> : null }
               </Box>
             </Flex>
           </Paper>
