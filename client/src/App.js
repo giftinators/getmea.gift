@@ -40,7 +40,7 @@ class App extends Component {
     super();
 
     this.state = {
-      currentUser: null,
+      currentUser: true,
       drawerShow: false
     };
 
@@ -92,8 +92,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <MuiThemeProvider muiTheme={muiTheme} >
-          { this.state.currentUser &&
-            <div className='container'>
+          { this.state.currentUser && <div className='container'>
               <div className="App">
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
