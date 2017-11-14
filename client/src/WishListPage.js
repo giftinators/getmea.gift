@@ -288,7 +288,7 @@ class WishListPage extends Component {
               value={this.state.currentList.title.toUpperCase()}
               onChange={(e) => {
                 // Copy current list into a new one to set state of current list to new one.
-                var newCurrentList = Object.assign({}, this.state.currentList);
+                var newCurrentList = JSON.parse(JSON.stringify(this.state.currentList));
                 newCurrentList.title = e.target.value;
                 // Iterate through user's wishlists and find the wishlist that matches the current one.
                 for (var n = 0; n < this.state.userData.wishlists.length; n++) {
@@ -297,7 +297,7 @@ class WishListPage extends Component {
                   }
                 }
                 // Change the title of the wishlist on the user data by copying the object (not by reference) and changing the title.
-                var newUserData = Object.assign({}, this.state.userData);
+                var newUserData = JSON.parse(JSON.stringify(this.state.userData));
                 newUserData.wishlists[n].title = e.target.value;
                 this.setState({currentList: newCurrentList, userData: newUserData});
               }}
@@ -328,7 +328,6 @@ class WishListPage extends Component {
                 'width': 'auto',
                 'minWidth':'2px'
               }}
-              // After hitting 'enter', change the name in the database. Create character limit. Make it so that
             ></input>
             <br/>
             <div style={style.username}>{this.props.match.params.username.toUpperCase()}</div>
