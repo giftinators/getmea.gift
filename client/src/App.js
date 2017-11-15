@@ -16,6 +16,7 @@ import Login from './Login';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import AppDrawer from './AppDrawer';
 import IconButton from 'material-ui/IconButton';
+import FindUserButton from './FindUserButton';
 
 const history = createHistory();
 //overwrite default theme
@@ -40,7 +41,7 @@ class App extends Component {
     super();
 
     this.state = {
-      currentUser: null,
+      currentUser: true,
       drawerShow: false
     };
 
@@ -70,7 +71,14 @@ class App extends Component {
         drawerShow: !this.state.drawerShow
       })
     }
-
+/*
+    this.handleFindUser = () => {
+      console.log('inside handleFindUser');
+      this.setState({
+        userSearch: true
+      })
+    }
+*/
     this.handleLogout = (e) => {
       e.preventDefault();
       axios('/api/logout')
@@ -98,7 +106,7 @@ class App extends Component {
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
                   iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
-                  iconElementRight={<Login history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>}
+                  iconElementRight={<div><FindUserButton style={"display: inline"} /><Login style={"display: inline"} history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/></div>}
                   zDepth={4}
                 ></AppBar>
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />

@@ -37,6 +37,7 @@ router.get('/users/:username', (req, res) => {
 }
 */
 router.post('/signup', (req, res) => {
+  console.log('signing up')
   passport.authenticate('local-signup', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
@@ -90,6 +91,7 @@ router.get('/logout', (req, res) => {
 //Sends back the logged in user's info
 //We use this in the react app
 router.get('/me', (req, res) => {
+  console.log('Getting me');
   var user_id = req.session.user_id;
   helpers.getUserById(user_id)
   .then((user) => {
