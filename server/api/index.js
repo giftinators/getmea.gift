@@ -38,7 +38,6 @@ router.get('/users/:username', (req, res) => {
 */
 router.post('/signup', (req, res) => {
   passport.authenticate('local-signup', (err, user) => {
-    console.log('Sign UP: ', user);
     if (err) {
       res.status(401).send({err: err});
     } else {
@@ -61,7 +60,6 @@ router.post('/signup', (req, res) => {
         return user.save()
       })
       .then((user) => {
-        console.log('after second save: ', user)
         res.send(user);
       })
       .catch((err) => {
@@ -79,6 +77,10 @@ router.post('/signup', (req, res) => {
 }
 */
 router.post('/login', (req, res) => {
+  helpers.getAllUsers()
+  .then((users) => {
+    console.log('ALL USERS TEST: ', users);
+  })
   passport.authenticate('local-login', (err, user) => {
     if (err) {
       res.status(401).send({err: err});

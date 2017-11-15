@@ -66,6 +66,25 @@ const getUser = (username, loggedInUserId) => {
   })
 };
 
+const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    User.find({})
+    .select('-password') //don't send back password
+    .exec()
+    .then((user) => {
+      //check if user doesn't exist
+      if (!user) {
+        reject('no users');
+      } else {
+        resolve(user);
+      }
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
 
 const createList = (list) => {
   return new Promise((resolve, reject) => {
@@ -263,6 +282,7 @@ const deleteItem = (user_id, item_id) => {
 
 module.exports = {
   getUserById,
+  getAllUsers,
   getUser,
   createList,
   deleteList,
