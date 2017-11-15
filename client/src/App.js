@@ -47,8 +47,6 @@ class App extends Component {
 
     this.setCurrentUser = (user) => {
       this.setState({currentUser: user});
-      console.log('current user updated to: ', this.state.currentUser.username);
-      console.log(this);
     }
 
     this.getLoggedInUser = () => {
@@ -93,6 +91,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    console.log('MOUNTED');
     this.getLoggedInUser();
   }
 
@@ -100,8 +99,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <MuiThemeProvider muiTheme={muiTheme} >
-          { this.state.currentUser &&
-            <div className='container'>
+          { this.state.currentUser && <div className='container'>
               <div className="App">
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
