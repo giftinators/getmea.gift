@@ -284,10 +284,11 @@ class WishListPage extends Component {
         return (
           <div>
             <input
+              type="text"
               value={this.state.currentList.title.toUpperCase()}
               onChange={(e) => {
                 // Copy current list into a new one to set state of current list to new one.
-                var newCurrentList = JSON.parse(JSON.stringify(this.state.currentList));
+                var newCurrentList = Object.assign({}, this.state.currentList);
                 newCurrentList.title = e.target.value;
                 // Iterate through user's wishlists and find the wishlist that matches the current one.
                 for (var n = 0; n < this.state.userData.wishlists.length; n++) {
@@ -296,9 +297,22 @@ class WishListPage extends Component {
                   }
                 }
                 // Change the title of the wishlist on the user data by copying the object (not by reference) and changing the title.
-                var newUserData = JSON.parse(JSON.stringify(this.state.userData));
+                var newUserData = Object.assign({}, this.state.userData);
                 newUserData.wishlists[n].title = e.target.value;
                 this.setState({currentList: newCurrentList, userData: newUserData});
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  console.log(this.state.currentList.title);
+                  console.log(this.state.currentList);
+                  // Send new data to be changed to the database by interacting with the server.
+                  axios.put('/api/lists/'+this.state.currentList._id, {
+                    secret: !this.state.currentList.secret,
+                    title: this.state.currentList.title
+                  }).then((res) => {
+                    this.setState({ currentList: res.data});
+                  });
+                }
               }}
               // Because this is an input text field, certain styles must be removed, and certain styles must be added to mimic the original title style.
               style = {{
@@ -314,6 +328,7 @@ class WishListPage extends Component {
                 'width': 'auto',
                 'minWidth':'2px'
               }}
+              // After hitting 'enter', change the name in the database. Create character limit. Make it so that
             ></input>
             <br/>
             <div style={style.username}>{this.props.match.params.username.toUpperCase()}</div>
