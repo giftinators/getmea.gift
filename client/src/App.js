@@ -40,14 +40,12 @@ class App extends Component {
     super();
 
     this.state = {
-      currentUser: null,
+      currentUser: true,
       drawerShow: false
     };
 
     this.setCurrentUser = (user) => {
       this.setState({currentUser: user});
-      console.log('current user updated to: ', this.state.currentUser.username);
-      console.log(this);
     }
 
     this.getLoggedInUser = () => {
@@ -85,13 +83,14 @@ class App extends Component {
   }
 
   componentWillMount() {
+    console.log('MOUNTED');
     this.getLoggedInUser();
   }
 
   render() {
     return (
       <Router history={history}>
-        <MuiThemeProvider muiTheme={muiTheme} >
+        <MuiThemeProvider muiTheme={muiTheme} >{/*http://www.material-ui.com/#/get-started/usage*/}
           { this.state.currentUser &&
             <div className='container'>
               <div className="App">

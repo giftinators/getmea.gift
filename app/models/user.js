@@ -4,7 +4,8 @@ var bcrypt = require('bcrypt-nodejs');
 var userSchema = mongoose.Schema({
   username: {type: String, required: true, index: {unique: true}},
   password: {type: String, required: true},
-  wishlists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }]
+  wishlists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
+  email: {type: String, required: false}
 })
 
 // user method for generating a hashed password
