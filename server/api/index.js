@@ -156,6 +156,8 @@ router.put('/lists/:id', (req, res) => {
   var listUpdates = req.body;
   var user_id = req.session.user_id;
 
+  console.log(req.body);
+
   helpers.updateList(user_id, list_id, listUpdates)
   .then((list) => {
     res.send(list);
