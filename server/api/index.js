@@ -58,7 +58,7 @@ router.post('/signup', (req, res) => {
       .then((user) => {
         user.email = req.body.email
         user.firstName = req.body.firstName
-        user.lastname = req.body.lastName
+        user.lastName = req.body.lastName
         return user.save()
       })
       .then((user) => {

@@ -82,7 +82,9 @@ export default class Login extends Component {
       axios.post('api/signup', {
         username: this.state.username,
         password: this.state.password,
-        email: this.state.email
+        email: this.state.email,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName
       })
       .then((response) => {
         if(response.data) {
