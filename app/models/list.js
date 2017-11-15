@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'); /* http://mongoosejs.com/docs/ */
 
 var listSchema = mongoose.Schema({
   title: {type: String, required: true},
