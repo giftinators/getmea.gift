@@ -30,7 +30,7 @@ import AddItem from './AddItem';
 import AddList from './AddList';
 import BuyGiftModal from './BuyGiftModal';
 import Share from './Share';
-//import EntryList from './EntryList';
+import EntryList from './EntryList';
 
 import axios from 'axios';
 
@@ -167,7 +167,7 @@ class WishListPage extends Component {
     }
     var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
     if (list.length > 0) {
-      return (<div>Hello</div>
+      return (<EntryList />
                     //         list.map((row, index) => (
                     //   <TableRow hoverable={true} key={index}>
                     //     <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>

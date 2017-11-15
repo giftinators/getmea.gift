@@ -1,5 +1,6 @@
 import React from 'react';
-import { CardGroup, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { Card, Button, CardImg, CardTitle, CardText, CardGroup,
+ CardSubtitle, CardBody } from 'reactstrap';
 
 const EntryList = () => {
   return (
