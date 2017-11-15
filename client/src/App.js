@@ -90,9 +90,8 @@ class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <MuiThemeProvider muiTheme={muiTheme} >{/*http://www.material-ui.com/#/get-started/usage*/}
-          { this.state.currentUser &&
-            <div className='container'>
+        <MuiThemeProvider muiTheme={muiTheme} >
+          { this.state.currentUser && <div className='container'>
               <div className="App">
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
