@@ -46,8 +46,6 @@ class App extends Component {
 
     this.setCurrentUser = (user) => {
       this.setState({currentUser: user});
-      console.log('current user updated to: ', this.state.currentUser.username);
-      console.log(this);
     }
 
     this.getLoggedInUser = () => {
@@ -85,6 +83,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    console.log('MOUNTED');
     this.getLoggedInUser();
   }
 

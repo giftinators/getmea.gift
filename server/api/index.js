@@ -4,7 +4,7 @@ const User = require('../../app/models/user');
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 const helpers = require('./helpers');
-const passport = require('passport');
+const passport = require('passport');/* http://www.passportjs.org/docs */
 
 
 //get all users
@@ -37,12 +37,14 @@ router.get('/users/:username', (req, res) => {
 }
 */
 router.post('/signup', (req, res) => {
+  console.log('SIGNUP: ', req.body);
   passport.authenticate('local-signup', (err, user) => {
+    console.log('Sign UP: ', user);
     if (err) {
       res.status(401).send({err: err});
     } else {
       req.session.user_id = user._id;
-
+      // user.email = req.body.email
       //create a default list for the new user
       helpers.createList({
         title: 'Wishlist',
@@ -54,6 +56,13 @@ router.post('/signup', (req, res) => {
         return helpers.getUserById(user._id);
       })
       .then((user) => {
+        user.email = req.body.email
+        user.firstName = req.body.firstName
+        user.lastName = req.body.lastName
+        return user.save()
+      })
+      .then((user) => {
+        console.log('after second save: ', user)
         res.send(user);
       })
       .catch((err) => {
