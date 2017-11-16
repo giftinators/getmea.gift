@@ -167,7 +167,12 @@ class WishListPage extends Component {
     }
     var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
     if (list.length > 0) {
-      return (<EntryList />
+      
+      return (
+        <div> 
+          <EntryList list={list} />
+        </div>
+      )
                     //         list.map((row, index) => (
                     //   <TableRow hoverable={true} key={index}>
                     //     <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
@@ -193,7 +198,7 @@ class WishListPage extends Component {
                     //     </TableRowColumn>
                     //   </TableRow>
                     // ))
-      )
+      
     } else {
       return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
