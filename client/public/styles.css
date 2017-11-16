@@ -1,0 +1,13 @@
+.signup-dialog > div {
+  max-height: none;
+}
+
+.entry-card {
+  max-width: 33%;
+  display: inline-block;
+  background-color: red;
+}
+
+.card {
+  display: inline;
+}
