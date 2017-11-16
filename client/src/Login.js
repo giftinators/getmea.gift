@@ -159,7 +159,7 @@ export default class Login extends Component {
 
     var loginDiv = (
       <div className="login">
-        <RaisedButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
+        <RaisedButton className="LoginBtn" secondary label="Login/Signup" onClick={this.handleOpen} />
         <Dialog
           title="Login"
           actions={loginActions}
@@ -184,7 +184,7 @@ export default class Login extends Component {
                 value={this.state.password}
               /><br />
             </form>
-            <p>Dont have an account? <span style={{cursor: "pointer"}} onClick={this.toggleRegister}>Create one</span></p>
+            <p>Don't have an account? <span style={{cursor: "pointer", color: "blue"}} onClick={this.toggleRegister}>Sign up</span></p>
           </div>
         </Dialog>
       </div>
@@ -241,7 +241,7 @@ export default class Login extends Component {
                 errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords do not match"}
               /><br />
             </form>
-            <p>Already have an account? <span style={{cursor: 'pointer'}} onClick={this.toggleRegister}>Login</span></p>
+            <p>Already have an account? <span style={{cursor: 'pointer', color: "blue"}} onClick={this.toggleRegister}>Login</span></p>
           </div>
         </Dialog>
       </div>

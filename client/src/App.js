@@ -119,9 +119,6 @@ class App extends Component {
                       <div style={{display:"inline-block", margin:"2px"}}>
                         <Login  history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>
                     </div>
-                    <div style={{display:"inline-block", margin:"2px"}}>
-                      <Login  history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>
-                  </div>
                   </div>
                   }
                   zDepth={4}
