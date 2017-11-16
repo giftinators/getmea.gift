@@ -169,9 +169,7 @@ export default class AddItem extends Component {
           .then(response => {
             const data = response.data;
             //url of image in cloudinary
-            console.log(data);
             const fileURL = data.secure_url
-            console.log(fileURL);
             //set the state to the new url
             this.setState({
               imageUrl: fileURL

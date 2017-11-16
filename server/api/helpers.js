@@ -86,23 +86,15 @@ const getAllUsers = () => {
   })
 };
 
-const getUserByUsername = (user) => {
+const getUserByUsername = (username) => {
+  console.log('USERNAME BODY: ', user);
   return new Promise((resolve, reject) => {
-    var allUsers = [];
-    User.find({firstName: user.firstName})
+    User.find({username: username})
     .select('-password')  //don't send back password
     .select('-wishlists') //don't send back wishlists
     .exec() //sends the query
-    .then((foundUser) => {
-      allUsers = foundUser
-      User.find({lastName: user.lastName})
-      .select('-password')  //don't send back password
-      .select('-wishlists') //don't send back wishlists
-      .exec()
-      .then((foundUser) => {
-        allUsers.concat(foundUser);
-        resolve(allUsers)
-      })
+    .then((foundUsers) => {
+      resolve(foundUsers)
     })
     .catch((err) => {
       reject(err);
@@ -112,9 +104,25 @@ const getUserByUsername = (user) => {
 
 const getUserByName = (userFullName) => {
   var allNames = userFullName.split(' ')
-  var user = {firstName: allNames[0].toLowerCase(), lastName: allNames[allNames.length-1].toLowerCase()};
-  console.log('User names: ', user);
-
+  if(allNames.length === 1) {
+    //if user only inputs one word, search both first and last name with it
+    var user = {
+      firstName: allNames[0].toLowerCase(),
+      lastName: allNames[0].toLowerCase()
+    };
+  } else if (allNames.length === 0) {
+    //if user search is empty populate with empty strings to avoid error
+    var user = {
+      firstName: '',
+      lastName: ''
+    };
+  } else {
+    //take first word to be firstName and last word to be lastName(ignires middle names)
+    var user = {
+      firstName: allNames[0].toLowerCase(),
+      lastName: allNames[allNames.length-1].toLowerCase()
+    };
+  }
 
   return new Promise((resolve, reject) => {
     var allUsers = [];
@@ -129,7 +137,7 @@ const getUserByName = (userFullName) => {
       .select('-wishlists') //don't send back wishlists
       .exec()
       .then((foundUser) => {
-        allUsers.concat(foundUser);
+        allUsers = allUsers.concat(foundUser);
         resolve(allUsers)
       })
     })
@@ -355,6 +363,7 @@ module.exports = {
   getAllUsers,
   getUser,
   getUserByName,
+  getUserByUsername,
   getUserByEmail,
   createList,
   deleteList,

@@ -84,10 +84,6 @@ router.post('/signup', (req, res) => {
 }
 */
 router.post('/login', (req, res) => {
-  helpers.getUserByEmail('RT')
-  .then((user) => {
-    console.log('EMAIL FOUND: ', user);
-  })
   passport.authenticate('local-login', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
@@ -126,13 +122,9 @@ router.get('/me', (req, res) => {
 */
 router.post('/search', (req, res) => {
   var searchMethod = req.body.searchMethod;
-  console.log('INSIDE SEARCH API: ', req.body);
-  //req.body is expecte to be an object with a firstName and lastName field
   if(searchMethod === 'name') {
-    console.log('NAME REQUEST: ', req.body);
     helpers.getUserByName(req.body.userInput)
     .then((foundUsers) => {
-      console.log('SERVER FOUND USERS NAME: ', foundUsers);
       //foundUsers is an array of users that met the search requirements
       res.status(201).send(foundUsers)
     })
@@ -140,7 +132,7 @@ router.post('/search', (req, res) => {
       res.status(500).send(err)
     })
   } else if ( searchMethod === 'username' ) {
-    helpers.getUserByUsername(req.body)
+    helpers.getUserByUsername(req.body.userInput)
     .then((foundUsers) => {
       //foundUsers is an array of users that met the search requirements
       res.status(201).send(foundUsers)
@@ -149,7 +141,8 @@ router.post('/search', (req, res) => {
       res.status(500).send(err)
     })
   } else if ( searchMethod === 'email' ) {
-    helpers.getUserByEmail(req.body)
+    console.log('SERVER EMAIL SRACH');
+    helpers.getUserByEmail(req.body.userInput)
     .then((foundUsers) => {
       //foundUsers is an array of users that met the search requirements
       res.status(201).send(foundUsers)
