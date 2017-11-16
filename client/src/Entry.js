@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
-import { Parallax } from 'react-parallax';
 
 const Entry = props => {
   return (
