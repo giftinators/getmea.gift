@@ -24,7 +24,6 @@ module.exports = function(passport) {
         // Set the user's local credentials
         newUser.username = username;
         newUser.password = newUser.generateHash(password);
-
         // Save the user
         newUser.save(function(err) {
           if (err) {

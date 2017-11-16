@@ -16,7 +16,8 @@ import Login from './Login';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import AppDrawer from './AppDrawer';
 import IconButton from 'material-ui/IconButton';
-
+import FindUserButton from './FindUserButton';
+import Options from './Options';
 const history = createHistory();
 //overwrite default theme
 const muiTheme = getMuiTheme({
@@ -40,16 +41,18 @@ class App extends Component {
     super();
 
     this.state = {
-      currentUser: null,
-      drawerShow: false
+      currentUser: true,
+      drawerShow: false,
+      optionsShow: false,
     };
 
     this.setCurrentUser = (user) => {
       this.setState({currentUser: user});
-      console.log('current user updated to: ', this.state.currentUser.username);
-      console.log(this);
     }
 
+    this.refresh = () => {
+      this.setState({currentUser: this.state.currentUser})
+    }
     this.getLoggedInUser = () => {
       axios.get('/api/me')
       .then((user) => {
@@ -68,6 +71,12 @@ class App extends Component {
     this.toggleDrawer = () => {
       this.setState({
         drawerShow: !this.state.drawerShow
+      })
+    }
+
+    this.handleOptionsClick = () => {
+      this.setState({
+        optionsShow: !this.state.optionsShow
       })
     }
 
@@ -92,19 +101,28 @@ class App extends Component {
     return (
       <Router history={history}>
         <MuiThemeProvider muiTheme={muiTheme} >
-          { this.state.currentUser &&
-            <div className='container'>
+          { this.state.currentUser && <div className='container'>
               <div className="App">
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
                   iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
-                  iconElementRight={<Login history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>}
+                  iconElementRight={
+                    <div>
+                      <div style={{display: "inline-block", margin:"2px"}}>
+                        <FindUserButton refresh={this.refresh.bind(this)} history={history} />
+                      </div>
+                      <div style={{display:"inline-block", margin:"2px"}}>
+                        <Login  history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>
+                    </div>
+                  </div>
+                  }
                   zDepth={4}
                 ></AppBar>
-                <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
-                <Route exact path="/" component={Homepage}/>
+                <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} handleOptionsClick={this.handleOptionsClick.bind(this)} />
+                <Route exact path="/" component={(props) => <Homepage history={history} setCurrentUser={this.setCurrentUser.bind(this)} />}/>
                 <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
                 <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
+                <Options appState={this.state} close={this.handleOptionsClick.bind(this)}/>
                 <Footer />
               </div>
             </div>
