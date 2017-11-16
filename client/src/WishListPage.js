@@ -476,6 +476,12 @@ class WishListPage extends Component {
               </Paper>
             </div>
           </div>
+          <div className="friends-container" style={{flex:'3'}}>
+          <AppBar>
+            Hello
+          </AppBar>
+          </div>
+
         { /* End container */ }
         </div>
       </div>

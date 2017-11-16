@@ -17,7 +17,7 @@ const Entry = props => {
       <Paper>
         <Card>
           <CardMedia>
-            <img src={props.data.image_url} />
+            <img width="100px" height="100px" src={props.data.image_url} />
           </CardMedia>
           <CardTitle
             title={props.data.title}
