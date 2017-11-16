@@ -14,6 +14,7 @@ const MongoStore = require('connect-mongo')(session);
 
 
 //connecting to the mongoose database
+console.log('Process/MongoDBUri', process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 //mongoose Promises are deprecated in Mongoose 4 (think we used mongo3 for sprint)
 mongoose.Promise = global.Promise;
