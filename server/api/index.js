@@ -14,6 +14,13 @@ router.get('/users', (req, res) => {
     res.send({users})
   })
 })
+//get all users in the DB
+router.get('/allUsers'), (req, res) => {
+  helpers.getAllUsers()
+  .then((users) => {
+    res.status(201).send(users)
+  })
+}
 
 //get user
 router.get('/users/:username', (req, res) => {
@@ -55,8 +62,8 @@ router.post('/signup', (req, res) => {
       })
       .then((user) => {
         user.email = req.body.email
-        user.firstName = req.body.firstName
-        user.lastName = req.body.lastName
+        user.firstName = req.body.firstName.toLowerCase()
+        user.lastName = req.body.lastName.toLowerCase()
         return user.save()
       })
       .then((user) => {
@@ -77,10 +84,6 @@ router.post('/signup', (req, res) => {
 }
 */
 router.post('/login', (req, res) => {
-  helpers.getAllUsers()
-  .then((users) => {
-    console.log('ALL USERS TEST: ', users);
-  })
   passport.authenticate('local-login', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
@@ -110,7 +113,24 @@ router.get('/me', (req, res) => {
     res.send({});
   });
 });
-
+//search for a User by nameSearch
+/* Example POST data
+{
+  firstName: 'ross',
+  lastName: 'salge'
+}
+*/
+router.post('/nameSearch', (req, res) => {
+  //req.body is expecte to be an object with a firstName and lastName field
+  helpers.getUserByName(req.body)
+  .then((foundUsers) => {
+    //foundUsers is an array of users that met the search requirements
+    res.status(201).send(foundUsers)
+  })
+  .catch((err) => {
+    res.status(500).send(err)
+  })
+})
 //add new list to user
 /* Example POST data
 {

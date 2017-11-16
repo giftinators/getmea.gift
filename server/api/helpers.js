@@ -85,6 +85,31 @@ const getAllUsers = () => {
   })
 };
 
+const getUserByName = (user) => {
+  return new Promise((resolve, reject) => {
+    var allUsers = [];
+    User.find({firstName: user.firstName})
+    // User.find({firstName: 'Carter'})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec()
+    .then((foundUser) => {
+      allUsers = foundUser
+      User.find({lastName: user.lastName})
+      .select('-password')  //don't send back password
+      .select('-wishlists') //don't send back wishlists
+      .exec()
+      .then((foundUser) => {
+        allUsers.concat(foundUser);
+        resolve(allUsers)
+      })
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
 
 const createList = (list) => {
   return new Promise((resolve, reject) => {
@@ -284,6 +309,7 @@ module.exports = {
   getUserById,
   getAllUsers,
   getUser,
+  getUserByName,
   createList,
   deleteList,
   updateList,
