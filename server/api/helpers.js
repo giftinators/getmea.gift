@@ -112,8 +112,9 @@ const getUserByUsername = (user) => {
 
 const getUserByName = (userFullName) => {
   var allNames = userFullName.split(' ')
-  console.log('ALL names: ', allNames);
-  var user = {};
+  var user = {firstName: allNames[0].toLowerCase(), lastName: allNames[allNames.length-1].toLowerCase()};
+  console.log('User names: ', user);
+
 
   return new Promise((resolve, reject) => {
     var allUsers = [];

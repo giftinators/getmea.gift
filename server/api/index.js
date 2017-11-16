@@ -129,8 +129,10 @@ router.post('/search', (req, res) => {
   console.log('INSIDE SEARCH API: ', req.body);
   //req.body is expecte to be an object with a firstName and lastName field
   if(searchMethod === 'name') {
-    helpers.getUserByName(req.body)
+    console.log('NAME REQUEST: ', req.body);
+    helpers.getUserByName(req.body.userInput)
     .then((foundUsers) => {
+      console.log('SERVER FOUND USERS NAME: ', foundUsers);
       //foundUsers is an array of users that met the search requirements
       res.status(201).send(foundUsers)
     })
@@ -147,7 +149,7 @@ router.post('/search', (req, res) => {
       res.status(500).send(err)
     })
   } else if ( searchMethod === 'email' ) {
-    helpers.getUserByUsername(req.body)
+    helpers.getUserByEmail(req.body)
     .then((foundUsers) => {
       //foundUsers is an array of users that met the search requirements
       res.status(201).send(foundUsers)

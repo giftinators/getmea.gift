@@ -167,11 +167,12 @@ class WishListPage extends Component {
     }
     var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
     if (list.length > 0) {
-      
+
       return (
-        <div> 
+        <div>
           <EntryList list={list} />
         </div>
+
       )
                     //         list.map((row, index) => (
                     //   <TableRow hoverable={true} key={index}>
@@ -198,7 +199,7 @@ class WishListPage extends Component {
                     //     </TableRowColumn>
                     //   </TableRow>
                     // ))
-      
+
     } else {
       return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
               <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
@@ -397,8 +398,8 @@ class WishListPage extends Component {
 
         { /* Displays the AddItem button only if currentList belongs to currentUser */
           isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-        } 
-        <div className="startContainer" 
+        }
+        <div className="startContainer"
         style={{
           'display':'flex',
           'flex-direction':'row',
@@ -475,7 +476,7 @@ class WishListPage extends Component {
                 </Table>
               </Paper>
             </div>
-          </div> 
+          </div>
         { /* End container */ }
         </div>
       </div>

@@ -23,9 +23,10 @@ export default class FindUserButton extends Component {
       open: false,
       register: false,
       input: '',
-      radioButton: 'name'
+      radioButton: 'name',
+      foundUsers: [],
+      usersFound: false
     };
-
 
     this.setStore = (obj) => {
       this.setState(obj);
@@ -44,16 +45,16 @@ export default class FindUserButton extends Component {
     };
 */
 
-    this.handleInputChange = (e, newValue) => {
-      this.setState({input: newValue})
-    };
-
     this.handleSearch = (e) => {
-      e.preventDefault;
+      e.preventDefault();
       console.log('in handleSearch: ', this.state.input, ' ::::' , this.state.radioButton)
       axios.post('api/search', {
         searchMethod:this.state.radioButton,
         userInput: this.state.input
+      })
+      .then((users) => {
+        console.log('USERS FOUND IN FindUserButton: ', users.data);
+        this.setState({foundUsers: users, usersFound: true})
       })
     }
 
@@ -63,9 +64,6 @@ export default class FindUserButton extends Component {
       }
     }
 
-    this.handleRadioSwitch = (e, label) => {
-      this.setState({radioButton: label})
-    }
 /*
     this.handleLoginSubmit = (e) => {
       e.preventDefault();
@@ -118,14 +116,14 @@ export default class FindUserButton extends Component {
 
     const findUserActions = [
       <FlatButton
-        label="Search"
-        primary={true}
-        onClick={this.handleSearch}
-      />,
-      <FlatButton
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="Search"
+        primary={true}
+        onClick={this.handleSearch}
       />
     ];
 
@@ -156,7 +154,7 @@ export default class FindUserButton extends Component {
               <form onSubmit={this.handleSubmit}>
                 <TextField
                   onKeyPress={this.handleKeyPress}
-                  onChange={this.handleInputChange}
+                  onChange={(e, newValue) => {this.setStore({input: newValue})}}
                   hintText={hintText[this.state.radioButton]}
                   floatingLabelText={this.state.radioButton}
                   value={this.state.input}
