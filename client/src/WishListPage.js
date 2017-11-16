@@ -397,8 +397,15 @@ class WishListPage extends Component {
 
         { /* Displays the AddItem button only if currentList belongs to currentUser */
           isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-        }
-
+        } 
+        <Paper className="leftSideWishlistPaper" style={{maxWidth: 300, float: 'left', marginTop: '50px'}}>
+          <AppBar title="All Lists"
+              style={{maxWidth: 400}}>
+          </AppBar>
+          <div className="wishlistsOnLeft">
+            {this.renderMessages()}
+          </div>
+        </Paper>
         <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
           <div>
             <AppBar title={showTitle()}
