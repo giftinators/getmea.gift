@@ -66,6 +66,95 @@ const getUser = (username, loggedInUserId) => {
   })
 };
 
+const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    User.find({})
+    .select('-password') //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((user) => {
+      //check if user doesn't exist
+      if (!user) {
+        reject('no users');
+      } else {
+        resolve(user);
+      }
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getUserByUsername = (user) => {
+  return new Promise((resolve, reject) => {
+    var allUsers = [];
+    User.find({firstName: user.firstName})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((foundUser) => {
+      allUsers = foundUser
+      User.find({lastName: user.lastName})
+      .select('-password')  //don't send back password
+      .select('-wishlists') //don't send back wishlists
+      .exec()
+      .then((foundUser) => {
+        allUsers.concat(foundUser);
+        resolve(allUsers)
+      })
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getUserByName = (userFullName) => {
+  var allNames = userFullName.split(' ')
+  var user = {firstName: allNames[0].toLowerCase(), lastName: allNames[allNames.length-1].toLowerCase()};
+  console.log('User names: ', user);
+
+
+  return new Promise((resolve, reject) => {
+    var allUsers = [];
+    User.find({firstName: user.firstName})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((foundUser) => {
+      allUsers = foundUser
+      User.find({lastName: user.lastName})
+      .select('-password')  //don't send back password
+      .select('-wishlists') //don't send back wishlists
+      .exec()
+      .then((foundUser) => {
+        allUsers.concat(foundUser);
+        resolve(allUsers)
+      })
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getUserByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    email = email.toLowerCase()
+    User.find({email: email})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((foundUser) => {
+      resolve(foundUser)
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
 
 const createList = (list) => {
   return new Promise((resolve, reject) => {
@@ -263,7 +352,10 @@ const deleteItem = (user_id, item_id) => {
 
 module.exports = {
   getUserById,
+  getAllUsers,
   getUser,
+  getUserByName,
+  getUserByEmail,
   createList,
   deleteList,
   updateList,

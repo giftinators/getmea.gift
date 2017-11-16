@@ -4,7 +4,7 @@ const User = require('../../app/models/user');
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
 const helpers = require('./helpers');
-const passport = require('passport');
+const passport = require('passport');/* http://www.passportjs.org/docs */
 
 
 //get all users
@@ -14,6 +14,13 @@ router.get('/users', (req, res) => {
     res.send({users})
   })
 })
+//get all users in the DB
+router.get('/allUsers'), (req, res) => {
+  helpers.getAllUsers()
+  .then((users) => {
+    res.status(201).send(users)
+  })
+}
 
 //get user
 router.get('/users/:username', (req, res) => {
@@ -42,7 +49,7 @@ router.post('/signup', (req, res) => {
       res.status(401).send({err: err});
     } else {
       req.session.user_id = user._id;
-
+      // user.email = req.body.email
       //create a default list for the new user
       helpers.createList({
         title: 'Wishlist',
@@ -52,6 +59,12 @@ router.post('/signup', (req, res) => {
       .then((list) => {
         //get the user again which should now have the wishlist
         return helpers.getUserById(user._id);
+      })
+      .then((user) => {
+        user.email = req.body.email.toLowerCase()
+        user.firstName = req.body.firstName.toLowerCase()
+        user.lastName = req.body.lastName.toLowerCase()
+        return user.save()
       })
       .then((user) => {
         res.send(user);
@@ -71,6 +84,10 @@ router.post('/signup', (req, res) => {
 }
 */
 router.post('/login', (req, res) => {
+  helpers.getUserByEmail('RT')
+  .then((user) => {
+    console.log('EMAIL FOUND: ', user);
+  })
   passport.authenticate('local-login', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
@@ -90,6 +107,7 @@ router.get('/logout', (req, res) => {
 //Sends back the logged in user's info
 //We use this in the react app
 router.get('/me', (req, res) => {
+  console.log('Getting me');
   var user_id = req.session.user_id;
   helpers.getUserById(user_id)
   .then((user) => {
@@ -99,6 +117,49 @@ router.get('/me', (req, res) => {
     res.send({});
   });
 });
+//search for a User by nameSearch
+/* Example POST data
+{
+  userInput: 'whatever the user types in the serach field'
+  searchMethod: name OR username OR email //indicate your search method
+}
+*/
+router.post('/search', (req, res) => {
+  var searchMethod = req.body.searchMethod;
+  console.log('INSIDE SEARCH API: ', req.body);
+  //req.body is expecte to be an object with a firstName and lastName field
+  if(searchMethod === 'name') {
+    console.log('NAME REQUEST: ', req.body);
+    helpers.getUserByName(req.body.userInput)
+    .then((foundUsers) => {
+      console.log('SERVER FOUND USERS NAME: ', foundUsers);
+      //foundUsers is an array of users that met the search requirements
+      res.status(201).send(foundUsers)
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+  } else if ( searchMethod === 'username' ) {
+    helpers.getUserByUsername(req.body)
+    .then((foundUsers) => {
+      //foundUsers is an array of users that met the search requirements
+      res.status(201).send(foundUsers)
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+  } else if ( searchMethod === 'email' ) {
+    helpers.getUserByEmail(req.body)
+    .then((foundUsers) => {
+      //foundUsers is an array of users that met the search requirements
+      res.status(201).send(foundUsers)
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+  }
+})
+
 
 //add new list to user
 /* Example POST data
@@ -155,6 +216,8 @@ router.put('/lists/:id', (req, res) => {
   var list_id = req.params.id;
   var listUpdates = req.body;
   var user_id = req.session.user_id;
+
+  console.log(req.body);
 
   helpers.updateList(user_id, list_id, listUpdates)
   .then((list) => {
