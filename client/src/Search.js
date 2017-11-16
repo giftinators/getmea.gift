@@ -48,7 +48,7 @@ export default class Search extends Component {
               primaryText={user.firstName}
               onClick={ () => {
                 this.props.history.push('/'+user.username)
-              //   this.setState({currentList: list});
+                this.props.handleClose()
               }}
              />
            )
