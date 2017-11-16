@@ -397,66 +397,86 @@ class WishListPage extends Component {
 
         { /* Displays the AddItem button only if currentList belongs to currentUser */
           isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-        }
-
-        <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
-          <div>
-            <AppBar title={showTitle()}
-              iconElementRight={topRightMenu}
-              iconElementLeft={
-                this.state.currentList.secret
-                  ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
-                    <VisibilityOff style={{padding: 12}}/>
-                  </IconButton>)
-                  : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
-                    <Visibility style={{padding: 12}} />
-                  </IconButton>)
-              }
-            ></AppBar>
-            <Tabs>
-              <Tab onActive={this.showWanted.bind(this)} label="Wanted Items" />
-              <Tab onActive={this.showPurchased.bind(this)} label="Purchased Items" />
-            </Tabs>
-          </div>
-
-
-          <AddList
-            list={this.state.currentList}
-            getdata={this.getUserData.bind(this)}
-            open={this.state.addListOpen}
-            onRequestClose={this.handleAddListClose.bind(this)}
-            handleClose={this.handleAddListClose.bind(this)}
-            state={this.state}
-          />
-
-          <Share
-            user={this.props.currentUser}
-            list={this.state.currentList}
-            open={this.state.shareOpen}
-            onRequestClose={this.handleShareClose.bind(this)}
-            handleClose={this.handleShareClose.bind(this)}
-          />
-
-          <Dialog
-            actions={deleteActions}
-            modal={false}
-            open={this.state.deleteOpen}
-            onRequestClose={this.handleDeleteClose.bind(this)}
-          >
-            Are you sure you want to delete this list?
-          </Dialog>
-
-          <div className="paperContainer">
-            <Paper zDepth={2}>
-              <Table>
-                <TableBody
-                  displayRowCheckbox={false}
-                >
-                  { this.renderList() }
-                </TableBody>
-              </Table>
+        } 
+        <div className="startContainer" 
+        style={{
+          'display':'flex',
+          'flex-direction':'row',
+          maxWidth: '1400px'
+        }}>
+          <div className="wishlist-list-sidebar"
+          style={{
+            'flex':'1'
+          }}>
+            <Paper className="leftSideWishlistPaper" style={{maxWidth: 400, marginTop: '50px'}}>
+              <AppBar title={`${this.state.currentListOwner}'s Lists`}
+                  style={{maxWidth: 400}}>
+              </AppBar>
+              <div className="wishlistsOnLeft">
+                {this.renderMessages()}
+              </div>
             </Paper>
           </div>
+          <div className="wishlistContainer" style={{'flex':'4', textAlign: 'center', margin: 'auto', paddingTop: 50, maxWidth: 800, marginLeft: 50}} >
+            <div>
+              <AppBar title={showTitle()}
+                iconElementRight={topRightMenu}
+                iconElementLeft={
+                  this.state.currentList.secret
+                    ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
+                      <VisibilityOff style={{padding: 12}}/>
+                    </IconButton>)
+                    : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
+                      <Visibility style={{padding: 12}} />
+                    </IconButton>)
+                }
+              ></AppBar>
+              <Tabs>
+                <Tab onActive={this.showWanted.bind(this)} label="Wanted Items" />
+                <Tab onActive={this.showPurchased.bind(this)} label="Purchased Items" />
+              </Tabs>
+            </div>
+
+
+            <AddList
+              list={this.state.currentList}
+              getdata={this.getUserData.bind(this)}
+              open={this.state.addListOpen}
+              onRequestClose={this.handleAddListClose.bind(this)}
+              handleClose={this.handleAddListClose.bind(this)}
+              state={this.state}
+            />
+
+            <Share
+              user={this.props.currentUser}
+              list={this.state.currentList}
+              open={this.state.shareOpen}
+              onRequestClose={this.handleShareClose.bind(this)}
+              handleClose={this.handleShareClose.bind(this)}
+            />
+
+            <Dialog
+              actions={deleteActions}
+              modal={false}
+              open={this.state.deleteOpen}
+              onRequestClose={this.handleDeleteClose.bind(this)}
+            >
+              Are you sure you want to delete this list?
+            </Dialog>
+
+            <div className="paperContainer">
+              <Paper zDepth={2}>
+                <Table>
+                  <TableBody
+                    displayRowCheckbox={false}
+                  >
+                    { this.renderList() }
+                  </TableBody>
+                </Table>
+              </Paper>
+            </div>
+          </div> 
+        { /* End container */ }
         </div>
       </div>
     );
