@@ -111,11 +111,23 @@ class App extends Component {
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
                   iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
-                  iconElementRight={<div><FindUserButton history={history} style={"display: inline"} /><Login style={"display: inline"} history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/></div>}
+                  iconElementRight={
+                    <div>
+                      <div style={{display: "inline-block", margin:"2px"}}>
+                        <FindUserButton history={history} />
+                      </div>
+                      <div style={{display:"inline-block", margin:"2px"}}>
+                        <Login  history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>
+                    </div>
+                    <div style={{display:"inline-block", margin:"2px"}}>
+                      <Login  history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>
+                  </div>
+                  </div>
+                  }
                   zDepth={4}
                 ></AppBar>
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} handleOptionsClick={this.handleOptionsClick.bind(this)} />
-                <Route exact path="/" component={Homepage}/>
+                <Route exact path="/" component={(props) => <Homepage history={history} setCurrentUser={this.setCurrentUser.bind(this)} />}/>
                 <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
                 <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
                 <Options appState={this.state} close={this.handleOptionsClick.bind(this)}/>
