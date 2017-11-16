@@ -166,14 +166,17 @@ class WishListPage extends Component {
        isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
     }
     var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
-    if (list.length > 0) {
+    // if (list.length > 0) {
 
       return (
         <div>
-          <EntryList list={list} />
+          <EntryList list={list} addListComponent={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>}/>        
+          {/* { /* Displays the AddItem button only if currentList belongs to currentUser 
+          isListOwner && 
+          } */}
         </div>
-
       )
+      // )
                     //         list.map((row, index) => (
                     //   <TableRow hoverable={true} key={index}>
                     //     <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
@@ -200,11 +203,11 @@ class WishListPage extends Component {
                     //   </TableRow>
                     // ))
 
-    } else {
-      return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
-              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
-            </div>
-    }
+    // } else {
+    //   return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
+    //           <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
+    //         </div>
+    // }
   }
 
   renderMessages() {
@@ -395,10 +398,6 @@ class WishListPage extends Component {
 
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
-
-        { /* Displays the AddItem button only if currentList belongs to currentUser */
-          isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-        }
         <div className="startContainer"
         style={{
           'display':'flex',

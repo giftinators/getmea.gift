@@ -5,6 +5,9 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import Paper from 'material-ui/Paper';
+
 
 import axios from 'axios';
 
@@ -14,19 +17,46 @@ import Dropzone from 'react-dropzone';
 
 
 const initialState = {
-      open: false,
-      title: '',
-      price: 0,
-      url: '',
-      imageUrl: '',
-      comments: '',
-      errorTextPrice: '*Required',
-      errorTextTitle: '*Required',
-      fileReceived: false,
-      files: null,
-      fileName: '',
-      loading: false
-    };
+  open: false,
+  title: '',
+  price: 0,
+  url: '',
+  imageUrl: '',
+  comments: '',
+  errorTextPrice: '*Required',
+  errorTextTitle: '*Required',
+  fileReceived: false,
+  files: null,
+  fileName: '',
+  loading: false
+};
+
+const AddItemEntry = props => {
+  return (
+    <div 
+    className="entry-card"
+    style={{
+      'display':'inline-block',
+      'backgroundColor':'red',
+      'margin':'2px',
+      'float':'left',
+      'maxWidth':'100%'
+    }}>
+      <Paper>
+        <Card>
+          <CardTitle
+          title="Add item"
+          ></CardTitle>
+          <CardMedia>
+            <div onClick={props.action}>
+              <img style={{maxWidth:'100%'}} src="http://downloadicons.net/sites/default/files/add-icon-76240.png" />
+            </div>
+          </CardMedia>
+        </Card>
+      </Paper>
+    </div>
+  );
+};
 
 export default class AddItem extends Component {
   constructor (props) {
@@ -225,10 +255,8 @@ export default class AddItem extends Component {
     };
 
     return (
-      <div>
-        <FloatingActionButton secondary onClick={this.handleOpen} style={style}>
-          <ContentAdd />
-        </FloatingActionButton>
+      <div style={{width:'33%', display:'inline-block'}}>
+        <AddItemEntry action={this.handleOpen}/>
         <Dialog
           title={Header()}
           actions={actions}

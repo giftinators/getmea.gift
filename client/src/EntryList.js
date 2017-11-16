@@ -1,14 +1,13 @@
 import React from 'react';
 import Entry from './Entry';
-import AddItemEntry from './AddItemEntry';
 
 const EntryList = (props) => {
   return (
-    <div>
+    <div style={{float: 'left', maxWidth:'100%'}}>
       {props.list.map((row, index) => {
         return <Entry data={row}/>;
       })}
-      <AddItemEntry />
+      {props.addListComponent}
     </div>
   );
 };
