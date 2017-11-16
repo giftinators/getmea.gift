@@ -61,7 +61,7 @@ router.post('/signup', (req, res) => {
         return helpers.getUserById(user._id);
       })
       .then((user) => {
-        user.email = req.body.email
+        user.email = req.body.email.toLowerCase()
         user.firstName = req.body.firstName.toLowerCase()
         user.lastName = req.body.lastName.toLowerCase()
         return user.save()
@@ -84,6 +84,10 @@ router.post('/signup', (req, res) => {
 }
 */
 router.post('/login', (req, res) => {
+  helpers.getUserByEmail('RT')
+  .then((user) => {
+    console.log('EMAIL FOUND: ', user);
+  })
   passport.authenticate('local-login', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
@@ -116,21 +120,45 @@ router.get('/me', (req, res) => {
 //search for a User by nameSearch
 /* Example POST data
 {
-  firstName: 'ross',
-  lastName: 'salge'
+  userInput: 'whatever the user types in the serach field'
+  searchMethod: name OR username OR email //indicate your search method
 }
 */
-router.post('/nameSearch', (req, res) => {
+router.post('/search', (req, res) => {
+  var searchMethod = req.body.searchMethod;
+  console.log('INSIDE SEARCH API: ', req.body);
   //req.body is expecte to be an object with a firstName and lastName field
-  helpers.getUserByName(req.body)
-  .then((foundUsers) => {
-    //foundUsers is an array of users that met the search requirements
-    res.status(201).send(foundUsers)
-  })
-  .catch((err) => {
-    res.status(500).send(err)
-  })
+  if(searchMethod === 'name') {
+    helpers.getUserByName(req.body)
+    .then((foundUsers) => {
+      //foundUsers is an array of users that met the search requirements
+      res.status(201).send(foundUsers)
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+  } else if ( searchMethod === 'username' ) {
+    helpers.getUserByUsername(req.body)
+    .then((foundUsers) => {
+      //foundUsers is an array of users that met the search requirements
+      res.status(201).send(foundUsers)
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+  } else if ( searchMethod === 'email' ) {
+    helpers.getUserByUsername(req.body)
+    .then((foundUsers) => {
+      //foundUsers is an array of users that met the search requirements
+      res.status(201).send(foundUsers)
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+  }
 })
+
+
 //add new list to user
 /* Example POST data
 {

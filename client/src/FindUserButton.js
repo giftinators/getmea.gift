@@ -27,6 +27,9 @@ export default class FindUserButton extends Component {
     };
 
 
+    this.setStore = (obj) => {
+      this.setState(obj);
+    };
 
     this.handleOpen = () => {
       this.setState({open: true});
@@ -47,7 +50,11 @@ export default class FindUserButton extends Component {
 
     this.handleSearch = (e) => {
       e.preventDefault;
-      console.log('in handleSearch')
+      console.log('in handleSearch: ', this.state.input, ' ::::' , this.state.radioButton)
+      axios.post('api/search', {
+        searchMethod:this.state.radioButton,
+        userInput: this.state.input
+      })
     }
 
     this.handleKeyPress = (e) => {
@@ -111,6 +118,11 @@ export default class FindUserButton extends Component {
 
     const findUserActions = [
       <FlatButton
+        label="Search"
+        primary={true}
+        onClick={this.handleSearch}
+      />,
+      <FlatButton
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
@@ -133,7 +145,7 @@ export default class FindUserButton extends Component {
             open={this.state.open}
           >
             <div>
-            <RadioButtonGroup name="status" defaultSelected="name" onChange={(e, value) => {this.handleRadioSwitch(e, value)}}>
+            <RadioButtonGroup name="status" defaultSelected="name" onChange={(e, value) => {this.setStore({radioButton: value})}}>
             <RadioButton style={{ display: 'inline-block', width: '100px' }} label="name" value="name" />
             <RadioButton style={{ display: 'inline-block', width: '100px', marginLeft: '50px' }} label="username" value="username" />
             <RadioButton style={{ display: 'inline-block', width: '100px', marginLeft: '50px' }} label="email" value="email" />

@@ -70,7 +70,8 @@ const getAllUsers = () => {
   return new Promise((resolve, reject) => {
     User.find({})
     .select('-password') //don't send back password
-    .exec()
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
     .then((user) => {
       //check if user doesn't exist
       if (!user) {
@@ -85,14 +86,13 @@ const getAllUsers = () => {
   })
 };
 
-const getUserByName = (user) => {
+const getUserByUsername = (user) => {
   return new Promise((resolve, reject) => {
     var allUsers = [];
     User.find({firstName: user.firstName})
-    // User.find({firstName: 'Carter'})
     .select('-password')  //don't send back password
     .select('-wishlists') //don't send back wishlists
-    .exec()
+    .exec() //sends the query
     .then((foundUser) => {
       allUsers = foundUser
       User.find({lastName: user.lastName})
@@ -103,6 +103,50 @@ const getUserByName = (user) => {
         allUsers.concat(foundUser);
         resolve(allUsers)
       })
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getUserByName = (userFullName) => {
+  var allNames = userFullName.split(' ')
+  console.log('ALL names: ', allNames);
+  var user = {};
+
+  return new Promise((resolve, reject) => {
+    var allUsers = [];
+    User.find({firstName: user.firstName})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((foundUser) => {
+      allUsers = foundUser
+      User.find({lastName: user.lastName})
+      .select('-password')  //don't send back password
+      .select('-wishlists') //don't send back wishlists
+      .exec()
+      .then((foundUser) => {
+        allUsers.concat(foundUser);
+        resolve(allUsers)
+      })
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getUserByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    email = email.toLowerCase()
+    User.find({email: email})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((foundUser) => {
+      resolve(foundUser)
     })
     .catch((err) => {
       reject(err);
@@ -310,6 +354,7 @@ module.exports = {
   getAllUsers,
   getUser,
   getUserByName,
+  getUserByEmail,
   createList,
   deleteList,
   updateList,
