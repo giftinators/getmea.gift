@@ -39,23 +39,17 @@ export default class FindUserButton extends Component {
     };
 
     this.handleClose = () => {
-      this.setState({open: false});
+      this.setState({open: false, usersFound: false, foundUsers: []});
+      this.props.refresh()//refreshes the page so proper lists are shown
     };
-/*
-    this.toggleRegister = () => {
-      this.setState({register: !this.state.register})
-    };
-*/
 
     this.handleSearch = (e) => {
       e.preventDefault();
-      console.log('in handleSearch: ', this.state.input, ' ::::' , this.state.radioButton)
       axios.post('api/search', {
         searchMethod:this.state.radioButton,
         userInput: this.state.input
       })
       .then((users) => {
-        console.log('USERS FOUND IN FindUserButton: ', users.data);
         this.setState({foundUsers: users, usersFound: true})
       })
       .catch((err) => {
@@ -68,51 +62,6 @@ export default class FindUserButton extends Component {
         this.handleSearch(e);
       }
     }
-
-/*
-    this.handleLoginSubmit = (e) => {
-      e.preventDefault();
-      axios.post('/api/login', {
-        username: this.state.username,
-        password: this.state.password
-      })
-      .then((response) => {
-        if (response.data) {
-          this.props.setCurrentUser(response.data);
-          this.setState({open: false});
-          if (this.props.history.location.pathname === '/'){
-            this.props.history.push('/'+this.state.username)
-          }
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    };
-
-    this.handleRegisterSubmit = (e) => {
-      e.preventDefault();
-      axios.post('api/signup', {
-        username: this.state.username,
-        password: this.state.password
-      })
-      .then((response) => {
-        if(response.data) {
-          this.props.setCurrentUser(response.data);
-          this.setState({open: false});
-          if (this.props.history.location.pathname === '/'){
-            this.props.history.push('/'+this.state.username)
-          }
-        } else {
-          console.log(response);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    };
-
-*/
 
 }
 
@@ -166,8 +115,7 @@ export default class FindUserButton extends Component {
                 />
               </form>
             </div>
-            {console.log('HISTORY: ', this.props)}
-            {this.state.usersFound && <Search history={this.props.history} handleClose={()=>{this.setStore({open: false})}}users={this.state.foundUsers}/>}
+            {this.state.usersFound && <Search history={this.props.history} handleClose={this.handleClose.bind(this)} users={this.state.foundUsers}/>}
           </Dialog>
         </div>
     )

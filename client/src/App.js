@@ -50,6 +50,9 @@ class App extends Component {
       this.setState({currentUser: user});
     }
 
+    this.refresh = () => {
+      this.setState({currentUser: this.state.currentUser})
+    }
     this.getLoggedInUser = () => {
       axios.get('/api/me')
       .then((user) => {
@@ -76,14 +79,7 @@ class App extends Component {
         optionsShow: !this.state.optionsShow
       })
     }
-/*
-    this.handleFindUser = () => {
-      console.log('inside handleFindUser');
-      this.setState({
-        userSearch: true
-      })
-    }
-*/
+
     this.handleLogout = (e) => {
       e.preventDefault();
       axios('/api/logout')
@@ -98,7 +94,6 @@ class App extends Component {
   }
 
   componentWillMount() {
-    console.log('MOUNTED');
     this.getLoggedInUser();
   }
 
@@ -114,7 +109,7 @@ class App extends Component {
                   iconElementRight={
                     <div>
                       <div style={{display: "inline-block", margin:"2px"}}>
-                        <FindUserButton history={history} />
+                        <FindUserButton refresh={this.refresh.bind(this)} history={history} />
                       </div>
                       <div style={{display:"inline-block", margin:"2px"}}>
                         <Login  history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/>

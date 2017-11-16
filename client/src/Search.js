@@ -23,7 +23,7 @@ export default class Search extends Component {
     super(props);
 
     this.state = {
-
+      test:0
     };
 
 
@@ -33,48 +33,25 @@ export default class Search extends Component {
   }
 
   renderUsers(props) {
-    console.log('SEARCH PROPS: ', this.props);
     var key = 5;
-    //changed just now
-  //   if (this.state.currentList) {
-  //     var username = this.props.match.params.username;
-  //
-  //     if (this.state.currentList.items && this.state.currentList.items.length >= 0) {
-        return (
-          this.props.users.data.map((user) => {
-            return ( <MenuItem
-              key={key++}
-              // rightIcon={list.secret ? <VisibilityOff /> : <Visibility />}
-              primaryText={user.firstName}
-              onClick={ () => {
-                this.props.history.push('/'+user.username)
-                this.props.handleClose()
-              }}
-             />
-           )
-          })
-  //
-  //         this.state.userData.wishlists.map((list, index) => {
-  //           return (
-              // <MenuItem
-              //   key={1}
-                // rightIcon={list.secret ? <VisibilityOff /> : <Visibility />}
-                // primaryText='user'
-                // onClick={ () => {
-                //   this.props.history.push('/'+username+'/'+list._id);
-                //   this.setState({currentList: list});
-                // }}
-               // />
-  //           )})
+      return (
+        this.props.users.data.map((user) => {
+          return ( <MenuItem
+            key={key++}
+            // rightIcon={list.secret ? <VisibilityOff /> : <Visibility />}
+            primaryText={user.firstName}
+            onClick={ () => {
+              this.props.history.push('/'+user.username)
+              this.props.handleClose()
+            }}
+           />
           )
-  //     }
-  //   }
-
+        })
+      )
   }
 
 
   render() {
-    console.log('INSIDE SEARCH RENDER');
     return (
     <div className="search-sidebar"
       style={{'flex':'1'}}
@@ -86,7 +63,6 @@ export default class Search extends Component {
         >
         </AppBar>
         <div className="wishlistsOnLeft">
-          Hello
           {this.renderUsers()}
         </div>
       </Paper>

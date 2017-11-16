@@ -5,7 +5,6 @@ const EntryList = (props) => {
   return (
     <div>
       {props.list.map((row, index) => {
-        console.log(row);
         return <Entry data={row}/>;
       })}
     </div>
