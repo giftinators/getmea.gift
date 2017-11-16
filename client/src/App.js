@@ -111,7 +111,7 @@ class App extends Component {
                 <AppBar id='appBar'
                   title={<Link style={style.logo} to="/">Get Me A Gift</Link>}
                   iconElementLeft={<IconButton><Menu onClick={() => this.toggleDrawer()} /></IconButton>}
-                  iconElementRight={<div><FindUserButton style={"display: inline"} /><Login style={"display: inline"} history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/></div>}
+                  iconElementRight={<div><FindUserButton history={history} style={"display: inline"} /><Login style={"display: inline"} history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/></div>}
                   zDepth={4}
                 ></AppBar>
                 <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} handleOptionsClick={this.handleOptionsClick.bind(this)} />

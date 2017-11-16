@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-
+import Search from './Search.js'
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
@@ -23,10 +23,16 @@ export default class FindUserButton extends Component {
       open: false,
       register: false,
       input: '',
-      radioButton: 'name'
+      radioButton: 'name',
+      foundUsers: [],
+      usersFound: false
     };
 
+    this.setStore = (obj) => {
+      this.setState(obj);
+    };
 
+    this.setStore = this.setStore.bind(this)
 
     this.handleOpen = () => {
       this.setState({open: true});
@@ -41,13 +47,20 @@ export default class FindUserButton extends Component {
     };
 */
 
-    this.handleInputChange = (e, newValue) => {
-      this.setState({input: newValue})
-    };
-
     this.handleSearch = (e) => {
-      e.preventDefault;
-      console.log('in handleSearch')
+      e.preventDefault();
+      console.log('in handleSearch: ', this.state.input, ' ::::' , this.state.radioButton)
+      axios.post('api/search', {
+        searchMethod:this.state.radioButton,
+        userInput: this.state.input
+      })
+      .then((users) => {
+        console.log('USERS FOUND IN FindUserButton: ', users.data);
+        this.setState({foundUsers: users, usersFound: true})
+      })
+      .catch((err) => {
+        console.log('Handle search error: ', err);
+      })
     }
 
     this.handleKeyPress = (e) => {
@@ -56,9 +69,6 @@ export default class FindUserButton extends Component {
       }
     }
 
-    this.handleRadioSwitch = (e, label) => {
-      this.setState({radioButton: label})
-    }
 /*
     this.handleLoginSubmit = (e) => {
       e.preventDefault();
@@ -114,6 +124,11 @@ export default class FindUserButton extends Component {
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="Search"
+        primary={true}
+        onClick={this.handleSearch}
       />
     ];
 
@@ -133,7 +148,7 @@ export default class FindUserButton extends Component {
             open={this.state.open}
           >
             <div>
-            <RadioButtonGroup name="status" defaultSelected="name" onChange={(e, value) => {this.handleRadioSwitch(e, value)}}>
+            <RadioButtonGroup name="status" defaultSelected="name" onChange={(e, value) => {this.setStore({radioButton: value})}}>
             <RadioButton style={{ display: 'inline-block', width: '100px' }} label="name" value="name" />
             <RadioButton style={{ display: 'inline-block', width: '100px', marginLeft: '50px' }} label="username" value="username" />
             <RadioButton style={{ display: 'inline-block', width: '100px', marginLeft: '50px' }} label="email" value="email" />
@@ -144,13 +159,15 @@ export default class FindUserButton extends Component {
               <form onSubmit={this.handleSubmit}>
                 <TextField
                   onKeyPress={this.handleKeyPress}
-                  onChange={this.handleInputChange}
+                  onChange={(e, newValue) => {this.setStore({input: newValue})}}
                   hintText={hintText[this.state.radioButton]}
                   floatingLabelText={this.state.radioButton}
                   value={this.state.input}
                 />
               </form>
             </div>
+            {console.log('HISTORY: ', this.props)}
+            {this.state.usersFound && <Search history={this.props.history} handleClose={()=>{this.setStore({open: false})}}users={this.state.foundUsers}/>}
           </Dialog>
         </div>
     )
