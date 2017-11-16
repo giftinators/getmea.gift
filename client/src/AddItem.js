@@ -157,19 +157,21 @@ export default class AddItem extends Component {
           const formData = new FormData();
           formData.append("file", file);
           formData.append("tags", `getmeagift`);
-          formData.append("upload_preset", "sgazd2ix"); //preset is with account
-          formData.append("api_key", "737998977447549"); //key is based on account
+          formData.append("upload_preset", "n5n2w26w"); //preset is with account
+          formData.append("api_key", "365845311351591"); //key is based on account
           formData.append("timestamp", (Date.now() / 1000) | 0);
 
           // Make an AJAX upload request using Axios
           // The url is provided by cloudinary
-          return axios.post("https://api.cloudinary.com/v1_1/getmeagift/image/upload", formData, {
+          return axios.post("https://api.cloudinary.com/v1_1/getmeagiftlegacy/image/upload", formData, {
             headers: { "X-Requested-With": "XMLHttpRequest" },
           })
           .then(response => {
             const data = response.data;
             //url of image in cloudinary
+            console.log(data);
             const fileURL = data.secure_url
+            console.log(fileURL);
             //set the state to the new url
             this.setState({
               imageUrl: fileURL

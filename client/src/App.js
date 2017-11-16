@@ -17,7 +17,7 @@ import Menu from 'material-ui/svg-icons/navigation/menu';
 import AppDrawer from './AppDrawer';
 import IconButton from 'material-ui/IconButton';
 import FindUserButton from './FindUserButton';
-
+import Options from './Options';
 const history = createHistory();
 //overwrite default theme
 const muiTheme = getMuiTheme({
@@ -42,7 +42,8 @@ class App extends Component {
 
     this.state = {
       currentUser: true,
-      drawerShow: false
+      drawerShow: false,
+      optionsShow: false,
     };
 
     this.setCurrentUser = (user) => {
@@ -67,6 +68,12 @@ class App extends Component {
     this.toggleDrawer = () => {
       this.setState({
         drawerShow: !this.state.drawerShow
+      })
+    }
+
+    this.handleOptionsClick = () => {
+      this.setState({
+        optionsShow: !this.state.optionsShow
       })
     }
 /*
@@ -107,10 +114,11 @@ class App extends Component {
                   iconElementRight={<div><FindUserButton style={"display: inline"} /><Login style={"display: inline"} history={history} handleLogout={this.handleLogout.bind(this)} setCurrentUser={this.setCurrentUser.bind(this)} user={this.state.currentUser} currentList={this.state.currentList}/></div>}
                   zDepth={4}
                 ></AppBar>
-                <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} />
+                <AppDrawer handleLogout={this.handleLogout.bind(this)} currentUser={this.state.currentUser} setCurrentList={this.setCurrentList.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)} open={this.state.drawerShow} handleOptionsClick={this.handleOptionsClick.bind(this)} />
                 <Route exact path="/" component={Homepage}/>
                 <Route exact path="/:username" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
                 <Route exact path="/:username/:list_id" component={(props) => <WishListPage {...props} currentUser={this.state.currentUser} />} />
+                <Options appState={this.state} close={this.handleOptionsClick.bind(this)}/>
                 <Footer />
               </div>
             </div>
