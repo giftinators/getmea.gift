@@ -25,6 +25,7 @@ const Entry = props => {
               return date;
             })()}
           />
+          <CardText>{props.data.price}</CardText>
           <CardText>{props.data.comments}</CardText>
           <CardActions>
             <FlatButton label="Link" />

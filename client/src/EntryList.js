@@ -1,5 +1,6 @@
 import React from 'react';
 import Entry from './Entry';
+import AddItemEntry from './AddItemEntry';
 
 const EntryList = (props) => {
   return (
@@ -7,6 +8,7 @@ const EntryList = (props) => {
       {props.list.map((row, index) => {
         return <Entry data={row}/>;
       })}
+      <AddItemEntry />
     </div>
   );
 };
