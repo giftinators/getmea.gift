@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-
+import Search from './Search.js'
 /**
 * A modal dialog can only be closed by selecting one of the actions.
 */
@@ -55,6 +55,9 @@ export default class FindUserButton extends Component {
       .then((users) => {
         console.log('USERS FOUND IN FindUserButton: ', users.data);
         this.setState({foundUsers: users, usersFound: true})
+      })
+      .catch((err) => {
+        console.log('Handle search error: ', err);
       })
     }
 
@@ -161,6 +164,8 @@ export default class FindUserButton extends Component {
                 />
               </form>
             </div>
+            {console.log('HISTORY: ', this.props)}
+            {this.state.usersFound && <Search history={this.props.history} users={this.state.foundUsers}/>}
           </Dialog>
         </div>
     )
