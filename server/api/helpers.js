@@ -359,9 +359,16 @@ const deleteItem = (user_id, item_id) => {
   })
 };
 
-const friendRequest = (initiatingUser_id, requestedUser_id) => {
+const friendRequest = (initiatingUser_id, requestedUser_id) => { //requestedUser_id:{status:'pending', initiated:false}
   return new Promise((resolve, reject) => {
-    User.findById(initiatingUser_id, (err, user) => {
+    User.update({user_id:initiatingUser_id},{friends:'hello'}, (err, raw) => {
+      if(err) {
+        console.log('FR ERROR: ', err);
+      } else {
+        console.log('USER CHANGE: ', raw);
+      }
+    })
+    User.findById(initiatingUser_id, 'friends').exec( (err, user) => {
       if ( err ) {
         reject(err)
       } else {
