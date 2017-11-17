@@ -22,10 +22,10 @@ const history = createHistory();
 //overwrite default theme
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: '#00AA8D',
-    primary2Color: '#00BF9A',
-    primary3Color: '#008975',
-    accent1Color: '#008975'
+    primary1Color: '#ff5656',
+    primary2Color: '#fff163',
+    primary3Color: '#fff487',
+    accent1Color: '#fd6464'
   }
 });
 

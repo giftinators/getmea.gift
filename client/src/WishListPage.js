@@ -31,15 +31,18 @@ import AddList from './AddList';
 import BuyGiftModal from './BuyGiftModal';
 import Share from './Share';
 import EntryList from './EntryList';
+import WishlistEntryGridList from './WishlistEntryGridList';
 
 import axios from 'axios';
 
 import giftImage from './img/gift.png';
 
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+
 const style = {
 
   backgroundStyle: {
-    backgroundColor: '#eaf2ff',
+    backgroundColor: '#ffffff',
     height: '110%',
     paddingBottom: 40
   },
@@ -53,6 +56,34 @@ const style = {
     fontSize: 16,
     fontWeight: 400,
   }
+};
+
+const FriendsList = props => {
+  console.log(props.userData);
+
+
+
+  return (
+    <div className="friends-list">
+      <Paper>
+        <AppBar 
+          title="Pending"
+          iconElementLeft={<div></div>}
+          />
+          <MenuItem key="1" primaryText="it's me" />    
+          <MenuItem key="2" primaryText="hello" />
+          <Divider />
+          <MenuItem key="3" primaryText="it's me" />
+          <AppBar 
+          title="All Friends"
+          iconElementLeft={<div></div>}
+          />
+          <MenuItem key="4" primaryText="hello" />
+          <Divider />
+          <MenuItem key="5" primaryText="it's me" />
+      </Paper>
+    </div>
+  );
 };
 
 class WishListPage extends Component {
@@ -166,14 +197,20 @@ class WishListPage extends Component {
        isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
     }
     var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
-    if (list.length > 0) {
+    // if (list.length > 0) {
 
       return (
-        <div>
-          <EntryList list={list} />
-        </div>
+        <WishlistEntryGridList list={list} addItem={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)} />} />
 
-      )
+
+        // <div>
+        //   <EntryList list={list} addListComponent={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>}/>        
+        //   {/* { /* Displays the AddItem button only if currentList belongs to currentUser 
+        //   isListOwner && 
+        //   } */}
+        // </div>
+      );
+      // )
                     //         list.map((row, index) => (
                     //   <TableRow hoverable={true} key={index}>
                     //     <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
@@ -200,11 +237,11 @@ class WishListPage extends Component {
                     //   </TableRow>
                     // ))
 
-    } else {
-      return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
-              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
-            </div>
-    }
+    // } else {
+    //   return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
+    //           <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
+    //         </div>
+    // }
   }
 
   renderMessages() {
@@ -291,7 +328,7 @@ class WishListPage extends Component {
           <div>
             <input
               type="text"
-              value={this.state.currentList.title.toUpperCase()}
+              value={this.state.currentList.title}
               onChange={(e) => {
                 // Copy current list into a new one to set state of current list to new one.
                 var newCurrentList = Object.assign({}, this.state.currentList);
@@ -395,10 +432,6 @@ class WishListPage extends Component {
 
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
-
-        { /* Displays the AddItem button only if currentList belongs to currentUser */
-          isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-        }
         <div className="startContainer"
         style={{
           'display':'flex',
@@ -409,7 +442,7 @@ class WishListPage extends Component {
           style={{
             'flex':'1'
           }}>
-            <Paper className="leftSideWishlistPaper" style={{maxWidth: 400, marginTop: '50px'}}>
+            <Paper className="leftSideWishlistPaper" style={{maxWidth: 400, marginTop: '50px', marginLeft:"10px"}}>
               <AppBar title={`${this.state.currentListOwner}'s Lists`}
                   style={{maxWidth: 400}}>
               </AppBar>
@@ -418,7 +451,7 @@ class WishListPage extends Component {
               </div>
             </Paper>
           </div>
-          <div className="wishlistContainer" style={{'flex':'4', textAlign: 'center', margin: 'auto', paddingTop: 50, maxWidth: 800, marginLeft: 50}} >
+          <div className="wishlistContainer" style={{'flex':'4', textAlign: 'center', margin: 'auto', paddingTop: 50, maxWidth: 800, marginLeft: 10}} >
             <div>
               <AppBar title={showTitle()}
                 iconElementRight={topRightMenu}
@@ -477,7 +510,16 @@ class WishListPage extends Component {
               </Paper>
             </div>
           </div>
-        { /* End container */ }
+
+
+
+
+
+          <div className="friends-container" style={{flex:'2', marginLeft: '10px', marginTop: '50px', marginRight: '10px'}}>
+            <FriendsList userData={this.state.userData}/>
+          </div>
+
+
         </div>
       </div>
     );

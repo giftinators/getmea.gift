@@ -3,10 +3,11 @@ import Entry from './Entry';
 
 const EntryList = (props) => {
   return (
-    <div>
+    <div style={{float: 'left', maxWidth:'100%'}}>
       {props.list.map((row, index) => {
         return <Entry data={row}/>;
       })}
+      {props.addListComponent}
     </div>
   );
 };
