@@ -52,21 +52,25 @@ export default class Search extends Component {
 
 
   render() {
-    return (
-    <div className="search-sidebar"
-      style={{'flex':'1'}}
-    >
-      <Paper className="leftSideWishlistPaper" style={{maxWidth: 400, marginTop: '50px'}}>
-        <AppBar title={`Search results`}
-          iconElementLeft={<div></div>}
-          style={{maxWidth: 400}}
-        >
-        </AppBar>
-        <div className="wishlistsOnLeft">
-          {this.renderUsers()}
-        </div>
-      </Paper>
-    </div>
-  )
+    if(this.props.users.data ) {
+      return (
+        <div className="search-sidebar"
+          style={{'flex':'1'}}
+          >
+            <Paper className="leftSideWishlistPaper" style={{maxWidth: 400, marginTop: '50px'}}>
+              <AppBar title={`Search results`}
+                iconElementLeft={<div></div>}
+                style={{maxWidth: 400}}
+                >
+                </AppBar>
+                <div className="wishlistsOnLeft">
+                  {this.props.users.data && this.renderUsers()}
+                </div>
+              </Paper>
+            </div>
+      )
+    } else {
+      return <div></div>
+    }
   }
 }

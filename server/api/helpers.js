@@ -1,6 +1,7 @@
 const User = require('../../app/models/user');
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
+const _ = require('underscore')
 
 const getUserById = (user_id) => {
   return new Promise((resolve, reject) => {
@@ -87,7 +88,7 @@ const getAllUsers = () => {
 };
 
 const getUserByUsername = (username) => {
-  console.log('USERNAME BODY: ', user);
+  console.log('USERNAME BODY: ', username);
   return new Promise((resolve, reject) => {
     User.find({username: username})
     .select('-password')  //don't send back password
@@ -138,6 +139,7 @@ const getUserByName = (userFullName) => {
       .exec()
       .then((foundUser) => {
         allUsers = allUsers.concat(foundUser);
+        console.log('regular allUsers: ', allUsers);
         resolve(allUsers)
       })
     })
