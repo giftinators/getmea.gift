@@ -70,17 +70,18 @@ const WishlistEntryGridList = (props) => (
       style={styles.gridList}
     >
       <Subheader>December</Subheader>
-      {props.list.map((tile) => (
+      {props.list.map((tile, index) => (
         <GridTile
-          key={tile.img}
+          key={index}
           title={tile.title}
-          subtitle={<span>by <b>{tile.author}</b></span>}
+          subtitle={<span>by <b>{tile.comments}</b></span>}
           actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
         >
-          <img src={tile.img} />
+          <img src={tile.image_url} />
         </GridTile>
       ))}
     </GridList>
+    {props.addItem}
   </div>
 );
 
