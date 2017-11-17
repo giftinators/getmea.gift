@@ -28,6 +28,7 @@ import AddCircle from 'material-ui/svg-icons/content/add-circle';
 
 import AddItem from './AddItem';
 import AddList from './AddList';
+import FriendsList from './FriendsList';
 import BuyGiftModal from './BuyGiftModal';
 import Share from './Share';
 import EntryList from './EntryList';
@@ -58,33 +59,33 @@ const style = {
   }
 };
 
-const FriendsList = props => {
-  console.log(props.userData);
-
-
-
-  return (
-    <div className="friends-list">
-      <Paper>
-        <AppBar 
-          title="Pending"
-          iconElementLeft={<div></div>}
-          />
-          <MenuItem key="1" primaryText="it's me" />    
-          <MenuItem key="2" primaryText="hello" />
-          <Divider />
-          <MenuItem key="3" primaryText="it's me" />
-          <AppBar 
-          title="All Friends"
-          iconElementLeft={<div></div>}
-          />
-          <MenuItem key="4" primaryText="hello" />
-          <Divider />
-          <MenuItem key="5" primaryText="it's me" />
-      </Paper>
-    </div>
-  );
-};
+// const FriendsList = props => {
+//   console.log(props.userData);
+//
+//
+//
+//   return (
+//     <div className="friends-list">
+//       <Paper>
+//         <AppBar
+//           title="Pending"
+//           iconElementLeft={<div></div>}
+//           />
+//           <MenuItem key="1" primaryText="it's me" />
+//           <MenuItem key="2" primaryText="hello" />
+//           <Divider />
+//           <MenuItem key="3" primaryText="it's me" />
+//           <AppBar
+//           title="All Friends"
+//           iconElementLeft={<div></div>}
+//           />
+//           <MenuItem key="4" primaryText="hello" />
+//           <Divider />
+//           <MenuItem key="5" primaryText="it's me" />
+//       </Paper>
+//     </div>
+//   );
+// };
 
 class WishListPage extends Component {
   constructor(props) {
@@ -140,6 +141,7 @@ class WishListPage extends Component {
       return res.data;
     })
     .then((res)=>{
+
       //if a list was requested try to find that list
       if (list_id){
         //find the specific list and set it to currentList
@@ -204,9 +206,9 @@ class WishListPage extends Component {
 
 
         // <div>
-        //   <EntryList list={list} addListComponent={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>}/>        
-        //   {/* { /* Displays the AddItem button only if currentList belongs to currentUser 
-        //   isListOwner && 
+        //   <EntryList list={list} addListComponent={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>}/>
+        //   {/* { /* Displays the AddItem button only if currentList belongs to currentUser
+        //   isListOwner &&
         //   } */}
         // </div>
       );
@@ -510,10 +512,6 @@ class WishListPage extends Component {
               </Paper>
             </div>
           </div>
-
-
-
-
 
           <div className="friends-container" style={{flex:'2', marginLeft: '10px', marginTop: '50px', marginRight: '10px'}}>
             <FriendsList userData={this.state.userData}/>

@@ -120,7 +120,7 @@ router.get('/me', (req, res) => {
 //search for a User by nameSearch
 /* Example POST data
 {
-  userInput: 'whatever the user types in the serach field'
+  userInput: 'whatever the user types in the search field'
   searchMethod: name OR username OR email //indicate your search method
 }
 */
@@ -147,6 +147,15 @@ router.post('/search', (req, res) => {
   } else if ( searchMethod === 'email' ) {
     console.log('SERVER EMAIL SRACH');
     helpers.getUserByEmail(req.body.userInput)
+    .then((foundUsers) => {
+      //foundUsers is an array of users that met the search requirements
+      res.status(201).send(foundUsers)
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+  } else if ( searchMethod === 'id' ) {
+    helpers.getUserById(req.body.userInput)
     .then((foundUsers) => {
       //foundUsers is an array of users that met the search requirements
       res.status(201).send(foundUsers)
@@ -297,9 +306,9 @@ router.post('/friendRequest', (req, res) => {
   helpers.friendRequest(initiatingUser_id, requestedUser_id)
   .then((data) => {
     res.send(`Success: ${data}`)
-  });
+  })
   .catch((err) => {
-    res.status(401).send({err});
+    res.status(400).send({err});
   });
 });
 
@@ -309,9 +318,9 @@ router.post('/acceptFriendRequest', (req, res) => {
   helpers.addFriend(acceptUser_id, requestUser_id)
   .then((data) => {
     res.send(`Success: ${data}`)
-  });
+  })
   .catch((err) => {
-    res.status(401).send({err});
+    res.status(400).send({err});
   });
 });
 
@@ -321,9 +330,9 @@ router.post('/denyFriendRequest', (req, res) => {
   helpers.addFriend(denyUser_id, requestUser_id)
   .then((data) => {
     res.send(`Success: ${data}`)
-  });
+  })
   .catch((err) => {
-    res.status(401).send({err});
+    res.status(400).send({err});
   });
 });
 
