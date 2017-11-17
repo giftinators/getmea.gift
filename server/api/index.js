@@ -287,6 +287,25 @@ router.delete('/items/:id', (req, res) => {
   });
 });
 
+router.post('/friendRequest', (req, res) => {
+  var initiatingUser_id = req.body.initiatingUser_id;
+  var requestedUser_id = req.body.requestedUser_id;
+  // insert helper here
+});
+
+router.post('/acceptFriendRequest', (req, res) => {
+  var acceptingUser_id = req.body.acceptingUser_id;
+  var requestingUser_id = req.body.requestingUser_id;
+  // insert helper here
+});
+
+router.post('/rejectFriendRequest', (req, res) => {
+  var rejecttingUser_id = req.body.rejecttingUser_id;
+  var requestingUser_id = req.body.requestingUser_id;
+  // insert helper here
+});
+
+
 
 
 module.exports = router;

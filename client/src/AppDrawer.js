@@ -30,7 +30,7 @@ const AppDrawer = ({open, toggleDrawer, currentUser, muiTheme, showLists, histor
             } }
           ></MenuItem>
         )
-      })
+      }).concat([<MenuItem primaryText={'Create New List'}></MenuItem>])
     )
   }
 

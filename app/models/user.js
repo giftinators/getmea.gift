@@ -7,7 +7,8 @@ var userSchema = mongoose.Schema({
   wishlists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
   email: {type: String, required: false},
   firstName: {type: String, required: false},
-  lastName: {type: String, required: false}
+  lastName: {type: String, required: false},
+  friends: {type: Object, required: false},
 })
 
 // user method for generating a hashed password
