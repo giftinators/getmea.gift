@@ -30,15 +30,19 @@ import AddItem from './AddItem';
 import AddList from './AddList';
 import BuyGiftModal from './BuyGiftModal';
 import Share from './Share';
+import EntryList from './EntryList';
+import WishlistEntryGridList from './WishlistEntryGridList';
 
 import axios from 'axios';
 
 import giftImage from './img/gift.png';
 
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+
 const style = {
 
   backgroundStyle: {
-    backgroundColor: '#eaf2ff',
+    backgroundColor: '#ffffff',
     height: '110%',
     paddingBottom: 40
   },
@@ -52,6 +56,34 @@ const style = {
     fontSize: 16,
     fontWeight: 400,
   }
+};
+
+const FriendsList = props => {
+  console.log(props.userData);
+
+
+
+  return (
+    <div className="friends-list">
+      <Paper>
+        <AppBar 
+          title="Pending"
+          iconElementLeft={<div></div>}
+          />
+          <MenuItem key="1" primaryText="it's me" />    
+          <MenuItem key="2" primaryText="hello" />
+          <Divider />
+          <MenuItem key="3" primaryText="it's me" />
+          <AppBar 
+          title="All Friends"
+          iconElementLeft={<div></div>}
+          />
+          <MenuItem key="4" primaryText="hello" />
+          <Divider />
+          <MenuItem key="5" primaryText="it's me" />
+      </Paper>
+    </div>
+  );
 };
 
 class WishListPage extends Component {
@@ -165,39 +197,51 @@ class WishListPage extends Component {
        isListOwner = this.props.currentUser._id === this.state.currentList.user_id;
     }
     var list = this.state.showPurchased ? this.state.purchasedItems : this.state.wantedItems;
-    if (list.length > 0) {
+    // if (list.length > 0) {
+
       return (
-                            list.map((row, index) => (
-                      <TableRow hoverable={true} key={index}>
-                        <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
-                        <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
-                        <TableRowColumn style={{color: 'white'}} >
-                        {!row.purchased &&
-                          <BuyGiftModal
-                            primary={this.props.muiTheme.palette.primary1Color}
-                            item={row}
-                            index={index}
-                            getUserData={this.getUserData.bind(this)}
-                            isListOwner={isListOwner}
-                            userData={this.state.userData}
-                          />
-                        }
-                        </TableRowColumn>
-                        <TableRowColumn hoverable={true} style={{ height: 140}}>
-                          {
-                            row.image_url && <Paper style={{marginTop: 10, maxHeight: 120, textAlign:'center'}} zDepth={1} >
-                              <img alt={''} style={style.images} src={row.image_url}/>
-                            </Paper>
-                          }
-                        </TableRowColumn>
-                      </TableRow>
-                    ))
-      )
-    } else {
-      return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
-              <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
-            </div>
-    }
+        <WishlistEntryGridList list={list} addItem={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)} />} />
+
+
+        // <div>
+        //   <EntryList list={list} addListComponent={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>}/>        
+        //   {/* { /* Displays the AddItem button only if currentList belongs to currentUser 
+        //   isListOwner && 
+        //   } */}
+        // </div>
+      );
+      // )
+                    //         list.map((row, index) => (
+                    //   <TableRow hoverable={true} key={index}>
+                    //     <TableRowColumn style={{fontSize: 18, width: '25%'}}>{row.title}</TableRowColumn>
+                    //     <TableRowColumn  style={{fontSize: 18}}>${row.price}</TableRowColumn>
+                    //     <TableRowColumn style={{color: 'white'}} >
+                    //     {!row.purchased &&
+                    //       <BuyGiftModal
+                    //         primary={this.props.muiTheme.palette.primary1Color}
+                    //         item={row}
+                    //         index={index}
+                    //         getUserData={this.getUserData.bind(this)}
+                    //         isListOwner={isListOwner}
+                    //         userData={this.state.userData}
+                    //       />
+                    //     }
+                    //     </TableRowColumn>
+                    //     <TableRowColumn hoverable={true} style={{ height: 140}}>
+                    //       {
+                    //         row.image_url && <Paper style={{marginTop: 10, maxHeight: 120, textAlign:'center'}} zDepth={1} >
+                    //           <img alt={''} style={style.images} src={row.image_url}/>
+                    //         </Paper>
+                    //       }
+                    //     </TableRowColumn>
+                    //   </TableRow>
+                    // ))
+
+    // } else {
+    //   return <div><img style={{height: 150, width: 150, padding: 20, paddingBottom: 0, filter: 'grayscale(100%)'}} src={giftImage} alt='none'/>
+    //           <h4 style={{padding: 0, color: 'grey'}}>No Items Here</h4>
+    //         </div>
+    // }
   }
 
   renderMessages() {
@@ -282,10 +326,57 @@ class WishListPage extends Component {
       if (this.state.currentList) {
         return (
           <div>
-            {this.state.currentList.title.toUpperCase()} <br/>
+            <input
+              type="text"
+              value={this.state.currentList.title}
+              onChange={(e) => {
+                // Copy current list into a new one to set state of current list to new one.
+                var newCurrentList = Object.assign({}, this.state.currentList);
+                newCurrentList.title = e.target.value;
+                // Iterate through user's wishlists and find the wishlist that matches the current one.
+                for (var n = 0; n < this.state.userData.wishlists.length; n++) {
+                  if (this.state.currentList._id === this.state.userData.wishlists[n]._id) {
+                    break;
+                  }
+                }
+                // Change the title of the wishlist on the user data by copying the object (not by reference) and changing the title.
+                var newUserData = Object.assign({}, this.state.userData);
+                newUserData.wishlists[n].title = e.target.value;
+                this.setState({currentList: newCurrentList, userData: newUserData});
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  console.log(this.state.currentList.title);
+                  console.log(this.state.currentList);
+                  // Send new data to be changed to the database by interacting with the server.
+                  axios.put('/api/lists/'+this.state.currentList._id, {
+                    secret: !this.state.currentList.secret,
+                    title: this.state.currentList.title
+                  }).then((res) => {
+                    this.setState({ currentList: res.data});
+                  });
+                }
+              }}
+              // Because this is an input text field, certain styles must be removed, and certain styles must be added to mimic the original title style.
+              style = {{
+                'textAlign': 'center',
+                'outline': 'none',
+                'background': 'none',
+                'border': 'none',
+                'fontFamily': 'Asap, sans-serif',
+                'fontSize': '24px',
+                'fontWeight': '400',
+                'color': 'rgb(255, 255, 255)',
+                'lineHeight': '64px',
+                'width': 'auto',
+                'minWidth':'2px'
+              }}
+              // After hitting 'enter', change the name in the database. Create character limit. Make it so that
+            ></input>
+            <br/>
             <div style={style.username}>{this.props.match.params.username.toUpperCase()}</div>
-            </div>
-          )
+          </div>
+        )
       }
     }
 
@@ -341,69 +432,94 @@ class WishListPage extends Component {
 
     return (
       this.state.currentList && <div className="container" style={style.backgroundStyle}>
-
-        { /* Displays the AddItem button only if currentList belongs to currentUser */
-          isListOwner && <AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>
-        }
-
-        <div className="wishlistContainer" style={{maxWidth: 800, margin: 'auto', textAlign: 'center', paddingTop: 50}} >
-          <div>
-            <AppBar title={showTitle()}
-              iconElementRight={topRightMenu}
-              iconElementLeft={
-                this.state.currentList.secret
-                  ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
-                    <VisibilityOff style={{padding: 12}}/>
-                  </IconButton>)
-                  : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
-                    <Visibility style={{padding: 12}} />
-                  </IconButton>)
-              }
-            ></AppBar>
-            <Tabs>
-              <Tab onActive={this.showWanted.bind(this)} label="Wanted Items" />
-              <Tab onActive={this.showPurchased.bind(this)} label="Purchased Items" />
-            </Tabs>
-          </div>
-
-
-          <AddList
-            list={this.state.currentList}
-            getdata={this.getUserData.bind(this)}
-            open={this.state.addListOpen}
-            onRequestClose={this.handleAddListClose.bind(this)}
-            handleClose={this.handleAddListClose.bind(this)}
-            state={this.state}
-          />
-
-          <Share
-            user={this.props.currentUser}
-            list={this.state.currentList}
-            open={this.state.shareOpen}
-            onRequestClose={this.handleShareClose.bind(this)}
-            handleClose={this.handleShareClose.bind(this)}
-          />
-
-          <Dialog
-            actions={deleteActions}
-            modal={false}
-            open={this.state.deleteOpen}
-            onRequestClose={this.handleDeleteClose.bind(this)}
-          >
-            Are you sure you want to delete this list?
-          </Dialog>
-
-          <div className="paperContainer">
-            <Paper zDepth={2}>
-              <Table>
-                <TableBody
-                  displayRowCheckbox={false}
-                >
-                  { this.renderList() }
-                </TableBody>
-              </Table>
+        <div className="startContainer"
+        style={{
+          'display':'flex',
+          'flex-direction':'row',
+          maxWidth: '1400px'
+        }}>
+          <div className="wishlist-list-sidebar"
+          style={{
+            'flex':'1'
+          }}>
+            <Paper className="leftSideWishlistPaper" style={{maxWidth: 400, marginTop: '50px', marginLeft:"10px"}}>
+              <AppBar title={`${this.state.currentListOwner}'s Lists`}
+                  style={{maxWidth: 400}}>
+              </AppBar>
+              <div className="wishlistsOnLeft">
+                {this.renderMessages()}
+              </div>
             </Paper>
           </div>
+          <div className="wishlistContainer" style={{'flex':'4', textAlign: 'center', margin: 'auto', paddingTop: 50, maxWidth: 800, marginLeft: 10}} >
+            <div>
+              <AppBar title={showTitle()}
+                iconElementRight={topRightMenu}
+                iconElementLeft={
+                  this.state.currentList.secret
+                    ? (<IconButton tooltip="Private List" touch={true} tooltipPosition="bottom-center">
+                      <VisibilityOff style={{padding: 12}}/>
+                    </IconButton>)
+                    : (<IconButton tooltip="Public List" touch={true} tooltipPosition="bottom-center">
+                      <Visibility style={{padding: 12}} />
+                    </IconButton>)
+                }
+              ></AppBar>
+              <Tabs>
+                <Tab onActive={this.showWanted.bind(this)} label="Wanted Items" />
+                <Tab onActive={this.showPurchased.bind(this)} label="Purchased Items" />
+              </Tabs>
+            </div>
+
+
+            <AddList
+              list={this.state.currentList}
+              getdata={this.getUserData.bind(this)}
+              open={this.state.addListOpen}
+              onRequestClose={this.handleAddListClose.bind(this)}
+              handleClose={this.handleAddListClose.bind(this)}
+              state={this.state}
+            />
+
+            <Share
+              user={this.props.currentUser}
+              list={this.state.currentList}
+              open={this.state.shareOpen}
+              onRequestClose={this.handleShareClose.bind(this)}
+              handleClose={this.handleShareClose.bind(this)}
+            />
+
+            <Dialog
+              actions={deleteActions}
+              modal={false}
+              open={this.state.deleteOpen}
+              onRequestClose={this.handleDeleteClose.bind(this)}
+            >
+              Are you sure you want to delete this list?
+            </Dialog>
+
+            <div className="paperContainer">
+              <Paper zDepth={2}>
+                <Table>
+                  <TableBody
+                    displayRowCheckbox={false}
+                  >
+                    { this.renderList() }
+                  </TableBody>
+                </Table>
+              </Paper>
+            </div>
+          </div>
+
+
+
+
+
+          <div className="friends-container" style={{flex:'2', marginLeft: '10px', marginTop: '50px', marginRight: '10px'}}>
+            <FriendsList userData={this.state.userData}/>
+          </div>
+
+
         </div>
       </div>
     );

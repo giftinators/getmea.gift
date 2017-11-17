@@ -1,6 +1,7 @@
 const User = require('../../app/models/user');
 const List = require('../../app/models/list');
 const Item = require('../../app/models/item');
+const _ = require('underscore')
 
 const getUserById = (user_id) => {
   return new Promise((resolve, reject) => {
@@ -59,6 +60,104 @@ const getUser = (username, loggedInUserId) => {
         user.wishlists = publicWishlists;
         resolve(user);
       }
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    User.find({})
+    .select('-password') //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((user) => {
+      //check if user doesn't exist
+      if (!user) {
+        reject('no users');
+      } else {
+        resolve(user);
+      }
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getUserByUsername = (username) => {
+  console.log('USERNAME BODY: ', username);
+  return new Promise((resolve, reject) => {
+    User.find({username: username})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((foundUsers) => {
+      resolve(foundUsers)
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getUserByName = (userFullName) => {
+  var allNames = userFullName.split(' ')
+  if(allNames.length === 1) {
+    //if user only inputs one word, search both first and last name with it
+    var user = {
+      firstName: allNames[0].toLowerCase(),
+      lastName: allNames[0].toLowerCase()
+    };
+  } else if (allNames.length === 0) {
+    //if user search is empty populate with empty strings to avoid error
+    var user = {
+      firstName: '',
+      lastName: ''
+    };
+  } else {
+    //take first word to be firstName and last word to be lastName(ignires middle names)
+    var user = {
+      firstName: allNames[0].toLowerCase(),
+      lastName: allNames[allNames.length-1].toLowerCase()
+    };
+  }
+
+  return new Promise((resolve, reject) => {
+    var allUsers = [];
+    User.find({firstName: user.firstName})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((foundUser) => {
+      allUsers = foundUser
+      User.find({lastName: user.lastName})
+      .select('-password')  //don't send back password
+      .select('-wishlists') //don't send back wishlists
+      .exec()
+      .then((foundUser) => {
+        allUsers = allUsers.concat(foundUser);
+        console.log('regular allUsers: ', allUsers);
+        resolve(allUsers)
+      })
+    })
+    .catch((err) => {
+      reject(err);
+    })
+  })
+};
+
+const getUserByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    email = email.toLowerCase()
+    User.find({email: email})
+    .select('-password')  //don't send back password
+    .select('-wishlists') //don't send back wishlists
+    .exec() //sends the query
+    .then((foundUser) => {
+      resolve(foundUser)
     })
     .catch((err) => {
       reject(err);
@@ -260,14 +359,88 @@ const deleteItem = (user_id, item_id) => {
   })
 };
 
+const friendRequest = (initiatingUser_id, requestedUser_id) => { //requestedUser_id:{status:'pending', initiated:false}
+  return new Promise((resolve, reject) => {
+    //
+    User.update({_id:initiatingUser_id},
+      {$set: {['friends.'+String(requestedUser_id)]:{friendStatus:'pending', initiated: true}}},
+      (err, raw) => {
+      if(err) {
+        reject(err)
+      }
+    })
+
+    User.update({_id:requestedUser_id},
+      {$set: {['friends.'+String(initiatingUser_id)]:{friendStatus:'pending', initiated: false}}},
+      (err, raw) => {
+      if(err) {
+        reject(err)
+      } else {
+        resolve(raw)
+      }
+    })
+  })
+}
+
+const addFriend = (acceptUser_id, requestUser_id) => {
+  return new Promise((resolve, reject) => {
+    User.update({_id:acceptUser_id},
+      {$set: {['friends.'+String(requestUser_id)]:{friendStatus:'friend', initiated: null}}},
+      (err, raw) => {
+        if(err) {
+          reject(err)
+        }
+    })
+
+    User.update({_id:requestUser_id},
+      {$set: {['friends.'+String(acceptUser_id)]:{friendStatus:'friend', initiated: null}}},
+      (err, raw) => {
+        if(err) {
+          reject(err)
+        } else {
+          resolve(raw)
+        }
+    })
+  })
+}
+
+const denyRequest = (denyUser_id, requestUser_id) => {
+  return new Promise((resolve, reject) => {
+    User.update({_id:denyUser_id},
+      {$set: {['friends.'+String(requestUser_id)]:{friendStatus:'denied', initiated: null}}},
+      (err, raw) => {
+        if(err) {
+          reject(err)
+        }
+    })
+
+    User.update({_id:requestUser_id},
+      {$set: {['friends.'+String(denyUser_id)]:{friendStatus:'denied', initiated: null}}},
+      (err, raw) => {
+      if(err) {
+        reject(err)
+      } else {
+        resolve(raw)
+      }
+    })
+  })
+}
+
 
 module.exports = {
-  getUserById,
-  getUser,
-  createList,
-  deleteList,
-  updateList,
+  addFriend,
   addItem,
-  updateItem,
-  deleteItem
+  createList,
+  deleteItem,
+  deleteList,
+  denyRequest,
+  friendRequest,
+  getUserById,
+  getAllUsers,
+  getUser,
+  getUserByName,
+  getUserByUsername,
+  getUserByEmail,
+  updateList,
+  updateItem
 }

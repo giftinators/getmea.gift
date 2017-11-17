@@ -35,7 +35,6 @@ class BuyGiftModal extends React.Component {
      .then(() => {
        this.handleModalClose()
        this.props.getUserData()
-       console.log(this.props.item.purchased)
      })
    }
 
@@ -45,7 +44,6 @@ class BuyGiftModal extends React.Component {
      .then(() => {
        this.handleModalClose()
        this.props.getUserData()
-       console.log(this.props.item.purchased)
      })
    }
 
@@ -91,7 +89,6 @@ class BuyGiftModal extends React.Component {
     ];
 
     if (this.state.open) {
-      console.log(this.props);
       return (
         <Dialog
           actions={actions}

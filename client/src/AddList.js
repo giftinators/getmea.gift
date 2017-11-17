@@ -59,14 +59,11 @@ export default class AddList extends Component {
 
     this.handleSubmit = (e) => {
       e.preventDefault();
-      console.log('props in addlist ', this.props)
-      console.log(this.state)
       axios.post('/api/lists', {
         title: this.state.title,
         secret: this.state.secret
       })
       .then((response) => {
-        console.log('response: ', response);
         if (response.data) {
           this.props.handleClose();
           //rerender WishListPage
