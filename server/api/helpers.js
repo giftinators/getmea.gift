@@ -359,8 +359,21 @@ const deleteItem = (user_id, item_id) => {
   })
 };
 
+const friendRequest = (initiatingUser_id, requestedUser_id) => {
+  return new Promise((resolve, reject) => {
+    User.findById(initiatingUser_id, (err, user) => {
+      if ( err ) {
+        reject(err)
+      } else {
+        console.log('USER DATA: ', user);
+      }
+    })
+  })
+}
+
 
 module.exports = {
+  friendRequest,
   getUserById,
   getAllUsers,
   getUser,

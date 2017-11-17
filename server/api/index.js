@@ -84,11 +84,13 @@ router.post('/signup', (req, res) => {
 }
 */
 router.post('/login', (req, res) => {
+
   passport.authenticate('local-login', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
     } else {
       req.session.user_id = user._id;
+      helpers.friendRequest(user._id)
       res.send(user);
     }
   })(req, res);
