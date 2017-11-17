@@ -359,18 +359,88 @@ const deleteItem = (user_id, item_id) => {
   })
 };
 
+const friendRequest = (initiatingUser_id, requestedUser_id) => { //requestedUser_id:{status:'pending', initiated:false}
+  return new Promise((resolve, reject) => {
+    //
+    User.update({_id:initiatingUser_id},
+      {$set: {['friends.'+String(requestedUser_id)]:{friendStatus:'pending', initiated: true}}},
+      (err, raw) => {
+      if(err) {
+        reject(err)
+      }
+    })
+
+    User.update({_id:requestedUser_id},
+      {$set: {['friends.'+String(initiatingUser_id)]:{friendStatus:'pending', initiated: false}}},
+      (err, raw) => {
+      if(err) {
+        reject(err)
+      } else {
+        resolve(raw)
+      }
+    })
+  })
+}
+
+const addFriend = (acceptUser_id, requestUser_id) => {
+  return new Promise((resolve, reject) => {
+    User.update({_id:acceptUser_id},
+      {$set: {['friends.'+String(requestUser_id)]:{friendStatus:'friend', initiated: null}}},
+      (err, raw) => {
+        if(err) {
+          reject(err)
+        }
+    })
+
+    User.update({_id:requestUser_id},
+      {$set: {['friends.'+String(acceptUser_id)]:{friendStatus:'friend', initiated: null}}},
+      (err, raw) => {
+        if(err) {
+          reject(err)
+        } else {
+          resolve(raw)
+        }
+    })
+  })
+}
+
+const denyRequest = (denyUser_id, requestUser_id) => {
+  return new Promise((resolve, reject) => {
+    User.update({_id:denyUser_id},
+      {$set: {['friends.'+String(requestUser_id)]:{friendStatus:'denied', initiated: null}}},
+      (err, raw) => {
+        if(err) {
+          reject(err)
+        }
+    })
+
+    User.update({_id:requestUser_id},
+      {$set: {['friends.'+String(denyUser_id)]:{friendStatus:'denied', initiated: null}}},
+      (err, raw) => {
+      if(err) {
+        reject(err)
+      } else {
+        resolve(raw)
+      }
+    })
+  })
+}
+
 
 module.exports = {
+  addFriend,
+  addItem,
+  createList,
+  deleteItem,
+  deleteList,
+  denyRequest,
+  friendRequest,
   getUserById,
   getAllUsers,
   getUser,
   getUserByName,
   getUserByUsername,
   getUserByEmail,
-  createList,
-  deleteList,
   updateList,
-  addItem,
-  updateItem,
-  deleteItem
+  updateItem
 }

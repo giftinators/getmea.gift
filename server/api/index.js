@@ -84,12 +84,16 @@ router.post('/signup', (req, res) => {
 }
 */
 router.post('/login', (req, res) => {
+
   passport.authenticate('local-login', (err, user) => {
     if (err) {
       res.status(401).send({err: err});
     } else {
       req.session.user_id = user._id;
+      helpers.friendRequest(user._id, '5a0e53ec0c40584f51eb2b2e')
+      helpers.denyRequest(user._id, '5a0e53ec0c40584f51eb2b2e')
       res.send(user);
+      helpers.getUserById(user._id)
     }
   })(req, res);
 });
