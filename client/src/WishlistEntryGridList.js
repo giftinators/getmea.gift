@@ -74,7 +74,7 @@ const WishlistEntryGridList = (props) => (
         <GridTile
           key={index}
           title={tile.title}
-          subtitle={<span>by <b>{tile.comments}</b></span>}
+          subtitle={<span><b>{tile.comments}</b></span>}
           actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
         >
           <img src={tile.image_url} />
