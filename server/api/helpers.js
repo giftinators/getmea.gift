@@ -165,6 +165,21 @@ const getUserByEmail = (email) => {
   })
 };
 
+// const getUserById = (id) => {
+//   return new Promise((resolve, reject) => {
+//     User.find({_id: id})
+//     .select('-password')  //don't send back password
+//     .select('-wishlists') //don't send back wishlists
+//     .exec() //sends the query
+//     .then((foundUser) => {
+//       resolve(foundUser)
+//     })
+//     .catch((err) => {
+//       reject(err);
+//     })
+//   })
+// };
+
 
 const createList = (list) => {
   return new Promise((resolve, reject) => {
