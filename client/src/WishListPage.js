@@ -36,6 +36,8 @@ import axios from 'axios';
 
 import giftImage from './img/gift.png';
 
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+
 const style = {
 
   backgroundStyle: {
@@ -294,7 +296,7 @@ class WishListPage extends Component {
           <div>
             <input
               type="text"
-              value={this.state.currentList.title.toUpperCase()}
+              value={this.state.currentList.title}
               onChange={(e) => {
                 // Copy current list into a new one to set state of current list to new one.
                 var newCurrentList = Object.assign({}, this.state.currentList);
@@ -477,9 +479,11 @@ class WishListPage extends Component {
             </div>
           </div>
           <div className="friends-container" style={{flex:'3'}}>
-          <AppBar>
-            Hello
-          </AppBar>
+            <Toolbar>
+              <ToolbarGroup>
+                <ToolbarTitle text="test" />
+                </ToolbarGroup>
+            </Toolbar>
           </div>
 
         { /* End container */ }
