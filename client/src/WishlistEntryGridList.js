@@ -68,6 +68,7 @@ const WishlistEntryGridList = (props) => (
     <GridList
       cellHeight={180}
       style={styles.gridList}
+      cols={3}
     >
       <Subheader>December</Subheader>
       {props.list.map((tile, index) => (
@@ -80,8 +81,9 @@ const WishlistEntryGridList = (props) => (
           <img src={tile.image_url} />
         </GridTile>
       ))}
+      {props.addItem}
     </GridList>
-    {props.addItem}
+    
   </div>
 );
 

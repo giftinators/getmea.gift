@@ -7,6 +7,10 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import Paper from 'material-ui/Paper';
+import {GridList, GridTile} from 'material-ui/GridList';
+import IconButton from 'material-ui/IconButton';
+import Subheader from 'material-ui/Subheader';
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 
 
 import axios from 'axios';
@@ -255,8 +259,13 @@ export default class AddItem extends Component {
     };
 
     return (
-      <div style={{width:'33%', display:'inline-block'}}>
-        <AddItemEntry action={this.handleOpen}/>
+      <div style={{height:'180px'}}>
+        <GridTile
+          key="add"
+          onClick={this.handleOpen}
+        >
+          <img style={{height:'90px'}} src="https://i.imgur.com/4Iso7FF.jpg"/>
+        </GridTile>
         <Dialog
           title={Header()}
           actions={actions}
