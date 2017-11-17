@@ -8,6 +8,7 @@ import feature2 from './img/feature2.png'
 import feature3 from './img/feature3.png'
 import './Homepage.scss';
 import Signup from './Signup.js'
+import Login from './Login.js'
 
 const style = {
   hero: {
@@ -52,7 +53,7 @@ class Homepage extends Component {
               </Box>
               <Box p={2}>
                 <RaisedButton onClick = { ()=>{ this.toggleLogin() } } secondary label="Get Started" />
-                { this.state.isSignupVisible ? <Signup /> : null }
+                { this.state.isSignupVisible ? <Signup history={this.props.history} setCurrentUser={this.props.setCurrentUser} /> : null }
               </Box>
             </Flex>
           </Paper>
