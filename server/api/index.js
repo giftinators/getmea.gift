@@ -294,19 +294,37 @@ router.delete('/items/:id', (req, res) => {
 router.post('/friendRequest', (req, res) => {
   var initiatingUser_id = req.body.initiatingUser_id;
   var requestedUser_id = req.body.requestedUser_id;
-  // insert helper here
+  helpers.friendRequest(initiatingUser_id, requestedUser_id)
+  .then((data) => {
+    res.send(`Success: ${data}`)
+  });
+  .catch((err) => {
+    res.status(401).send({err});
+  });
 });
 
 router.post('/acceptFriendRequest', (req, res) => {
-  var acceptingUser_id = req.body.acceptingUser_id;
-  var requestingUser_id = req.body.requestingUser_id;
-  // insert helper here
+  var acceptUser_id = req.body.acceptUser_id;
+  var requestUser_id = req.body.requestUser_id;
+  helpers.addFriend(acceptUser_id, requestUser_id)
+  .then((data) => {
+    res.send(`Success: ${data}`)
+  });
+  .catch((err) => {
+    res.status(401).send({err});
+  });
 });
 
-router.post('/rejectFriendRequest', (req, res) => {
-  var rejecttingUser_id = req.body.rejecttingUser_id;
-  var requestingUser_id = req.body.requestingUser_id;
-  // insert helper here
+router.post('/denyFriendRequest', (req, res) => {
+  var denyUser_id = req.body.denyUser_id;
+  var requestUser_id = req.body.requestUser_id;
+  helpers.addFriend(denyUser_id, requestUser_id)
+  .then((data) => {
+    res.send(`Success: ${data}`)
+  });
+  .catch((err) => {
+    res.status(401).send({err});
+  });
 });
 
 
