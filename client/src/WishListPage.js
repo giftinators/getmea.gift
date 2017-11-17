@@ -31,6 +31,7 @@ import AddList from './AddList';
 import BuyGiftModal from './BuyGiftModal';
 import Share from './Share';
 import EntryList from './EntryList';
+import WishlistEntryGridList from './WishlistEntryGridList';
 
 import axios from 'axios';
 
@@ -41,7 +42,7 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 const style = {
 
   backgroundStyle: {
-    backgroundColor: '#eaf2ff',
+    backgroundColor: '#ffffff',
     height: '110%',
     paddingBottom: 40
   },
@@ -55,6 +56,34 @@ const style = {
     fontSize: 16,
     fontWeight: 400,
   }
+};
+
+const FriendsList = props => {
+  console.log(props.userData);
+
+
+
+  return (
+    <div className="friends-list">
+      <Paper>
+        <AppBar 
+          title="Pending"
+          iconElementLeft={<div></div>}
+          />
+          <MenuItem key="1" primaryText="it's me" />    
+          <MenuItem key="2" primaryText="hello" />
+          <Divider />
+          <MenuItem key="3" primaryText="it's me" />
+          <AppBar 
+          title="All Friends"
+          iconElementLeft={<div></div>}
+          />
+          <MenuItem key="4" primaryText="hello" />
+          <Divider />
+          <MenuItem key="5" primaryText="it's me" />
+      </Paper>
+    </div>
+  );
 };
 
 class WishListPage extends Component {
@@ -171,13 +200,16 @@ class WishListPage extends Component {
     // if (list.length > 0) {
 
       return (
-        <div>
-          <EntryList list={list} addListComponent={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>}/>        
-          {/* { /* Displays the AddItem button only if currentList belongs to currentUser 
-          isListOwner && 
-          } */}
-        </div>
-      )
+        <WishlistEntryGridList list={list} addItem={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)} />} />
+
+
+        // <div>
+        //   <EntryList list={list} addListComponent={<AddItem list={this.state.currentList} getdata={this.getUserData.bind(this)}/>}/>        
+        //   {/* { /* Displays the AddItem button only if currentList belongs to currentUser 
+        //   isListOwner && 
+        //   } */}
+        // </div>
+      );
       // )
                     //         list.map((row, index) => (
                     //   <TableRow hoverable={true} key={index}>
@@ -410,7 +442,7 @@ class WishListPage extends Component {
           style={{
             'flex':'1'
           }}>
-            <Paper className="leftSideWishlistPaper" style={{maxWidth: 400, marginTop: '50px'}}>
+            <Paper className="leftSideWishlistPaper" style={{maxWidth: 400, marginTop: '50px', marginLeft:"10px"}}>
               <AppBar title={`${this.state.currentListOwner}'s Lists`}
                   style={{maxWidth: 400}}>
               </AppBar>
@@ -419,7 +451,7 @@ class WishListPage extends Component {
               </div>
             </Paper>
           </div>
-          <div className="wishlistContainer" style={{'flex':'4', textAlign: 'center', margin: 'auto', paddingTop: 50, maxWidth: 800, marginLeft: 50}} >
+          <div className="wishlistContainer" style={{'flex':'4', textAlign: 'center', margin: 'auto', paddingTop: 50, maxWidth: 800, marginLeft: 10}} >
             <div>
               <AppBar title={showTitle()}
                 iconElementRight={topRightMenu}
@@ -478,15 +510,16 @@ class WishListPage extends Component {
               </Paper>
             </div>
           </div>
-          <div className="friends-container" style={{flex:'3'}}>
-            <Toolbar>
-              <ToolbarGroup>
-                <ToolbarTitle text="test" />
-                </ToolbarGroup>
-            </Toolbar>
+
+
+
+
+
+          <div className="friends-container" style={{flex:'2', marginLeft: '10px', marginTop: '50px', marginRight: '10px'}}>
+            <FriendsList userData={this.state.userData}/>
           </div>
 
-        { /* End container */ }
+
         </div>
       </div>
     );
