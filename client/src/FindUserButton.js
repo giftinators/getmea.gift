@@ -45,7 +45,7 @@ export default class FindUserButton extends Component {
 
     this.handleSearch = (e) => {
       e.preventDefault();
-      this.setState({foundUsers: []})
+      this.setState({foundUsers: [], usersFound: false})
       axios.post('api/search', {
         searchMethod:this.state.radioButton,
         userInput: this.state.input

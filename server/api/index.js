@@ -301,8 +301,12 @@ router.delete('/items/:id', (req, res) => {
 });
 
 router.post('/friendRequest', (req, res) => {
-  var initiatingUser_id = req.body.initiatingUser_id;
+  var initiatingUser_id = req.session.user_id;
   var requestedUser_id = req.body.requestedUser_id;
+  if(!initiatingUser_id) {
+    console.log('NOT SIGNED IN');
+    return false;
+  }
   helpers.friendRequest(initiatingUser_id, requestedUser_id)
   .then((data) => {
     res.send(`Success: ${data}`)
