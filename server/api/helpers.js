@@ -109,8 +109,8 @@ const getUserByName = (userFullName) => {
   if(allNames.length === 1) {
     //if user only inputs one word, search both first and last name with it
     var user = {
-      firstName: allNames[0].toLowerCase(),
-      lastName: allNames[0].toLowerCase()
+      firstName: new RegExp(allNames[0], 'i'),
+      lastName: new RegExp(allNames[0], 'i')
     };
   } else if (allNames.length === 0) {
     //if user search is empty populate with empty strings to avoid error
@@ -121,33 +121,27 @@ const getUserByName = (userFullName) => {
   } else {
     //take first word to be firstName and last word to be lastName(ignires middle names)
     var user = {
-      firstName: allNames[0].toLowerCase(),
-      lastName: allNames[allNames.length-1].toLowerCase()
+      firstName: new RegExp(allNames[0], 'i'),
+      lastName: new RegExp(allNames[allNames.length-1], 'i')
     };
   }
 
   return new Promise((resolve, reject) => {
     var allUsers = [];
-    User.find({firstName: user.firstName})
+    // var RE = new RegExp(userFullName, 'i');
+    User.find({ $or: [ {firstName: user.firstName}, {lastName: user.lastName} ]})
     .select('-password')  //don't send back password
     .select('-wishlists') //don't send back wishlists
     .exec() //sends the query
-    .then((foundUser) => {
-      allUsers = foundUser
-      User.find({lastName: user.lastName})
-      .select('-password')  //don't send back password
-      .select('-wishlists') //don't send back wishlists
-      .exec()
-      .then((foundUser) => {
-        allUsers = allUsers.concat(foundUser);
-        console.log('regular allUsers: ', allUsers);
-        resolve(allUsers)
+    .then((foundUsers) => {
+      console.log('foundUsers', foundUsers)
+      resolve(foundUsers);
       })
     })
     .catch((err) => {
+      console.log('err in getUserByName', err)
       reject(err);
     })
-  })
 };
 
 const getUserByEmail = (email) => {
