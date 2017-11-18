@@ -145,7 +145,7 @@ router.post('/search', (req, res) => {
       res.status(500).send(err)
     })
   } else if ( searchMethod === 'email' ) {
-    console.log('SERVER EMAIL SRACH');
+    console.log('SERVER EMAIL SEARCH');
     helpers.getUserByEmail(req.body.userInput)
     .then((foundUsers) => {
       //foundUsers is an array of users that met the search requirements

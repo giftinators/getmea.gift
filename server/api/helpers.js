@@ -88,9 +88,10 @@ const getAllUsers = () => {
 };
 
 const getUserByUsername = (username) => {
-  console.log('USERNAME BODY: ', username);
+  var RE = new RegExp(username, 'i');
+  console.log('User search by username:', username, ' RegExp:', RE);
   return new Promise((resolve, reject) => {
-    User.find({username: username})
+    User.find( {username: RE} )
     .select('-password')  //don't send back password
     .select('-wishlists') //don't send back wishlists
     .exec() //sends the query
@@ -150,9 +151,11 @@ const getUserByName = (userFullName) => {
 };
 
 const getUserByEmail = (email) => {
+  var RE = new RegExp(email, 'i');
+  console.log('User search by email: ', email, ' RegExp:', RE);
   return new Promise((resolve, reject) => {
     email = email.toLowerCase()
-    User.find({email: email})
+    User.find({email: RE})
     .select('-password')  //don't send back password
     .select('-wishlists') //don't send back wishlists
     .exec() //sends the query
