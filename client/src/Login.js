@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
+import Dropzone from 'react-dropzone';
 
 /**
 * A modal dialog can only be closed by selecting one of the actions.
@@ -23,8 +24,19 @@ export default class Login extends Component {
       register: false,
       username: '',
       password: '',
-      verifyPassword: ''
+      verifyPassword: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      fileReceived: false,
+      fileName: '',
+      files: null,
+      profilePicURL: "https://support.plymouth.edu/kb_images/Yammer/default.jpeg"
     };
+
+    this.setStore = (obj) => {
+      this.setState(obj);
+    }
 
     this.handleOpen = () => {
       this.setState({open: true});
@@ -70,11 +82,14 @@ export default class Login extends Component {
       });
     };
 
-    this.handleRegisterSubmit = (e) => {
-      e.preventDefault();
+    this.handleRegisterSubmit = () => {
       axios.post('api/signup', {
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        email: this.state.email,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        profilePicURL: this.state.profilePicURL
       })
       .then((response) => {
         if(response.data) {
@@ -92,10 +107,63 @@ export default class Login extends Component {
       });
     };
 
+    this.uploadFile = (e) => {
+      e.preventDefault();
+      const files = this.state.files;
+      console.log('uploading file')
+      //if the user has added a file
+      if (files) {
+        console.log('have a file in upload');
+        /* map over all of the images, upload them, and post them to db
+        (right now there is only 1 image, but can be
+        changed later to accept and render multiple images) */
+        files.map(file => {
+          // Initial FormData
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("tags", `getmeagift`);
+          formData.append("upload_preset", "n5n2w26w"); //preset is with account
+          formData.append("api_key", "365845311351591"); //key is based on account
+          formData.append("timestamp", (Date.now() / 1000) | 0);
+
+          // Make an AJAX upload request using Axios
+          // The url is provided by cloudinary
+          return axios.post("https://api.cloudinary.com/v1_1/getmeagiftlegacy/image/upload", formData, {
+            headers: { "X-Requested-With": "XMLHttpRequest" },
+          })
+          .then(response => {
+            const data = response.data;
+            //url of image in cloudinary
+            console.log(data);
+            const fileURL = data.secure_url
+            console.log(fileURL);
+            this.setState({profilePicURL: fileURL})
+            this.handleRegisterSubmit()
+          })
+        });
+      } else {
+        (console.log('no file in upload'))
+        this.handleRegisterSubmit();
+        //if they don't have a file ready to be uploaded just post to database
+      //  this.post()
+      }
+    }
+
+    this.onDrop = (files) => {
+      console.log('dropped')
+      if(files) {
+        this.setState({
+          fileReceived: true,
+          fileName: files[0].name,
+          files: files
+        });
+    }
+  }
+
     this.handleKeyPress = (e) => {
       if (e.key === 'Enter') {
         if (this.state.register) {
-          this.handleRegisterSubmit(e);
+          this.uploadFile(e);
         } else {
           this.handleLoginSubmit(e);
         }
@@ -127,7 +195,7 @@ export default class Login extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={this.handleClose}
+        onClick={() => {this.setStore({open: false, register: !this.state.register})}}
       />,
       <FlatButton
         label="Submit"
@@ -135,9 +203,11 @@ export default class Login extends Component {
         disabled={
           !this.state.username
           || !this.state.password
+          || !this.state.firstName
+          || !this.state.lastName
           || this.state.password !== this.state.verifyPassword
         }
-        onClick={this.handleRegisterSubmit}
+        onClick={this.uploadFile}
       />
     ];
 
@@ -147,7 +217,7 @@ export default class Login extends Component {
 
     var loginDiv = (
       <div className="login">
-        <RaisedButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
+        <RaisedButton className="LoginBtn" secondary label="Login/Signup" onClick={this.handleOpen} />
         <Dialog
           title="Login"
           actions={loginActions}
@@ -172,7 +242,7 @@ export default class Login extends Component {
                 value={this.state.password}
               /><br />
             </form>
-            <p>Dont have an account? <span style={{cursor: "pointer"}} onClick={this.toggleRegister}>Create one</span></p>
+            <p>Don't have an account? <span style={{cursor: "pointer", color: "blue"}} onClick={this.toggleRegister}>Sign up</span></p>
           </div>
         </Dialog>
       </div>
@@ -189,22 +259,38 @@ export default class Login extends Component {
           <div style={{textAlign: 'center'}}>
             <form onSubmit={this.handleSubmit}>
               <TextField
-                onKeyPress={this.handleKeyPress}
                 onChange={this.handleUsernameChange}
                 hintText="username"
                 floatingLabelText="username"
                 value={this.state.username}
               /><br />
               <TextField
-                onKeyPress={this.handleKeyPress}
+                onChange={(e, newValue) => {this.setStore({firstName:newValue})}}
+                hintText="first name"
+                floatingLabelText="first name"
+                value={this.state.firstName}
+              /><br />
+              <TextField
+                onChange={(e, newValue) => {this.setStore({lastName:newValue})}}
+                hintText="last name"
+                floatingLabelText="last name"
+                value={this.state.lastName}
+              /><br />
+              <TextField
+                onChange={(e, newValue) => {this.setStore({email:newValue})}}
+                hintText="email"
+                floatingLabelText="email"
+                value={this.state.email}
+              /><br />
+              <TextField
                 onChange={this.handlePasswordChange}
                 hintText="password"
                 floatingLabelText="password"
                 type="password"
                 value={this.state.password}
+                // errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords do not match"}
                 /><br />
               <TextField
-                onKeyPress={this.handleKeyPress}
                 onChange={this.handleVerifyPasswordChange}
                 hintText="verify password"
                 floatingLabelText="verify password"
@@ -212,8 +298,12 @@ export default class Login extends Component {
                 value={this.state.verifyPassword}
                 errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords do not match"}
               /><br />
+              <Dropzone disableClick={false} multiple={false} accept={'image/*'} onDrop={this.onDrop} style={{maxHeight: 50, maxWidth: 150}}>
+                <FlatButton secondary label="Add Profile Picture"></FlatButton>
+              </Dropzone>
+              {this.state.fileReceived ? <span style={{color: 'blue', width: 150}}>{this.state.fileName}</span> : null}
             </form>
-            <p>Already have an account? <span style={{cursor: 'pointer'}} onClick={this.toggleRegister}>Login</span></p>
+            <p>Already have an account? <span style={{cursor: 'pointer', color: "blue"}} onClick={this.toggleRegister}>Login</span></p>
           </div>
         </Dialog>
       </div>
