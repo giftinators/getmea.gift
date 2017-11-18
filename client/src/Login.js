@@ -23,8 +23,15 @@ export default class Login extends Component {
       register: false,
       username: '',
       password: '',
-      verifyPassword: ''
+      verifyPassword: '',
+      firstName: '',
+      lastName: '',
+      email: ''
     };
+
+    this.setStore = (obj) => {
+      this.setState(obj);
+    }
 
     this.handleOpen = () => {
       this.setState({open: true});
@@ -74,7 +81,10 @@ export default class Login extends Component {
       e.preventDefault();
       axios.post('api/signup', {
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        email: this.state.email,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName
       })
       .then((response) => {
         if(response.data) {
@@ -127,7 +137,7 @@ export default class Login extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={this.handleClose}
+        onClick={() => {this.setStore({open: false, register: !this.state.register})}}
       />,
       <FlatButton
         label="Submit"
@@ -135,6 +145,8 @@ export default class Login extends Component {
         disabled={
           !this.state.username
           || !this.state.password
+          || !this.state.firstName
+          || !this.state.lastName
           || this.state.password !== this.state.verifyPassword
         }
         onClick={this.handleRegisterSubmit}
@@ -147,7 +159,7 @@ export default class Login extends Component {
 
     var loginDiv = (
       <div className="login">
-        <RaisedButton className="LoginBtn" secondary label="Login" onClick={this.handleOpen} />
+        <RaisedButton className="LoginBtn" secondary label="Login/Signup" onClick={this.handleOpen} />
         <Dialog
           title="Login"
           actions={loginActions}
@@ -172,7 +184,7 @@ export default class Login extends Component {
                 value={this.state.password}
               /><br />
             </form>
-            <p>Dont have an account? <span style={{cursor: "pointer"}} onClick={this.toggleRegister}>Create one</span></p>
+            <p>Don't have an account? <span style={{cursor: "pointer", color: "blue"}} onClick={this.toggleRegister}>Sign up</span></p>
           </div>
         </Dialog>
       </div>
@@ -189,22 +201,38 @@ export default class Login extends Component {
           <div style={{textAlign: 'center'}}>
             <form onSubmit={this.handleSubmit}>
               <TextField
-                onKeyPress={this.handleKeyPress}
                 onChange={this.handleUsernameChange}
                 hintText="username"
                 floatingLabelText="username"
                 value={this.state.username}
               /><br />
               <TextField
-                onKeyPress={this.handleKeyPress}
+                onChange={(e, newValue) => {this.setStore({firstName:newValue})}}
+                hintText="first name"
+                floatingLabelText="first name"
+                value={this.state.firstName}
+              /><br />
+              <TextField
+                onChange={(e, newValue) => {this.setStore({lastName:newValue})}}
+                hintText="last name"
+                floatingLabelText="last name"
+                value={this.state.lastName}
+              /><br />
+              <TextField
+                onChange={(e, newValue) => {this.setStore({email:newValue})}}
+                hintText="email"
+                floatingLabelText="email"
+                value={this.state.email}
+              /><br />
+              <TextField
                 onChange={this.handlePasswordChange}
                 hintText="password"
                 floatingLabelText="password"
                 type="password"
                 value={this.state.password}
+                // errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords do not match"}
                 /><br />
               <TextField
-                onKeyPress={this.handleKeyPress}
                 onChange={this.handleVerifyPasswordChange}
                 hintText="verify password"
                 floatingLabelText="verify password"
@@ -213,7 +241,7 @@ export default class Login extends Component {
                 errorText={this.state.password === this.state.verifyPassword ? '' : "Passwords do not match"}
               /><br />
             </form>
-            <p>Already have an account? <span style={{cursor: 'pointer'}} onClick={this.toggleRegister}>Login</span></p>
+            <p>Already have an account? <span style={{cursor: 'pointer', color: "blue"}} onClick={this.toggleRegister}>Login</span></p>
           </div>
         </Dialog>
       </div>

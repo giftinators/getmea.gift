@@ -5,6 +5,13 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import Paper from 'material-ui/Paper';
+import {GridList, GridTile} from 'material-ui/GridList';
+import IconButton from 'material-ui/IconButton';
+import Subheader from 'material-ui/Subheader';
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+
 
 import axios from 'axios';
 
@@ -14,19 +21,46 @@ import Dropzone from 'react-dropzone';
 
 
 const initialState = {
-      open: false,
-      title: '',
-      price: 0,
-      url: '',
-      imageUrl: '',
-      comments: '',
-      errorTextPrice: '*Required',
-      errorTextTitle: '*Required',
-      fileReceived: false,
-      files: null,
-      fileName: '',
-      loading: false
-    };
+  open: false,
+  title: '',
+  price: 0,
+  url: '',
+  imageUrl: '',
+  comments: '',
+  errorTextPrice: '*Required',
+  errorTextTitle: '*Required',
+  fileReceived: false,
+  files: null,
+  fileName: '',
+  loading: false
+};
+
+const AddItemEntry = props => {
+  return (
+    <div 
+    className="entry-card"
+    style={{
+      'display':'inline-block',
+      'backgroundColor':'red',
+      'margin':'2px',
+      'float':'left',
+      'maxWidth':'100%'
+    }}>
+      <Paper>
+        <Card>
+          <CardTitle
+          title="Add item"
+          ></CardTitle>
+          <CardMedia>
+            <div onClick={props.action}>
+              <img style={{maxWidth:'100%'}} src="http://downloadicons.net/sites/default/files/add-icon-76240.png" />
+            </div>
+          </CardMedia>
+        </Card>
+      </Paper>
+    </div>
+  );
+};
 
 export default class AddItem extends Component {
   constructor (props) {
@@ -157,13 +191,13 @@ export default class AddItem extends Component {
           const formData = new FormData();
           formData.append("file", file);
           formData.append("tags", `getmeagift`);
-          formData.append("upload_preset", "sgazd2ix"); //preset is with account
-          formData.append("api_key", "737998977447549"); //key is based on account
+          formData.append("upload_preset", "n5n2w26w"); //preset is with account
+          formData.append("api_key", "365845311351591"); //key is based on account
           formData.append("timestamp", (Date.now() / 1000) | 0);
 
           // Make an AJAX upload request using Axios
           // The url is provided by cloudinary
-          return axios.post("https://api.cloudinary.com/v1_1/getmeagift/image/upload", formData, {
+          return axios.post("https://api.cloudinary.com/v1_1/getmeagiftlegacy/image/upload", formData, {
             headers: { "X-Requested-With": "XMLHttpRequest" },
           })
           .then(response => {
@@ -225,10 +259,13 @@ export default class AddItem extends Component {
     };
 
     return (
-      <div>
-        <FloatingActionButton secondary onClick={this.handleOpen} style={style}>
-          <ContentAdd />
-        </FloatingActionButton>
+      <div style={{height:'180px'}}>
+        <GridTile
+          key="add"
+          onClick={this.handleOpen}
+        >
+          <img style={{height:'90px'}} src="https://i.imgur.com/4Iso7FF.jpg"/>
+        </GridTile>
         <Dialog
           title={Header()}
           actions={actions}
