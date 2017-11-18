@@ -13,6 +13,8 @@ export default class FriendsList extends React.Component {
       pending: []
     };
     this.retrieveFriends = this.retrieveFriends.bind(this);
+    this.acceptFriendRequest = this.acceptFriendRequest.bind(this);
+    this.denyFriendRequest = this.denyFriendRequest.bind(this);
   }
 
   componentWillMount() {
@@ -20,11 +22,10 @@ export default class FriendsList extends React.Component {
   }
 
   retrieveFriends() {
-    var pending = [];
-    var friends = [];
-    var userDataFriends = this.props.userData.friends;
-    console.table(userDataFriends);
-    for (var user in userDataFriends) {
+    let pending = [];
+    let friends = [];
+    let userDataFriends = this.props.userData.friends;
+    for (let user in userDataFriends) {
       axios
         .post('api/search', {
           searchMethod: 'id',
@@ -36,6 +37,7 @@ export default class FriendsList extends React.Component {
           } else if (userDataFriends[user].friendStatus === 'friend') {
             friends.push(foundUser.data);
           }
+          console.table(pending);
           this.setState({
             pending: pending,
             friends: friends
@@ -47,6 +49,21 @@ export default class FriendsList extends React.Component {
     }
   }
 
+  acceptFriendRequest(e) {
+    console.log('Accepted friend request');
+    axios.post('/acceptFriendRequest', {
+      acceptUser_id: this.props.userData._id,
+      requestUser_id: e.target.value
+    }).then((message) => {
+      console.log('Message: ', message);
+      this.forceUpdate();
+    });
+  }
+
+  denyFriendRequest(e) {
+    console.log('Denied friend request');
+  }
+
   render() {
     return (
       <div className="friends-list">
@@ -54,12 +71,23 @@ export default class FriendsList extends React.Component {
           <AppBar title="Pending" iconElementLeft={<div />} />
           {this.state.pending.map((pendingFriend, index) => {
             return (
-              <MenuItem key={'pending_' + index} primaryText={pendingFriend.firstName + ' ' + pendingFriend.lastName} />
+              <MenuItem
+                key={'pending-' + index}
+                value={pendingFriend._id}
+                primaryText={pendingFriend.firstName + ' ' + pendingFriend.lastName}
+                onClick={this.acceptFriendRequest}
+              />
             );
           })}
           <AppBar title="All Friends" iconElementLeft={<div />} />
           {this.state.friends.map((friend, index) => {
-            return <MenuItem key={'friend_' + index} primaryText={friend.firstName + ' ' + friend.lastName} />;
+            return (
+              <MenuItem
+                key={'friend-' + index}
+                value={friend._id}
+                primaryText={friend.firstName + ' ' + friend.lastName}
+              />
+            );
           })}
         </Paper>
       </div>
