@@ -54,7 +54,7 @@ Examples on accessing `style` properties:
 
 Below the `style` variable there is the `WishListPage` component. This component takes up 356 lines and is where most of the application logic is stored.
 
-All neccessary data is pulled from the (mongo) database and stores the data in the state for DOM rendering. The state of this component includes 10 variables and include:
+All necessary data is pulled from the (mongo) database and stores the data in the state for DOM rendering. The state of this component includes 10 variables and include:
 
 ## userData:
 Default key is null. Upon rendering the getUserData() (line 135) function is called and the null state is changed to an array of data holding user data.  One of the array properties is another array of list data that is used for the currentList state.
